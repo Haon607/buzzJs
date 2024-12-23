@@ -31,17 +31,15 @@ function setLeds(states) {
   if (device) {
     try {
       const ledData = [0x00, 0x00].concat(
-        states.map(state => (state ? 0xff : 0x00))
+        states.map(state => (state ? 0xFF : 0x00))
       );
       device.write(ledData);
-      console.log('LEDs set to:', states);
     } catch (error) {
       console.error('Error setting LEDs:', error);
     }
   }
 }
 
-// Mock buzzer device for testing (replace with real device logic)
 let device = connectToDevice();
 
 // WebSocket connection handler
@@ -49,7 +47,6 @@ wss.on('connection', ws => {
   console.log('New WebSocket connection');
 
   ws.on('message', message => {
-    console.log('Received message:', message);
     const data = JSON.parse(message);
 
     if (data.event === 'setLeds') {
