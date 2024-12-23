@@ -85,9 +85,8 @@ export class BuzzDeviceService implements OnDestroy {
     return { controller: controller + 1, button: index - controller * 5 };
   }
 
-  public setLeds(states: (boolean | undefined)[]): void {
+  public setLeds(states: boolean[]): void {
     try {
-      let states = this.getStates().subscribe();
       // Send the LED control message to the WebSocket server
       this.ws.send(JSON.stringify({ event: 'setLeds', states }));
     } catch (e) {
