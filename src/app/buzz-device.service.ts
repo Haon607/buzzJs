@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 interface ButtonState {
@@ -9,7 +9,7 @@ interface ButtonState {
 @Injectable({
   providedIn: 'root',
 })
-export class BuzzDeviceService {
+export class BuzzDeviceService implements OnDestroy {
   private readonly EVENTS = {
     PRESS: 'press',
     RELEASE: 'release',
@@ -112,5 +112,9 @@ export class BuzzDeviceService {
 
   public getStates() {
     return this.statesSubject.asObservable();
+  }
+
+  ngOnDestroy(): void {
+    this.ws.close()
   }
 }
