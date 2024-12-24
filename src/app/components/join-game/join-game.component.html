@@ -1,0 +1,16 @@
+<div class="background">
+  <span class="headline" #headline>Drücke die Buzz-Taste!</span>
+  <div class="player-container" #playerContainer>
+    @for (player of players; track player.playerInformation.controllerId) {
+      <div class="player">
+      <span
+        class="name">{{ player.playerInformation.name === '' ? player.playerInformation.controllerId : player.playerInformation.name }}</span>
+        <div class="options">
+          @for (option of player.options; track option) {
+            <span class="option" [ngStyle]="{'font-weight': player.selectedOption === player.options.indexOf(option) ? 'bold' : 'normal'}">{{ option }}</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

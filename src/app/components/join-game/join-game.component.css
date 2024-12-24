@@ -1,0 +1,49 @@
+.background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.headline {
+  font-size: 150px;
+  font-weight: bold;
+  position: absolute;
+  top: 150px;
+}
+
+.player-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.player {
+  margin: 25px;
+  width: 288px;
+  height: 162px;
+  font-size: 50px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.name {
+  font-size: 100px;
+  font-weight: bolder;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+}

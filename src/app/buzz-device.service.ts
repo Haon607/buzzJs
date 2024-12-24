@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-interface ButtonState {
+export interface ButtonState {
   controller: number;
   button: number;
 }
