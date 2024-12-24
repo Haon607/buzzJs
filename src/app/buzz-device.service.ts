@@ -82,7 +82,7 @@ export class BuzzDeviceService implements OnDestroy {
 
   private indexToObject(index: number): ButtonState {
     const controller = Math.floor(index / 5);
-    return { controller: controller + 1, button: index - controller * 5 };
+    return { controller: controller, button: index - controller * 5 };
   }
 
   public setLeds(states: boolean[]): void {
