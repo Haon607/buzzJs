@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, ElementRef, input, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ButtonState, BuzzDeviceService } from '../../buzz-device.service';
 import { Player } from '../../models';
 import gsap from 'gsap';
-import { NgStyle } from '@angular/common';
+import { NgOptimizedImage, NgStyle } from '@angular/common';
 
 export interface PlayerData {
   playerInformation: Player;
@@ -16,7 +16,7 @@ export interface PlayerData {
   templateUrl: './join-game.component.html',
   styleUrls: ['./join-game.component.css'],
   standalone: true,
-  imports: [NgStyle]
+  imports: [NgOptimizedImage]
 })
 export class JoinGameComponent {
 
@@ -86,7 +86,20 @@ export class JoinGameComponent {
   }
 
   updateSelectedOption(player: any, direction: number) {
-    player.selectedOption = (player.selectedOption + direction + player.options.length) % player.options.length;
+    const optionsContainer = document.getElementById(`options-${player.playerInformation.controllerId}`);
+
+    if (optionsContainer) {
+      // Calculate the new index
+      const previousIndex = player.selectedOption;
+      player.selectedOption = (player.selectedOption + direction + player.options.length) % player.options.length;
+
+      // Calculate the new position
+      const optionHeight = 50; // Match this to the `line-height` or actual height of an option
+      const newPosition = -player.selectedOption * optionHeight;
+
+      // Animate the options container to the new position
+      gsap.to(optionsContainer, { y: newPosition, duration: 0.5, ease: "power2.out" });
+    }
   }
 
   handleInput(player: PlayerData, input: ButtonState) {

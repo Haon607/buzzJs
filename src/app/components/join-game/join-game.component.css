@@ -4,6 +4,8 @@
   align-items: center;
   flex-direction: column;
   flex-wrap: wrap;
+  background: black;
+  color: white;
 }
 
 .headline {
@@ -23,10 +25,9 @@
 
 .player {
   margin: 25px;
-  width: 288px;
+  width: 400px;
   height: 162px;
   font-size: 50px;
-  color: black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,14 +37,41 @@
 }
 
 .name {
-  font-size: 100px;
+  font-size: 75px;
   font-weight: bolder;
+}
+
+.options-container {
+  width: 200px; /* Adjust width as needed */
+  height: 50px; /* Limit height for better readability */
+  overflow: hidden; /* Hide overflowing options */
+  position: relative; /* To position internal elements absolutely */
 }
 
 .options {
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* Stack options vertically */
+  position: absolute;
+  top: 0;
+  left: 0;
   align-items: center;
-  flex-direction: column;
-  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.option {
+  font-size: 20px;
+  line-height: 50px; /* Match the height of the viewport for smooth transitions */
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.option[ngStyle*="bold"] {
+  opacity: 1;
+}
+
+#controls {
+  position: absolute;
+  bottom: 10px;
 }

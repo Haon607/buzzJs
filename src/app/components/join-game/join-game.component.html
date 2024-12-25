@@ -3,14 +3,17 @@
   <div class="player-container" #playerContainer>
     @for (player of players; track player.playerInformation.controllerId) {
       <div class="player">
-      <span
-        class="name">{{ player.playerInformation.name === '' ? player.playerInformation.controllerId : player.playerInformation.name }}</span>
-        <div class="options">
-          @for (option of player.options; track option) {
-            <span class="option" [ngStyle]="{'font-weight': player.selectedOption === player.options.indexOf(option) ? 'bold' : 'normal'}">{{ option }}</span>
-          }
+        <span
+          class="name">{{ player.playerInformation.name === '' ? player.playerInformation.controllerId : player.playerInformation.name }}</span>
+        <div class="options-container">
+          <div class="options" id="options-{{player.playerInformation.controllerId}}">
+            @for (option of player.options; track option) {
+              <span class="option"> {{ option }} </span>
+            }
+          </div>
         </div>
       </div>
     }
   </div>
+  <img id="controls" ngSrc="/join_controls.png" height="{{1331/4}}" width="{{4094/4}}" alt="">
 </div>
