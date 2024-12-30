@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, input, OnDestroy, ViewChild } from '@angular/core';
 import { ButtonState, BuzzDeviceService } from '../../services/buzz-device.service';
 import { Player } from '../../../models';
 import gsap from 'gsap';
@@ -21,27 +21,31 @@ export interface PlayerData {
   standalone: true,
   imports: [NgOptimizedImage],
 })
-export class JoinGameComponent {
+export class JoinGameComponent implements OnDestroy {
   static options = {
     alphabet: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Ü', 'Ä', 'Ö'],
     defaultOption: ['Neu', 'Vorhanden'],
     readyOption: ['FERTIG'],
   };
 
+  onThisPage: boolean;
+
   @ViewChild('headline', {static: true}) headline!: ElementRef;
+  @ViewChild('controls', {static: true}) controls!: ElementRef;
   @ViewChild('playerContainer', {static: true}) playerContainer!: ElementRef;
 
   players: PlayerData[] = [
-    {playerInformation: new Player('', 0, 0, 0), options: [], selectedOption: NaN, joined: false},
-    {playerInformation: new Player('', 1, 0, 0), options: [], selectedOption: NaN, joined: false},
-    {playerInformation: new Player('', 2, 0, 0), options: [], selectedOption: NaN, joined: false},
-    {playerInformation: new Player('', 3, 0, 0), options: [], selectedOption: NaN, joined: false},
+    {playerInformation: new Player('', 0, 0), options: [], selectedOption: NaN, joined: false},
+    {playerInformation: new Player('', 1, 0), options: [], selectedOption: NaN, joined: false},
+    {playerInformation: new Player('', 2, 0), options: [], selectedOption: NaN, joined: false},
+    {playerInformation: new Player('', 3, 0), options: [], selectedOption: NaN, joined: false},
   ];
 
   inCustomRoundsEditor: boolean = false;
   states: boolean[] = new Array(4).fill(true);
 
   constructor(private buzzService: BuzzDeviceService, private cdr: ChangeDetectorRef, private router: Router, private memory: MemoryService) {
+    this.onThisPage = true;
     this.buzzService.onRelease((input) => {
       if (this.players.find((player) => player.playerInformation.controllerId === input.controller && player.options[0] === 'STARTBEREIT')) {
         this.states[input.controller] = false;
@@ -57,7 +61,7 @@ export class JoinGameComponent {
   }
 
   @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent): void {
+  async handleKeyboardEvent(event: KeyboardEvent) {
     if (this.inCustomRoundsEditor) {
       if (event.key === 'p') this.memory.rounds.push(Round.Punktesammler);
       if (event.key === 'Backspace') this.memory.rounds.pop();
@@ -118,7 +122,13 @@ export class JoinGameComponent {
         styledLogger("Spielernamen:", Style.information);
         styledLogger(this.players.filter(player => player.joined).map(player => player.playerInformation.name).join(", "), Style.speak);
 
-        this.router.navigateByUrl('/category');
+        gsap.to(this.headline.nativeElement, {y: -350, opacity: 0, ease: "power1.in"})
+        gsap.to(this.controls.nativeElement, {y: 250, opacity: 0, ease: "power1.in"})
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        gsap.to(this.playerContainer.nativeElement, {x: 250, opacity: 0, ease: "power1.in"})
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (this.onThisPage) this.router.navigateByUrl('/category/000000');
       }
     }
   }
@@ -175,7 +185,7 @@ export class JoinGameComponent {
 
   resetPlayer(player: PlayerData, controllerId: number) {
     this.players[this.players.indexOf(player)] = {
-      playerInformation: new Player('', controllerId, 0, 0),
+      playerInformation: new Player('', controllerId, 0),
       options: JoinGameComponent.options.defaultOption,
       selectedOption: 0,
       joined: true,
@@ -187,7 +197,7 @@ export class JoinGameComponent {
   private async onPress(input: ButtonState) {
     if (input.button === 0 && !this.players.some((player) => player.playerInformation.controllerId === input.controller && player.joined)) {
       this.players[input.controller] = {
-        playerInformation: new Player('', input.controller, 0, 0),
+        playerInformation: new Player('', input.controller, 0),
         options: ['Neu', 'Vorhanden'],
         selectedOption: 0,
         joined: true,
@@ -221,7 +231,7 @@ export class JoinGameComponent {
         this.buzzService.setLeds(this.states);
         await new Promise((resolve) => setTimeout(resolve, 250));
       }
-      if (this.players.filter((player) => player.joined).length === 4) break;
+      if (this.players.filter((player) => player.joined).length === 4 || !this.onThisPage) break;
       if (i === 7) i = -1;
     }
   }
@@ -232,5 +242,9 @@ export class JoinGameComponent {
         this.memory.rounds = [Round.Punktesammler];
         break;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.onThisPage = false
   }
 }

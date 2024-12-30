@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class HueLightService {
-  private readonly BRIDGE_IP = '192.168.0.3'; // Replace with your bridge IP
+  private readonly BRIDGE_IP = '192.168.0.10'; // Replace with your bridge IP
   private readonly API_KEY = 'accDyGkcUk0ZQhW5KU-ENr1Q83dgRqVJGoInANIO'; // Replace with your API key
   private readonly BASE_URL = `http://${this.BRIDGE_IP}/api/${this.API_KEY}`;
 
