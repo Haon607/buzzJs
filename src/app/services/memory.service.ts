@@ -37,7 +37,10 @@ export class Round {
     name: "Punktesammler",
     category: true,
     questionType: QuestionType.multipleChoice,
-    path: "/punktesammler"
+    path: "/punktesammler",
+    background: "#015c53",
+    primary: "#20fff8",
+    secondary: "#015c53",
   };
   // Liederbeginn Buzzing
   // Lieder autism highlight multiselect
@@ -49,5 +52,8 @@ export interface RoundInterface {
   name: string;
   questionType: QuestionType;
   category: boolean;
-  path: string
+  path: string;
+  background: string;
+  primary: string;
+  secondary: string;
 }
