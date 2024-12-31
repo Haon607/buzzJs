@@ -8,4 +8,20 @@
             <div class="option" id="yellow"><span>{{ categories[3].name }}</span></div>
         </div>
     }
+    <div id="round-container" [ngStyle]="{'background': 'radial-gradient(circle, ' + round.primary + ' 0%, ' + round.secondary + ' 100%'}">
+        <svg id="round-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+            <path [attr.d]="roundIconPath"/>
+        </svg>
+        <span id="round-text">{{ round.name }}</span>
+    </div>
+    <div id="round-numbers-container">
+        @for (rou of rounds; track rou) {
+            <div class="round-number" id="round-number-{{rou.name}}" [ngStyle]="{'background': rou.color}">
+                <span class="round-number-text" [ngStyle]="{'color': (rou.name === round.name && activateRound) ? '#FFF' : '#500'}">{{rou.index+1}}</span>
+            </div>
+        }
+    </div>
+    <div id="selected-category-container">
+        <div id="selected-category"><span>{{ selectedCategory?.name }}</span></div>
+    </div>
 </div>

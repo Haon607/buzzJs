@@ -49,18 +49,100 @@
     background: #2CADFA88;
     opacity: 0;
 }
+
 #orange {
     border-color: #F86613;
     background: #F8661388;
     opacity: 0;
 }
+
 #green {
     border-color: #11BC20;
     background: #11BC2088;
     opacity: 0;
 }
+
 #yellow {
     border-color: #FFFF00;
     background: #FFFF0088;
     opacity: 0;
+}
+
+#round-container {
+    position: absolute;
+    height: 750px;
+    width: 750px;
+    border: 10px solid black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+}
+
+#round-icon {
+    height: 650px;
+    width: 650px;
+}
+
+#round-text {
+    position: absolute;
+    font-size: 200px;
+    width: 1750px;
+    transform: rotateX(40deg) rotateY(10deg) rotateZ(-20deg);
+    text-shadow: 10px 10px 20px #000, 20px 20px 40px #000, 30px 30px 60px #000;
+    word-break: break-word;
+    opacity: 0;
+    text-align: center;
+}
+
+#round-numbers-container {
+    position: absolute;
+    height: 200px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    bottom: 10px;
+    opacity: 0;
+}
+
+.round-number {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.round-number-text {
+    font-size: 150px;
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+}
+
+#selected-category-container {
+    width: 40%;
+    position: absolute;
+    bottom: 55px;
+    right: 15px;
+    height: 25%;
+    display: flex;
+    vertical-align: center;
+    text-align: center;
+    border-radius: 50px;
+    border-width: 5px;
+    border-style: solid;
+    word-break: break-word;
+    font-size: 75px;
+    justify-content: center;
+    align-items: center;
+    border-color: #FFFFFF;
+    background: #FFFFFF88;
+    transform: rotateX(-10deg) rotateY(10deg) rotateZ(10deg);
+    opacity: 0;
+}
+
+#selected-category {
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
 }

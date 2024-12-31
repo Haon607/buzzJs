@@ -1,11 +1,11 @@
 import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { MemoryService, RoundInterface } from "../../services/memory.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Category, CategoryLoader } from "../../../Loader";
+import { Category, CategoryLoader, QuestionType } from "../../../Loader";
 import { ButtonState, BuzzDeviceService } from "../../services/buzz-device.service";
 import { NgStyle } from "@angular/common";
 import { HueLightService } from "../../services/hue-light.service";
-import { ColorFader, randomNumber, shuffleArray } from "../../../utils";
+import { ColorFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../utils";
 import gsap from 'gsap';
 
 @Component({
@@ -20,18 +20,30 @@ import gsap from 'gsap';
 export class CategoryComponent implements OnDestroy {
     displayHeadline: string = "";
     round: RoundInterface;
+    rounds: { name: string, index: number, color: string }[] = [];
+    activateRound: boolean = false;
     categories: Category[] = [];
     music: HTMLAudioElement = new Audio("/music/buzz/bqw-choose_category.mp3");
     bgc: string;
     controllingPlayerIndex: number = NaN;
-    selectedCategory: Category | undefined = undefined;
+    selectedCategory: Category = {name: "", questionType: QuestionType.multipleChoice};
+
 
     @ViewChild("headline", {static: true}) headline!: ElementRef;
     private stopBuzzCycle: boolean = false;
     private stopLightCycle: boolean = false;
+    roundIconPath: string = "";
 
-    constructor(private router: Router, private memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService) {
+    constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
+        this.roundIconPath = this.round.iconPath;
+        for (let i = 0; i < memory.rounds.length; i++) {
+            this.rounds.push({
+                name: memory.rounds[i].name,
+                index: i,
+                color: memory.rounds[i].background
+            })
+        }
         this.bgc = "#" + route.snapshot.paramMap.get('bgc')!;
         buzz.onPress(buttonState => this.onPress(buttonState));
         this.setUpWithDelay();
@@ -39,7 +51,9 @@ export class CategoryComponent implements OnDestroy {
         if (this.round.category) {
             this.categories = CategoryLoader.loadCategories(this.round.questionType);
             this.displayHeadline = "Kategoriewahl";
-
+            styledLogger(this.displayHeadline, Style.speak)
+            styledLogger("Zur Auswahl:\n" + this.categories.map(cat => cat.name).join('\n'), Style.speak)
+            styledLogger("Wähle jemanden zum Kategorie auswählen mit 1-4", Style.requiresInput)
             this.animateOnLoad();
             this.fadeToPageColor(2500);
             this.music.play()
@@ -84,10 +98,11 @@ export class CategoryComponent implements OnDestroy {
     }
 
     private async onPress(input: ButtonState) {
-        if (input.controller === this.controllingPlayerIndex && !this.selectedCategory) {
+        if (input.controller === this.controllingPlayerIndex && !this.selectedCategory.name) {
             this.buzz.setLeds(new Array(4).fill(false));
             if (input.button === 0) input.button = randomNumber(1, 4);
             this.selectedCategory = this.categories[input.button - 1];
+            styledLogger("Kategorie gewählt: " + this.selectedCategory.name, Style.speak)
             let color: string = "";
             this.music.src = "/music/buzz/BTV-ChooseEnd.mp3";
             this.music.play();
@@ -112,6 +127,8 @@ export class CategoryComponent implements OnDestroy {
             if (input.button === 3) gsap.to('#green', {scale: 2, y: -100, x: 480}); else gsap.to('#green', {opacity: 0.5, scale: 0.2, x: -400});
             if (input.button === 4) gsap.to('#yellow', {scale: 2, y: -100, x: -480}); else gsap.to('#yellow', {opacity: 0.5, scale: 0.2, x: 400});
             this.hue.setColor(HueLightService.secondary, color, 0, 254)
+            styledLogger("Nächste Runde: " + this.round.name + "\n" + (this.memory.roundNumber+1) + "/" + this.rounds.length, Style.information)
+            styledLogger("Space zum starten der Runden einleitung", Style.requiresInput)
         }
     }
 
@@ -143,6 +160,7 @@ export class CategoryComponent implements OnDestroy {
     }
 
     private switchControlTo(playerIndex: number) {
+        styledLogger("Kontrolle wurde gewechselt zu: " + this.memory.players.find(player => player.controllerId === playerIndex)?.name, Style.information)
         let states: boolean[] = new Array(4).fill(false);
         states[playerIndex] = true;
         this.buzz.setLeds(states);
@@ -163,30 +181,54 @@ export class CategoryComponent implements OnDestroy {
         gsap.to('#orange', {y: 250, opacity: 0})
         gsap.to('#green', {y: 250, opacity: 0})
         gsap.to('#yellow', {y: 250, opacity: 0})
+
+        gsap.to('#round-numbers-container', {y: 100})
+        gsap.to('#round-container', {y: -250, rotation: 180})
+        gsap.to('#round-text', {x: -2000})
+        gsap.to('#selected-category-container', {x: 250})
+
+        styledLogger(this.round.name + " " + this.selectedCategory.name, Style.speak)
+
         await new Promise(resolve => setTimeout(resolve, 1000));
+        gsap.to('#round-text', {opacity: 1})
+
+
+        gsap.to('#round-numbers-container', {y: 0, opacity: 1})
         this.music.src = "/music/buzz/bqw-next_game_is.mp3";
         this.music.play();
         await new Promise(resolve => setTimeout(resolve, 686));
 //1
         this.hue.setColor(HueLightService.primary, '#FFFFFF', 0);
         this.hue.setColor(HueLightService.secondary, '#FFFFFF', 0);
+        this.activateRound = true
         this.startBuzzCycle();
         this.startLightCycle();
         await new Promise(resolve => setTimeout(resolve, 902));
+        gsap.to('#round-container', {y: 0, opacity: 1, rotation: 0})
+        new ColorFader().fadeColor(this.bgc, this.round.background, 1500, color => this.bgc = color);
 //2
         await new Promise(resolve => setTimeout(resolve, 1701));
+        gsap.to('#round-text', {x: 0, ease: "bounce.out"})
+
 //3
         await new Promise(resolve => setTimeout(resolve, 907));
+        gsap.to('#round-numbers-container', {y: 100, opacity: 0});
+        gsap.to('#round-container', {y: -100, x: -150, rotation: -370})
+        gsap.to('#selected-category-container', {x: 0, opacity: 1, ease: "bounce.out"})
+
 //4
         await new Promise(resolve => setTimeout(resolve, 1735));
         this.stopLightCycle = true;
         this.hue.setColor(HueLightService.primary.concat(HueLightService.secondary), '#FFFFFF', 250);
+        gsap.to('#round-text', {x: -2000, opacity: 0, rotation: -180})
 //5
         await new Promise(resolve => setTimeout(resolve, 324));
         this.hue.setColor(HueLightService.secondary, this.round.secondary, 0);
+        gsap.to('#selected-category-container', {x: 2000, opacity: 0, rotation: -180})
 //6
         await new Promise(resolve => setTimeout(resolve, 337));
-        this.hue.setColor(HueLightService.primary, this.round.primary, 0);
+        this.hue.setColor(HueLightService.primary, this.round.primary, 0, 254);
+        gsap.to('#round-container', {y: -2500, opacity: 0, rotation: -180});
 
         this.stopBuzzCycle = true;
 //7
@@ -197,7 +239,7 @@ export class CategoryComponent implements OnDestroy {
         for (let i = 0; i < 8; i++) {
             states[i % 4] = i - 4 >= 0;
             this.buzz.setLeds(states);
-            await new Promise((resolve) => setTimeout(resolve, 50));
+            await new Promise((resolve) => setTimeout(resolve, 100));
             if (this.stopBuzzCycle) break;
             if (i === 7) i = -1;
         }
