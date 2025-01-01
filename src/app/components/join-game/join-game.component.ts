@@ -72,29 +72,7 @@ export class JoinGameComponent implements OnDestroy {
       return;
     }
 
-    if (event.key === '!') this.onPress({controller: 0, button: 0})
-    if (event.key === '"') this.onPress({controller: 0, button: 1})
-    if (event.key === '§') this.onPress({controller: 0, button: 2})
-    if (event.key === '$') this.onPress({controller: 0, button: 3})
-    if (event.key === '%') this.onPress({controller: 0, button: 4})
-
-    if (event.key === 'Q') this.onPress({controller: 1, button: 0})
-    if (event.key === 'W') this.onPress({controller: 1, button: 1})
-    if (event.key === 'E') this.onPress({controller: 1, button: 2})
-    if (event.key === 'R') this.onPress({controller: 1, button: 3})
-    if (event.key === 'T') this.onPress({controller: 1, button: 4})
-
-    if (event.key === 'A') this.onPress({controller: 2, button: 0})
-    if (event.key === 'S') this.onPress({controller: 2, button: 1})
-    if (event.key === 'D') this.onPress({controller: 2, button: 2})
-    if (event.key === 'F') this.onPress({controller: 2, button: 3})
-    if (event.key === 'G') this.onPress({controller: 2, button: 4})
-
-    if (event.key === 'Y') this.onPress({controller: 3, button: 0})
-    if (event.key === 'X') this.onPress({controller: 3, button: 1})
-    if (event.key === 'C') this.onPress({controller: 3, button: 2})
-    if (event.key === 'V') this.onPress({controller: 3, button: 3})
-    if (event.key === 'B') this.onPress({controller: 3, button: 4})
+    if (this.buzz.emulate(event.key)) this.onPress(this.buzz.emulate(event.key)!);
 
     if (event.key === 'i') this.memory.print();
 

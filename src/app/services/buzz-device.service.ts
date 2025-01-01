@@ -126,6 +126,31 @@ export class BuzzDeviceService implements OnDestroy {
     }
   }
 
+  public emulate(key: string): ButtonState | undefined {
+    if (key === '!') return {controller: 0, button: 0}
+    if (key === '"') return {controller: 0, button: 1}
+    if (key === '§') return {controller: 0, button: 2}
+    if (key === '$') return {controller: 0, button: 3}
+    if (key === '%') return {controller: 0, button: 4}
+
+    if (key === 'Q') return {controller: 1, button: 0}
+    if (key === 'W') return {controller: 1, button: 1}
+    if (key === 'E') return {controller: 1, button: 2}
+    if (key === 'R') return {controller: 1, button: 3}
+    if (key === 'T') return {controller: 1, button: 4}
+
+    if (key === 'A') return {controller: 2, button: 0}
+    if (key === 'S') return {controller: 2, button: 1}
+    if (key === 'D') return {controller: 2, button: 2}
+    if (key === 'F') return {controller: 2, button: 3}
+    if (key === 'G') return {controller: 2, button: 4}
+
+    if (key === 'Y') return {controller: 3, button: 0}
+    if (key === 'X') return {controller: 3, button: 1}
+    if (key === 'C') return {controller: 3, button: 2}
+    if (key === 'V') return {controller: 3, button: 3}
+    if (key === 'B') return {controller: 3, button: 4}
+  }
 
   ngOnDestroy(): void {
     this.ws.close()
