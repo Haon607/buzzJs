@@ -34,7 +34,7 @@ export class ScoreboardComponent {
         let initialIndex = 0;
         await new Promise((resolve) => setTimeout(resolve, 100));
         for (const player of this.players) {
-            gsap.set('#player-container-' + player.name, {y: this.space * initialIndex})
+            gsap.set('#player-container-' + player.name, {y: this.space * initialIndex, rotateY: -5, x: -10})
             gsap.set('#player-square-text-' + player.name, {opacity: 0})
             gsap.set('#player-square-' + player.name, {x: 180, opacity: 1, scale: 0.8});
             initialIndex++;

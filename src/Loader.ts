@@ -1,8 +1,8 @@
 import { shuffleArray } from './utils';
 
 export interface Question {
-    Question: string;
-    Answers: Answer[];
+    question: string;
+    answers: Answer[];
     shuffle: boolean;
 }
 
@@ -28,32 +28,32 @@ export class QuestionLoader {
         switch (category.name) {
             case CategoryLoader.menschlicherKoerper.name:
                 questions.push({
-                    Question: "Welcher dieser menschlichen Knochen hat keine dreieckige Form?",
-                    Answers: [{answer: "Steißbein", correct: false}, {answer: "Kreuzbein", correct: false}, {answer: "Kniescheibe", correct: false}, {answer: "Elle", correct: true}],
+                    question: "Welcher dieser menschlichen Knochen hat keine dreieckige Form?",
+                    answers: [{answer: "Steißbein", correct: false}, {answer: "Kreuzbein", correct: false}, {answer: "Kniescheibe", correct: false}, {answer: "Elle", correct: true}],
                     shuffle: true,
                 });
                 questions.push({
-                    Question: "Die Osteologie ist die Lehre von...",
-                    Answers: [{answer: "Knochen und Knochenkrankheiten", correct: true}, {answer: "Schmerzen und Schmerzenslinderung", correct: false}, {answer: "Kräuter und Heilkräuter", correct: false}, {answer: "Trauma und Traumatherapie", correct: false}],
+                    question: "Die Osteologie ist die Lehre von...",
+                    answers: [{answer: "Knochen und Knochenkrankheiten", correct: true}, {answer: "Schmerzen und Schmerzenslinderung", correct: false}, {answer: "Kräuter und Heilkräuter", correct: false}, {answer: "Trauma und Traumatherapie", correct: false}],
                     shuffle: true,
                 });
                 break;
             case CategoryLoader.videospiele.name:
                 questions.push({
-                    Question: 'Aus wie vielen Quadraten bestehen alle "Tetris"-Blöcke?',
-                    Answers: [{answer: "Drei", correct: false}, {answer: "Vier", correct: true}, {answer: "Fünf", correct: false}, {answer: "Sechs", correct: false}],
+                    question: 'Aus wie vielen Quadraten bestehen alle "Tetris"-Blöcke?',
+                    answers: [{answer: "Drei", correct: false}, {answer: "Vier", correct: true}, {answer: "Fünf", correct: false}, {answer: "Sechs", correct: false}],
                     shuffle: false,
                 });
                 break;
             case CategoryLoader.phobien.name:
                 questions.push({
-                    Question: "Vor welchen Brummern hat eine Person mit Apiphobie angst?",
-                    Answers: [{answer: "bienenartige Insekten", correct: true}],
+                    question: "Vor welchen Brummern hat eine Person mit Apiphobie angst?",
+                    answers: [{answer: "bienenartige Insekten", correct: true}],
                     shuffle: false,
                 });
                 questions.push({
-                    Question: "Mit Cherophobie muss man ziemlich unglücklich Leben, denn diese Beschreibt die Angst vor...",
-                    Answers: [{answer: "Glücklichsein", correct: true}],
+                    question: "Mit Cherophobie muss man ziemlich unglücklich Leben, denn diese Beschreibt die Angst vor...",
+                    answers: [{answer: "Glücklichsein", correct: true}],
                     shuffle: false,
                 });
         }

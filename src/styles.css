@@ -18,5 +18,4 @@ body {
   position: absolute;
   bottom: 0;
   right: 0;
-  transform: rotateX(-5deg) rotateY(10deg) rotateZ(0deg);
 }

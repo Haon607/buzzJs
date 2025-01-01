@@ -1,5 +1,10 @@
 <div class="background" [ngStyle]="{'background': bgc}">
-
-
+    <div id="question">{{currentQuestion.question}}</div>
+    <div class="options-container" id="options-container">
+        <div class="option" id="blue"><span>{{ currentQuestion.answers[0].answer }}</span></div>
+        <div class="option" id="orange"><span>{{ currentQuestion.answers[1].answer }}</span></div>
+        <div class="option" id="green"><span>{{ currentQuestion.answers[2].answer }}</span></div>
+        <div class="option" id="yellow"><span>{{ currentQuestion.answers[3].answer }}</span></div>
+    </div>
     <app-scoreboard id="scoreboard" class="scoreboard"></app-scoreboard>
 </div>
