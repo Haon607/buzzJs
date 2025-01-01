@@ -1,5 +1,10 @@
 <div class="background" [ngStyle]="{'background': bgc}">
     <div id="question">{{currentQuestion.question}}</div>
+    <app-timer id="timer"
+               [size]="225"
+               [showTime]="true"
+               [duration]="30"
+    ></app-timer>
     <div class="options-container" id="options-container">
         <div class="option" id="blue"><span>{{ currentQuestion.answers[0].answer }}</span></div>
         <div class="option" id="orange"><span>{{ currentQuestion.answers[1].answer }}</span></div>

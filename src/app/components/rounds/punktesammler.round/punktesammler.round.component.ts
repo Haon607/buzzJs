@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
 import { MemoryService, RoundInterface } from "../../../services/memory.service";
 import { NgStyle } from "@angular/common";
@@ -6,12 +6,14 @@ import { ScoreboardService } from "../../../services/scoreboard.service";
 import gsap from 'gsap';
 import { Question } from "../../../../Loader";
 import { randomNumber } from "../../../../utils";
+import { TimerComponent } from "../../timer/timer.component";
 
 @Component({
     selector: 'app-punktesammler.round',
     imports: [
         ScoreboardComponent,
-        NgStyle
+        NgStyle,
+        TimerComponent
     ],
     templateUrl: '../multiple-choice.html',
     standalone: true,
@@ -26,9 +28,11 @@ export class PunktesammlerRoundComponent {
         ], shuffle: false
     };
 
+    @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
+
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService) {
         this.round = memory.rounds[memory.roundNumber];
-        this.bgc = this.round.background
+        this.bgc = this.round.background;
         this.setupWithDelay();
     }
 
@@ -88,5 +92,6 @@ export class PunktesammlerRoundComponent {
         }), true])
         await new Promise(resolve => setTimeout(resolve, 2000));
         this.scoreboard.sortSubject.next()
+        this.timer.startTimer()
     }
 }
