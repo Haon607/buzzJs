@@ -47,51 +47,38 @@ export class PunktesammlerRoundComponent {
                 square: undefined
             }
         }), false])
+
         gsap.set('#scoreboard', {x: 600})
-        gsap.set('#blue', {rotateY: 2, x: 30})
-        gsap.set('#orange', {rotateY: 2, x: 30})
-        gsap.set('#green', {rotateY: 2, x: 30})
-        gsap.set('#yellow', {rotateY: 2, x: 30})
+
+        let away = {rotateY: 88, x: -1150, ease: "sine.inOut"}
+        gsap.set('#blue', away)
+        gsap.set('#orange', away)
+        gsap.set('#green', away)
+        gsap.set('#yellow', away)
         await new Promise(resolve => setTimeout(resolve, 750));
         gsap.to('#scoreboard', {x: 0, ease: 'bounce'})
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
-            return {
-                name: player.name,
-                score: player.gameScore,
-                pointAward: undefined,
-                active: true,
-                square: {
-                    squareBackground: '#000',
-                    squareBorder: '#FFF'
-                }
-            }
-        }), true])
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
-            return {
-                name: player.name,
-                score: player.gameScore,
-                pointAward: undefined,
-                active: true,
-                square: {
-                    squareBackground: '#11BC2088',
-                    squareBorder: '#11BC20'
-                }
-            }
-        }), false])
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
-            return {
-                name: player.name,
-                score: player.gameScore,
-                pointAward: randomNumber(0, 100),
-                active: false,
-                square: undefined
-            }
-        }), true])
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        this.scoreboard.sortSubject.next()
-        this.timer.startTimer()
+    }
+
+    async displayAnswers(tf: boolean) {
+        let time = 100;
+        let see = {rotateY: 2, x: 30, ease: "sine.inOut"}
+        let away = {rotateY: 88, x: -1150, ease: "sine.inOut"}
+        if (tf) {
+            gsap.to('#blue', see)
+            await new Promise(resolve => setTimeout(resolve, time));
+            gsap.to('#orange', see)
+            await new Promise(resolve => setTimeout(resolve, time));
+            gsap.to('#green', see)
+            await new Promise(resolve => setTimeout(resolve, time));
+            gsap.to('#yellow', see)
+        } else {
+            gsap.to('#blue', away)
+            await new Promise(resolve => setTimeout(resolve, time));
+            gsap.to('#orange', away)
+            await new Promise(resolve => setTimeout(resolve, time));
+            gsap.to('#green', away)
+            await new Promise(resolve => setTimeout(resolve, time));
+            gsap.to('#yellow', away)
+        }
     }
 }
