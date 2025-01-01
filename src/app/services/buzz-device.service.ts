@@ -150,6 +150,8 @@ export class BuzzDeviceService implements OnDestroy {
     if (key === 'C') return {controller: 3, button: 2}
     if (key === 'V') return {controller: 3, button: 3}
     if (key === 'B') return {controller: 3, button: 4}
+
+    return undefined;
   }
 
   ngOnDestroy(): void {
