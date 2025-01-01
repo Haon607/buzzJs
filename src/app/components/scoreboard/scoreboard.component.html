@@ -1,10 +1,10 @@
 <div id="scoreboard-body">
-    @for (player of memory.players; track (player.name + player.controllerId)) {
-        <div class="player-container">
-            <div class="player-answer-square"></div>
-            <div class="player-information">
+    @for (player of players; track player.name) {
+        <div id="player-container-{{player.name}}" class="player-container">
+            <div id="player-square-{{player.name}}" class="player-square"><span id="player-square-text-{{player.name}}">{{player.square?.squareText ?? ""}}</span></div>
+            <div id="player-information-{{player.name}}" class="player-information" [ngStyle]="{}">
                 <span class="player-name">{{player.name}}</span>
-                <span class="player-score">{{player.gameScore}}</span>
+                <span id="player-score-{{player.name}}" class="player-score">{{player.score}}</span>
             </div>
         </div>
     }

@@ -19,10 +19,22 @@ export class MemoryService {
         this.roundNumber = 0;
         this.players = [
             {
-                name: "0",
+                name: "Name",
                 controllerId: 0,
                 gameScore: 0,
-            }
+            },{
+                name: "Benedikt",
+                controllerId: 0,
+                gameScore: 0,
+            },{
+                name: "Waltraud",
+                controllerId: 0,
+                gameScore: 0,
+            },{
+                name: "Moritz",
+                controllerId: 0,
+                gameScore: 0,
+            },
         ]
     }
 
