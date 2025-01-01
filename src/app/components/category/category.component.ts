@@ -7,11 +7,14 @@ import { NgStyle } from "@angular/common";
 import { HueLightService } from "../../services/hue-light.service";
 import { ColorFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../utils";
 import gsap from 'gsap';
+import { ScoreboardPlayer, ScoreboardService } from "../../services/scoreboard.service";
+import { ScoreboardComponent } from "../scoreboard/scoreboard.component";
 
 @Component({
     selector: 'app-category',
     imports: [
-        NgStyle
+        NgStyle,
+        ScoreboardComponent
     ],
     templateUrl: './category.component.html',
     standalone: true,
@@ -30,11 +33,11 @@ export class CategoryComponent implements OnDestroy {
 
 
     @ViewChild("headline", {static: true}) headline!: ElementRef;
+    roundIconPath: string = "";
     private stopBuzzCycle: boolean = false;
     private stopLightCycle: boolean = false;
-    roundIconPath: string = "";
 
-    constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService) {
+    constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService, private scoreboard: ScoreboardService) {
         this.round = memory.rounds[memory.roundNumber];
         this.roundIconPath = this.round.iconPath;
         for (let i = 0; i < memory.rounds.length; i++) {
@@ -106,7 +109,7 @@ export class CategoryComponent implements OnDestroy {
             if (input.button === 3) gsap.to('#green', {scale: 2, y: -100, x: 480}); else gsap.to('#green', {opacity: 0.5, scale: 0.2, x: -400});
             if (input.button === 4) gsap.to('#yellow', {scale: 2, y: -100, x: -480}); else gsap.to('#yellow', {opacity: 0.5, scale: 0.2, x: 400});
             this.hue.setColor(HueLightService.secondary, color, 0, 254)
-            styledLogger("Nächste Runde: " + this.round.name + "\n" + (this.memory.roundNumber+1) + "/" + this.rounds.length, Style.information)
+            styledLogger("Nächste Runde: " + this.round.name + "\n" + (this.memory.roundNumber + 1) + "/" + this.rounds.length, Style.information)
             styledLogger("Space zum starten der Runden einleitung", Style.requiresInput)
         }
     }
@@ -136,6 +139,8 @@ export class CategoryComponent implements OnDestroy {
         gsap.to('#green', {opacity: 1, x: 0, ease: "power1", y: 0, duration: 1.2, scale: 1})
         await new Promise((resolve) => setTimeout(resolve, 100));
         gsap.to('#yellow', {opacity: 1, x: 0, ease: "power1", y: 0, duration: 1.2, scale: 1})
+        await new Promise(resolve => setTimeout(resolve, 1250));
+        gsap.to('#scoreboard', {x: 75, ease: 'bounce'})
     }
 
     private switchControlTo(playerIndex: number) {
@@ -146,12 +151,36 @@ export class CategoryComponent implements OnDestroy {
         this.controllingPlayerIndex = playerIndex;
         this.hue.setColor(HueLightService.secondary, '#FFFFFF')
         this.hue.turnOff(HueLightService.secondary, 2000)
+
+        let sbP: ScoreboardPlayer[] = [];
+        for (let player of this.memory.players) {
+            sbP.push(
+                {
+                    name: player.name,
+                    score: player.gameScore,
+                    pointAward: undefined,
+                    square: undefined,
+                    active: player.controllerId === playerIndex,
+                }
+            )
+        }
+        this.scoreboard.playerSubject.next([sbP, false])
     }
 
     private async setUpWithDelay() {
         await new Promise(resolve => setTimeout(resolve, 100));
+        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+            return {
+                name: player.name,
+                score: player.gameScore,
+                pointAward: undefined,
+                active: false,
+                square: undefined
+            }
+        }), false])
         this.hue.turnOff(HueLightService.secondary);
         this.buzz.setLeds(new Array(4).fill(false));
+        gsap.set('#scoreboard', {x: 600, y: -100, scale: 0.7})
     }
 
     private async introduceRound() {
@@ -160,6 +189,7 @@ export class CategoryComponent implements OnDestroy {
         gsap.to('#orange', {y: 250, opacity: 0})
         gsap.to('#green', {y: 250, opacity: 0})
         gsap.to('#yellow', {y: 250, opacity: 0})
+        gsap.to('#scoreboard', {x: 600, opacity: 0})
 
         gsap.to('#round-numbers-container', {y: 100})
         gsap.to('#round-container', {y: -250, rotation: 180})
@@ -170,8 +200,6 @@ export class CategoryComponent implements OnDestroy {
 
         await new Promise(resolve => setTimeout(resolve, 1000));
         gsap.to('#round-text', {opacity: 1})
-
-
         gsap.to('#round-numbers-container', {y: 0, opacity: 1})
         this.music.src = "/music/buzz/bqw-next_game_is.mp3";
         this.music.play();

@@ -1,4 +1,5 @@
 <div class="background" [ngStyle]="{'background': bgc}">
+    <app-scoreboard id="scoreboard" class="scoreboard scoreboard-override"></app-scoreboard>
     <span class="headline" #headline>{{ displayHeadline }}</span>
     @if (round.category) {
         <div class="options-container">

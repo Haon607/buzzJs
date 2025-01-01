@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from "rxjs";
 import { MemoryService } from "./memory.service";
-import { ScoreboardComponent } from "../components/scoreboard/scoreboard.component";
 
 @Injectable({
   providedIn: 'root'

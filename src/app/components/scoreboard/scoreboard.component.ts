@@ -35,6 +35,8 @@ export class ScoreboardComponent {
         await new Promise((resolve) => setTimeout(resolve, 100));
         for (const player of this.players) {
             gsap.set('#player-container-' + player.name, {y: this.space * initialIndex})
+            gsap.set('#player-square-text-' + player.name, {opacity: 0})
+            gsap.set('#player-square-' + player.name, {x: 180, opacity: 1, scale: 0.8});
             initialIndex++;
         }
     }
@@ -54,7 +56,7 @@ export class ScoreboardComponent {
                     this.players.find(pla => pla.name === player.name)!.square!.squareText = player.square.squareText;
                 }
                 if (player.square.squareText) gsap.to('#player-square-text-' + player.name, {opacity: 1})
-            } else {
+            } else if (oldPlayers.find(oldPlayer => oldPlayer.name === player.name)!.square) {
                 gsap.to('#player-square-text-' + player.name, {opacity: 0})
                 gsap.to('#player-square-' + player.name, {x: 180, opacity: 1, scale: 0.8});
                 gsap.to('#player-information-' + player.name, {x: 50, scale: 1.2});
