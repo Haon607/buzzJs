@@ -11,3 +11,11 @@ body {
   width: 100vw;
   overflow: hidden;
 }
+
+.scoreboard {
+  height: 75vh;
+  width: 30vw;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

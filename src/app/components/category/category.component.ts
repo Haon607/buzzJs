@@ -7,6 +7,7 @@ import { NgStyle } from "@angular/common";
 import { HueLightService } from "../../services/hue-light.service";
 import { ColorFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../utils";
 import gsap from 'gsap';
+import { routes } from "../../app.routes";
 
 @Component({
     selector: 'app-category',
@@ -232,6 +233,8 @@ export class CategoryComponent implements OnDestroy {
 
         this.stopBuzzCycle = true;
 //7
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        this.router.navigateByUrl("/round" + this.round.path)
     }
 
     private async startBuzzCycle() {
