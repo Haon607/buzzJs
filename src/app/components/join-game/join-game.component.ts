@@ -44,16 +44,16 @@ export class JoinGameComponent implements OnDestroy {
   inCustomRoundsEditor: boolean = false;
   states: boolean[] = new Array(4).fill(true);
 
-  constructor(private buzzService: BuzzDeviceService, private cdr: ChangeDetectorRef, private router: Router, private memory: MemoryService) {
+  constructor(private buzz: BuzzDeviceService, private cdr: ChangeDetectorRef, private router: Router, private memory: MemoryService) {
     this.onThisPage = true;
-    this.buzzService.onRelease((input) => {
+    this.buzz.onRelease((input) => {
       if (this.players.find((player) => player.playerInformation.controllerId === input.controller && player.options[0] === 'STARTBEREIT')) {
         this.states[input.controller] = false;
-        this.buzzService.setLeds(this.states);
+        this.buzz.setLeds(this.states);
       }
     });
 
-    this.buzzService.onPress(async (input) => {
+    this.buzz.onPress(async (input) => {
       await this.onPress(input);
     });
 
@@ -174,12 +174,12 @@ export class JoinGameComponent implements OnDestroy {
     } else if (selectedOption === 'FERTIG' && player.playerInformation.name.length > 1) {
       player.options = ['STARTBEREIT'];
       this.states[player.playerInformation.controllerId!] = false;
-      this.buzzService.setLeds(this.states);
+      this.buzz.setLeds(this.states);
     } else if (player.options[0] === 'FERTIG') {
       styledLogger("Spieler " + player.playerInformation.controllerId + " muss einen Namen mit mehr als 2 Zeichen eingeben", Style.information)
     } else if (player.options[0] === 'STARTBEREIT') {
       this.states[player.playerInformation.controllerId!] = true;
-      this.buzzService.setLeds(this.states);
+      this.buzz.setLeds(this.states);
     }
   }
 
@@ -191,7 +191,7 @@ export class JoinGameComponent implements OnDestroy {
       joined: true,
     };
     this.states[player.playerInformation.controllerId!] = true;
-    this.buzzService.setLeds(this.states);
+    this.buzz.setLeds(this.states);
   }
 
   private async onPress(input: ButtonState) {
@@ -206,7 +206,7 @@ export class JoinGameComponent implements OnDestroy {
       this.animatePlayerJoin(input.controller);
       for (let i = 0; i < 5; i++) {
         this.states[input.controller] = i % 2 === 0;
-        this.buzzService.setLeds(this.states);
+        this.buzz.setLeds(this.states);
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
     } else if (this.players.some((player) => player.playerInformation.controllerId === input.controller && player.joined)) {
@@ -223,12 +223,12 @@ export class JoinGameComponent implements OnDestroy {
 
   private async startPulse() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    this.buzzService.setLeds(this.states);
+    this.buzz.setLeds(this.states);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     for (let i = 0; i < 8; i++) {
       if (!this.players.some((player) => player.playerInformation.controllerId === i % 4 && player.joined)) {
         this.states[i % 4] = i - 4 >= 0;
-        this.buzzService.setLeds(this.states);
+        this.buzz.setLeds(this.states);
         await new Promise((resolve) => setTimeout(resolve, 250));
       }
       if (this.players.filter((player) => player.joined).length === 4 || !this.onThisPage) break;
@@ -246,5 +246,6 @@ export class JoinGameComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.onThisPage = false
+    this.buzz.removeAllListeners()
   }
 }

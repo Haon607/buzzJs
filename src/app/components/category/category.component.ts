@@ -95,7 +95,8 @@ export class CategoryComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.music.pause()
+        this.music.pause();
+        this.buzz.removeAllListeners();
     }
 
     private async onPress(input: ButtonState) {

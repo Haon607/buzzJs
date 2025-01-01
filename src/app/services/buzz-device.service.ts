@@ -114,6 +114,19 @@ export class BuzzDeviceService implements OnDestroy {
     return this.statesSubject.asObservable();
   }
 
+  public removeAllListeners(eventType?: string): void {
+    if (eventType) {
+      // Remove all listeners for the specific event type
+      this.listeners[eventType] = [];
+    } else {
+      // Remove all listeners for all event types
+      for (const event in this.listeners) {
+        this.listeners[event] = [];
+      }
+    }
+  }
+
+
   ngOnDestroy(): void {
     this.ws.close()
   }
