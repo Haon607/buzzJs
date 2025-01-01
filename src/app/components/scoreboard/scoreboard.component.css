@@ -1,0 +1,19 @@
+#scoreboard-body {
+    background: black;
+    width: 100%;
+    height: 100%;
+}
+
+.player-container {
+    width: 100%;
+    height: 25%;
+    background: #2CADFA;
+    position: absolute;
+    top: 0;
+}
+
+.player-answer-square {
+    width: 40%;
+    height: 100%;
+    background: #11BC20;
+}

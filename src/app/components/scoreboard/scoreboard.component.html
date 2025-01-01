@@ -1,0 +1,11 @@
+<div id="scoreboard-body">
+    @for (player of memory.players; track (player.name + player.controllerId)) {
+        <div class="player-container">
+            <div class="player-answer-square"></div>
+            <div class="player-information">
+                <span class="player-name">{{player.name}}</span>
+                <span class="player-score">{{player.gameScore}}</span>
+            </div>
+        </div>
+    }
+</div>
