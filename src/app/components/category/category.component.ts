@@ -38,6 +38,8 @@ export class CategoryComponent implements OnDestroy {
     private stopLightCycle: boolean = false;
 
     constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService, private scoreboard: ScoreboardService) {
+        this.bgc = '#' + route.snapshot.paramMap.get('bgc')!;
+        if (this.bgc !== '#000000') this.memory.roundNumber++;
         this.round = memory.rounds[memory.roundNumber];
         this.roundIconPath = this.round.iconPath;
         for (let i = 0; i < memory.rounds.length; i++) {
@@ -47,7 +49,6 @@ export class CategoryComponent implements OnDestroy {
                 color: memory.rounds[i].background
             })
         }
-        this.bgc = "#" + route.snapshot.paramMap.get('bgc')!;
         buzz.onPress(buttonState => this.onPress(buttonState));
         this.setUpWithDelay();
         this.memory.category = null;
@@ -78,6 +79,7 @@ export class CategoryComponent implements OnDestroy {
     ngOnDestroy(): void {
         this.music.pause();
         this.buzz.removeAllListeners();
+        this.memory.scoreboardKill.next();
     }
 
     private async onPress(input: ButtonState) {
@@ -241,7 +243,7 @@ export class CategoryComponent implements OnDestroy {
         await new Promise(resolve => setTimeout(resolve, 324));
         this.hue.setColor(HueLightService.secondary, this.round.secondary, 0);
         gsap.to('#selected-category-container', {x: 2000, opacity: 0, rotation: -180})
-        if (!this.round.category) gsap.to('#round-numbers-container', {y: 2000});
+        if (!this.round.category) gsap.to('#round-numbers-container', {y: 500, ease: 'back.out'});
 
 //6
         await new Promise(resolve => setTimeout(resolve, 337));

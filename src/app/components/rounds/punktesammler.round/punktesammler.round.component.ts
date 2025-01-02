@@ -204,8 +204,6 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         this.questions = this.questions.slice(1, this.questions.length);
         this.currentQuestion = this.questions[0];
         if (this.currentQuestion.shuffle) this.currentQuestion.answers = shuffleArray(this.currentQuestion.answers);
-        console.log(this.currentQuestion)
-        console.log(this.questions)
         this.printQuestion()
     }
 
@@ -350,10 +348,5 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            if (input?.button === correctInput+1) player.gameScore += 25;
-        })
     }
 }

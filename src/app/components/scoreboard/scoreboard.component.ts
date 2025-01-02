@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NgStyle } from "@angular/common";
 import { ScoreboardPlayer, ScoreboardService } from "../../services/scoreboard.service";
 import gsap from 'gsap';
+import { MemoryService } from "../../services/memory.service";
 
 @Component({
     selector: 'app-scoreboard',
@@ -15,19 +16,25 @@ import gsap from 'gsap';
 export class ScoreboardComponent {
     players: ScoreboardPlayer[] = [];
     space: number = 200;
+    kill = false;
 
-    constructor(private scoreboardService: ScoreboardService) {
-        scoreboardService.playerSubject.subscribe(playersDelayTupel => {
-            if (this.players.length === 0) {
-                this.players = playersDelayTupel[0];
-                this.initPlace();
-            }
-            this.onPlayerUpdate(playersDelayTupel[0], [...this.players], playersDelayTupel[1]);
-        })
-        scoreboardService.sortSubject.subscribe(() => {
-            this.sort();
-        })
+    constructor(private scoreboardService: ScoreboardService, private memory: MemoryService) {
+            memory.scoreboardKill.subscribe(() => this.kill = true)
+            scoreboardService.playerSubject.subscribe(playersDelayTupel => {
+                if (!this.kill) {
+                    if (this.players.length === 0) {
+                        this.players = playersDelayTupel[0];
+                        this.initPlace();
+                    }
+                    this.onPlayerUpdate(playersDelayTupel[0], [...this.players], playersDelayTupel[1]);
+                }
+            })
 
+            scoreboardService.sortSubject.subscribe(() => {
+                if (!this.kill) {
+                    this.sort();
+                }
+            })
     }
 
     private async initPlace() {
@@ -67,6 +74,8 @@ export class ScoreboardComponent {
                 if (player.pointAward) {
                     this.players.find(pla => pla.name === player.name)!.score += player.pointAward
                     player.score += player.pointAward
+                    this.memory.players.find(pla => pla.name === player.name)!.gameScore += player.pointAward
+                    console.log("addPoints")
                     gsap.to('#player-score-' + player.name, {scale: 1.2, opacity: 0});
                     await new Promise(resolve => setTimeout(resolve, 100));
                 }
@@ -90,5 +99,4 @@ export class ScoreboardComponent {
             index++;
         }
     }
-
 }

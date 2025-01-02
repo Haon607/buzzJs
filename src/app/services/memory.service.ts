@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Style, styledLogger } from '../../utils';
 import { Category, CategoryLoader, QuestionType } from "../../Loader";
 import { Player } from "../../models";
@@ -11,14 +11,16 @@ export class MemoryService {
     roundNumber: number = 0;
     players: Player[] = [];
     category: Category | null = null;
+    scoreboardKill: EventEmitter<void> = new EventEmitter<void>();
+
 
     constructor() {
         this.rounds = [
-            Round.whatIsTheQuestion,
-            Round.wonderWall,
-            Round.stopTheClock,
-            Round.iLiterallyJustToldYou,
             Round.punktesammler,
+            Round.wonderWall,
+            Round.iLiterallyJustToldYou,
+            Round.whatIsTheQuestion,
+            Round.stopTheClock,
         ];
         this.roundNumber = 0;
         this.players = [
@@ -47,6 +49,8 @@ export class MemoryService {
         styledLogger("Printing Memory", Style.information)
         styledLogger("Rounds: " + this.rounds.map(round => round.name), Style.information)
         styledLogger("Round number: " + this.roundNumber, Style.information)
+        styledLogger("Category: " + this.category, Style.information)
+        styledLogger("Players: " + this.players, Style.information)
     }
 }
 
