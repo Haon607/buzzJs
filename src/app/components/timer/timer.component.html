@@ -1,0 +1,25 @@
+<div class="timer-container" [style.width.px]="size" [style.height.px]="size">
+    <svg class="circle" [attr.viewBox]="'0 0 ' + size + ' ' + size">
+        <circle
+                class="background"
+                [attr.stroke-width]="radius*2"
+                [attr.cx]="size / 2"
+                [attr.cy]="size / 2"
+                [attr.r]="radius"
+        ></circle>
+        <circle
+                class="progress"
+                [attr.stroke-width]="radius*2"
+                [attr.cx]="size / 2"
+                [attr.cy]="size / 2"
+                [attr.r]="radius"
+                [attr.stroke-dasharray]="circumference"
+                [attr.stroke-dashoffset]="circumference - progress"
+        ></circle>
+    </svg>
+    @if (showTime) {
+        <div class="time-display numbers" [ngStyle]="{'font-size': size/4 + 'px'}">
+            {{ remainingTime.toFixed(1) }}s
+        </div>
+    }
+</div>

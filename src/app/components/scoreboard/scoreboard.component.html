@@ -4,7 +4,7 @@
             <div id="player-square-{{player.name}}" class="player-square"><span id="player-square-text-{{player.name}}">{{player.square?.squareText ?? ""}}</span></div>
             <div id="player-information-{{player.name}}" class="player-information" [ngStyle]="{}">
                 <span class="player-name">{{player.name}}</span>
-                <span id="player-score-{{player.name}}" class="player-score">{{player.score}}</span>
+                <span id="player-score-{{player.name}}" class="player-score numbers">{{player.score}}</span>
             </div>
         </div>
     }

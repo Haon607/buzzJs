@@ -44,6 +44,11 @@ export class QuestionLoader {
                     answers: [{answer: "Drei", correct: false}, {answer: "Vier", correct: true}, {answer: "Fünf", correct: false}, {answer: "Sechs", correct: false}],
                     shuffle: false,
                 });
+                questions.push({
+                    question: 'In welchem 2023 erschienen Horrorspiel ist das Ziel, möglichst viele Gegenstände aus einem verlassenen Gebäude zu holen.',
+                    answers: [{answer: "Lethal Company", correct: true}, {answer: "Phasmophobia", correct: false}, {answer: "Among Us", correct: false}, {answer: "Content Warning", correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.phobien.name:
                 questions.push({

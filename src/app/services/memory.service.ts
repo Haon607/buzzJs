@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Style, styledLogger } from '../../utils';
-import { QuestionType } from "../../Loader";
+import { Category, CategoryLoader, QuestionType } from "../../Loader";
 import { Player } from "../../models";
 
 @Injectable({
@@ -10,6 +10,7 @@ export class MemoryService {
     rounds: RoundInterface[] = [];
     roundNumber: number = 0;
     players: Player[] = [];
+    category: Category | null = null;
 
     constructor() {
         this.rounds = [
@@ -36,6 +37,7 @@ export class MemoryService {
                 gameScore: 0,
             },
         ]
+        this.category = CategoryLoader.videospiele;
     }
 
     print() {

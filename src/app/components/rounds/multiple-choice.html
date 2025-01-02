@@ -4,6 +4,7 @@
                [size]="225"
                [showTime]="true"
                [duration]="30"
+               (timerExpired)="onTimeExpired()"
     ></app-timer>
     <div class="options-container" id="options-container">
         <div class="option" id="blue"><span>{{ currentQuestion.answers[0].answer }}</span></div>

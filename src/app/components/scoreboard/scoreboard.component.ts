@@ -48,8 +48,11 @@ export class ScoreboardComponent {
         for (const player of newPlayers) {
             if (player.square) {
                 if (oldPlayers.find(oldPlayer => oldPlayer.name === player.name)!.square) {
-                    gsap.set('#player-square-' + player.name, {rotation: 0});
-                    gsap.to('#player-square-' + player.name, {rotation: 360, borderColor: player.square.squareBorder, backgroundColor: player.square.squareBackground});
+                    let oldSquare = oldPlayers.find(oldPlayer => oldPlayer.name === player.name)!.square;
+                    if (player.square.squareBorder !== oldSquare?.squareBorder || player.square.squareBackground !== oldSquare?.squareBackground || player.square.squareText !== oldSquare?.squareText) {
+                        gsap.set('#player-square-' + player.name, {rotateX: 0});
+                        gsap.to('#player-square-' + player.name, {rotateX: 360, borderColor: player.square.squareBorder, backgroundColor: player.square.squareBackground});
+                    }
                 } else gsap.to('#player-square-' + player.name, {x: 0, opacity: 1, scale: 1, borderColor: player.square.squareBorder, backgroundColor: player.square.squareBackground});
                 if (oldPlayers.find(oldPlayer => oldPlayer.name === player.name)?.square?.squareText !== player.square.squareText) {
                     gsap.set('#player-square-text-' + player.name, {opacity: 0})

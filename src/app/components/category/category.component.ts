@@ -50,6 +50,7 @@ export class CategoryComponent implements OnDestroy {
         this.bgc = "#" + route.snapshot.paramMap.get('bgc')!;
         buzz.onPress(buttonState => this.onPress(buttonState));
         this.setUpWithDelay();
+        this.memory.category = null;
 
         if (this.round.category) {
             this.categories = CategoryLoader.loadCategories(this.round.questionType);
@@ -109,6 +110,7 @@ export class CategoryComponent implements OnDestroy {
             if (input.button === 3) gsap.to('#green', {scale: 2, y: -100, x: 480}); else gsap.to('#green', {opacity: 0.5, scale: 0.2, x: -400});
             if (input.button === 4) gsap.to('#yellow', {scale: 2, y: -100, x: -480}); else gsap.to('#yellow', {opacity: 0.5, scale: 0.2, x: 400});
             this.hue.setColor(HueLightService.secondary, color, 0, 254)
+            this.memory.category = this.selectedCategory;
             styledLogger("Nächste Runde: " + this.round.name + "\n" + (this.memory.roundNumber + 1) + "/" + this.rounds.length, Style.information)
             styledLogger("Space zum starten der Runden einleitung", Style.requiresInput)
         }

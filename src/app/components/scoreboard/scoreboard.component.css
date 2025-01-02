@@ -54,6 +54,7 @@
     text-align: center;
 }
 .player-score {
+    font-weight: bold;
     text-align: center;
     width: 100%;
 }
