@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
 import { MemoryService, RoundInterface } from "../../../services/memory.service";
 import { NgStyle } from "@angular/common";
@@ -6,10 +6,10 @@ import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboar
 import gsap from 'gsap';
 import { Question, QuestionLoader } from "../../../../Loader";
 import { TimerComponent } from "../../timer/timer.component";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { shuffleArray, Style, styledLogger } from "../../../../utils";
-import { Colors, inputToColor } from "../../../../models";
+import { inputToColor } from "../../../../models";
 
 @Component({
     selector: 'app-punktesammler.round',
@@ -38,7 +38,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     private inputs: ButtonState[] = [];
     private acceptInputsVar: boolean = false;
 
-    constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService) {
+    constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router) {
         this.round = memory.rounds[memory.roundNumber];
         this.bgc = this.round.background;
         buzz.onPress(buttonState => this.onPress(buttonState));
@@ -61,6 +61,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     ngOnDestroy(): void {
         this.music.pause();
         this.buzz.removeAllListeners();
+        this.memory.scoreboardKill.next()
     }
 
     private async setupWithDelay() {
@@ -133,7 +134,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         this.music.src = "/music/buzz/BTV-BL_PB.mp3";
         this.music.loop = true
         this.music.play()
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 1; i++) {
             this.setupNextQuestion()
             await this.waitForSpace();
             this.displayQuestion(true)
@@ -161,8 +162,11 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             await new Promise(resolve => setTimeout(resolve, 1500));
             this.scoreboard.sortSubject.next();
             await new Promise(resolve => setTimeout(resolve, 1000));
-
         }
+        this.music.pause()
+        gsap.to('#scoreboard', {x: 600})
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        this.router.navigateByUrl("/round/" + this.bgc.slice(1, this.bgc.length));
     }
 
     private onPress(buttonState: ButtonState) {
@@ -192,9 +196,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
 
     private async waitForSpace() {
         styledLogger("Space zum weitermachen", Style.requiresInput)
-        while (!this.spacePressed) {
-            await new Promise(resolve => setTimeout(resolve, 250));
-        }
+        while (!this.spacePressed) await new Promise(resolve => setTimeout(resolve, 250));
         this.spacePressed = false
     }
 

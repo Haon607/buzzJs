@@ -17,9 +17,9 @@ export class MemoryService {
     constructor() {
         this.rounds = [
             Round.punktesammler,
+            Round.whatIsTheQuestion,
             Round.wonderWall,
             Round.iLiterallyJustToldYou,
-            Round.whatIsTheQuestion,
             Round.stopTheClock,
         ];
         this.roundNumber = 0;
