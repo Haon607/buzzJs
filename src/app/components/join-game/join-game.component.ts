@@ -63,7 +63,7 @@ export class JoinGameComponent implements OnDestroy {
   @HostListener('document:keydown', ['$event'])
   async handleKeyboardEvent(event: KeyboardEvent) {
     if (this.inCustomRoundsEditor) {
-      if (event.key === 'p') this.memory.rounds.push(Round.Punktesammler);
+      if (event.key === 'p') this.memory.rounds.push(Round.punktesammler);
       if (event.key === 'Backspace') this.memory.rounds.pop();
       if (event.key === 'q') {
         this.inCustomRoundsEditor = false;
@@ -217,7 +217,7 @@ export class JoinGameComponent implements OnDestroy {
   private populateRounds(key: string) {
     switch (key) {
       case 'a':
-        this.memory.rounds = [Round.Punktesammler];
+        this.memory.rounds = [Round.punktesammler];
         break;
     }
   }

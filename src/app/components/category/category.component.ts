@@ -171,6 +171,10 @@ export class CategoryComponent implements OnDestroy {
 
     private async setUpWithDelay() {
         await new Promise(resolve => setTimeout(resolve, 100));
+        if (!this.round.category) {
+            this.introduceRound();
+            return
+        }
         this.scoreboard.playerSubject.next([this.memory.players.map(player => {
             return {
                 name: player.name,
@@ -221,10 +225,13 @@ export class CategoryComponent implements OnDestroy {
 
 //3
         await new Promise(resolve => setTimeout(resolve, 907));
-        gsap.to('#round-numbers-container', {y: 100, opacity: 0});
-        gsap.to('#round-container', {y: -100, x: -150, rotation: -370})
-        gsap.to('#selected-category-container', {x: 0, opacity: 1, ease: "bounce.out"})
-
+        if (this.round.category) {
+            gsap.to('#round-numbers-container', {y: 100, opacity: 0});
+            gsap.to('#round-container', {y: -100, x: -150, rotation: -370})
+            gsap.to('#selected-category-container', {x: 0, opacity: 1, ease: "bounce.out"})
+        } else {
+            gsap.to('#round-container', {rotation: 360, y: -100})
+        }
 //4
         await new Promise(resolve => setTimeout(resolve, 1735));
         this.stopLightCycle = true;
@@ -234,6 +241,8 @@ export class CategoryComponent implements OnDestroy {
         await new Promise(resolve => setTimeout(resolve, 324));
         this.hue.setColor(HueLightService.secondary, this.round.secondary, 0);
         gsap.to('#selected-category-container', {x: 2000, opacity: 0, rotation: -180})
+        if (!this.round.category) gsap.to('#round-numbers-container', {y: 2000});
+
 //6
         await new Promise(resolve => setTimeout(resolve, 337));
         this.hue.setColor(HueLightService.primary, this.round.primary, 0, 254);

@@ -7,5 +7,5 @@ import { Round } from "./services/memory.service";
 export const routes: Routes = [
   {path: "", component: JoinGameComponent},
   {path: "category/:bgc", component: CategoryComponent},
-  {path: "round"+Round.Punktesammler.path, component: PunktesammlerRoundComponent}
+  {path: "round"+Round.punktesammler.path, component: PunktesammlerRoundComponent}
 ];

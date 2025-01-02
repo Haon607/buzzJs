@@ -336,11 +336,11 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
     }
 
-    private collectPoints() {
+    private async collectPoints() {
         let scoreboardPlayers: ScoreboardPlayer[] = [];
+        let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
         this.memory.players.forEach((player) => {
             let input = this.inputs.find(input => input.controller === player.controllerId);
-            let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -348,8 +348,12 @@ export class PunktesammlerRoundComponent implements OnDestroy {
                 square: undefined,
                 active: false
             })
-            if (input?.button === correctInput+1) player.gameScore += 25;
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        this.memory.players.forEach((player) => {
+            let input = this.inputs.find(input => input.controller === player.controllerId);
+            if (input?.button === correctInput+1) player.gameScore += 25;
+        })
     }
 }

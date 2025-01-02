@@ -49,6 +49,11 @@ export class QuestionLoader {
                     answers: [{answer: "Lethal Company", correct: true}, {answer: "Phasmophobia", correct: false}, {answer: "Among Us", correct: false}, {answer: "Content Warning", correct: false}],
                     shuffle: true,
                 });
+                questions.push({
+                    question: '',
+                    answers: [{answer: "Metal Gear", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.phobien.name:
                 questions.push({
@@ -88,6 +93,18 @@ export class CategoryLoader {
         name: "Phobien",
         questionType: QuestionType.buzzer
     }
+    static werBinIch: Category = {
+        name: "Wer bin ich?",
+        questionType: QuestionType.buzzer
+    }
+    static sehenswuerdigkeiten: Category = {
+        name: "Sehenswürdigkeiten",
+        questionType: QuestionType.buzzer
+    }
+    static inDiesemJahr: Category = {
+        name: "In diesem Jahr...",
+        questionType: QuestionType.buzzer
+    }
 
     public static loadCategories(questionType: QuestionType) {
         let categories: Category[] = [];
@@ -101,6 +118,9 @@ export class CategoryLoader {
                 break;
             case QuestionType.buzzer:
                 categories.push(CategoryLoader.phobien);
+                categories.push(CategoryLoader.werBinIch);
+                categories.push(CategoryLoader.inDiesemJahr);
+                categories.push(CategoryLoader.sehenswuerdigkeiten);
                 break;
         }
 
