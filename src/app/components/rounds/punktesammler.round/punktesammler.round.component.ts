@@ -8,7 +8,7 @@ import { Question, QuestionLoader } from "../../../../Loader";
 import { TimerComponent } from "../../timer/timer.component";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
-import { shuffleArray, Style, styledLogger } from "../../../../utils";
+import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { inputToColor } from "../../../../models";
 
 @Component({
@@ -34,9 +34,11 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     spacePressed: boolean = false;
     music: HTMLAudioElement = new Audio();
     timerDone: boolean = false;
+    amountOfQuestions = 7;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     private inputs: ButtonState[] = [];
     private acceptInputsVar: boolean = false;
+    maxTime: number = 15;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router) {
         this.round = memory.rounds[memory.roundNumber];
@@ -134,7 +136,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         this.music.src = "/music/buzz/BTV-BL_PB.mp3";
         this.music.loop = true
         this.music.play()
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < this.amountOfQuestions; i++) {
             this.setupNextQuestion()
             await this.waitForSpace();
             this.displayQuestion(true)
@@ -151,6 +153,13 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             await this.waitForSpace();
             this.revealCorrect();
             await new Promise(resolve => setTimeout(resolve, 500));
+            if (i+1 === this.amountOfQuestions) {
+                new MusicFader().fadeOut(this.music, 1000);
+                await new Promise(resolve => setTimeout(resolve, 500));
+                this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
+                this.memory.crossMusic.volume = 0.2;
+                this.memory.crossMusic.play()
+            }
             this.flipToCorrect()
             await this.waitForSpace();
             this.flipToPoints()
@@ -163,10 +172,9 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             this.scoreboard.sortSubject.next();
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
-        this.music.pause()
+        await this.waitForSpace()
         gsap.to('#scoreboard', {x: 600})
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        this.router.navigateByUrl("/round/" + this.bgc.slice(1, this.bgc.length));
+        this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
     }
 
     private onPress(buttonState: ButtonState) {

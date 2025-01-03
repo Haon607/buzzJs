@@ -35,6 +35,7 @@ export class ScoreboardComponent {
                     this.sort();
                 }
             })
+        this.sort(true)
     }
 
     private async initPlace() {
@@ -75,7 +76,6 @@ export class ScoreboardComponent {
                     this.players.find(pla => pla.name === player.name)!.score += player.pointAward
                     player.score += player.pointAward
                     this.memory.players.find(pla => pla.name === player.name)!.gameScore += player.pointAward
-                    console.log("addPoints")
                     gsap.to('#player-score-' + player.name, {scale: 1.2, opacity: 0});
                     await new Promise(resolve => setTimeout(resolve, 100));
                 }
@@ -89,14 +89,27 @@ export class ScoreboardComponent {
         this.players = newPlayers
     }
 
-    private async sort() {
+    private async sort(initial = false) {
+        let old = [...this.players];
         this.players = [...this.players.sort((a, b) => b.score - a.score)];
 
         let index = 0;
         for (const player of this.players) {
             const selector = `#player-container-${player.name}`;
-            gsap.to(selector, {y: this.space * index, duration: 2, ease: 'back.inOut'});
+            if (initial) gsap.set(selector, {y: this.space * index});
+            else gsap.to(selector, {y: this.space * index, duration: 2, ease: 'back.inOut'});
             index++;
+        }
+        let changeHappened = false;
+        for (const player of this.players) {
+            const oldPlayer = old.find(p => p.name === player.name)!;
+            if (this.players.indexOf(player) !== old.indexOf(oldPlayer)) changeHappened = true;
+        }
+        if (changeHappened && !initial) {
+            await new Promise(resolve => setTimeout(resolve, 600));
+            let audio = new Audio('/music/buzz/bmq-change_place.mp3')
+            audio.volume = 0.2
+            audio.play();
         }
     }
 }

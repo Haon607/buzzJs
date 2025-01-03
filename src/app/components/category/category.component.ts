@@ -5,7 +5,7 @@ import { Category, CategoryLoader, QuestionType } from "../../../Loader";
 import { ButtonState, BuzzDeviceService } from "../../services/buzz-device.service";
 import { NgStyle } from "@angular/common";
 import { HueLightService } from "../../services/hue-light.service";
-import { ColorFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../utils";
+import { ColorFader, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../utils";
 import gsap from 'gsap';
 import { ScoreboardPlayer, ScoreboardService } from "../../services/scoreboard.service";
 import { ScoreboardComponent } from "../scoreboard/scoreboard.component";
@@ -39,6 +39,7 @@ export class CategoryComponent implements OnDestroy {
 
     constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService, private scoreboard: ScoreboardService) {
         this.bgc = '#' + route.snapshot.paramMap.get('bgc')!;
+        new MusicFader().fadeOut(memory.crossMusic, 1000)
         if (this.bgc !== '#000000') this.memory.roundNumber++;
         this.round = memory.rounds[memory.roundNumber];
         this.roundIconPath = this.round.iconPath;

@@ -151,14 +151,18 @@ export class ColorFader {
 
 export class MusicFader {
   async fadeOut(audio: HTMLAudioElement, time: number) {
-    for (let i = 99; i > 0; i--) {
-      audio.volume = i / 100;
-      await new Promise(resolve => setTimeout(resolve, time / 100));
+    const initialVolume = audio.volume; // Get the current volume
+    const steps = 100; // Number of steps in the fade-out
+    const stepTime = time / steps; // Time per step
+    for (let i = steps - 1; i >= 0; i--) {
+      audio.volume = (i / steps) * initialVolume; // Adjust volume relative to the initial volume
+      await new Promise(resolve => setTimeout(resolve, stepTime));
     }
     audio.pause();
-    audio.volume = 1;
+    audio.volume = initialVolume; // Reset to the initial volume
   }
 }
+
 
 export function randomNumber(from: number, to: number): number {
   return Math.floor(Math.random() * (to - from + 1) + from);

@@ -12,15 +12,16 @@ export class MemoryService {
     players: Player[] = [];
     category: Category | null = null;
     scoreboardKill: EventEmitter<void> = new EventEmitter<void>();
-
+    crossMusic: HTMLAudioElement = new Audio();
 
     constructor() {
         this.rounds = [
+            Round.stopTheClock,
+            Round.wonderWall,
+            Round.spotlight,
             Round.punktesammler,
             Round.whatIsTheQuestion,
-            Round.wonderWall,
             Round.iLiterallyJustToldYou,
-            Round.stopTheClock,
         ];
         this.roundNumber = 0;
         this.players = [
@@ -66,7 +67,7 @@ export class Round {
         secondary: "#015c53"
     };
     static stopTheClock: RoundInterface = {
-        name: "Stoppe die Zeit!",
+        name: "Stoppt die Uhr!",
         category: true,
         questionType: QuestionType.multipleChoice,
         path: "/stoptheclock",
@@ -105,9 +106,18 @@ export class Round {
         primary: "#257017",
         secondary: "#d3ff5d"
     }
+    static spotlight = {
+        name: "Rampensau",
+        category: true,
+        questionType: QuestionType.buzzer,
+        path: "/spotlight",
+        iconPath: "M480-80q-121 0-200.5-32.5T200-220q0-75 79.5-107.5T480-360q121 0 200.5 32.5T760-220q0 75-79.5 107.5T480-80Zm0-80q-101 0-162-21t-74-59q-2 5-3 10t-1 10q0 45 65.5 72.5T480-120q109 0 174.5-27.5T720-220q0-5-1-10t-3-10q-13 38-74 59t-162 21Zm0-40q88 0 144-17t56-43q0-26-56-43t-144-17q-88 0-144 17t-56 43q0 26 56 43t144 17Zm-40-200v-200h-80l160-280v200h80L440-400Zm40 200Zm0 80Zm0-40Z",
+        background: "#4b0080",
+        primary: "#c00fdc",
+        secondary: "#ece186"
+    }
     // Liederbeginn Buzzing
     // Lieder autism highlight multiselect
-    // Lüge
 }
 
 export interface RoundInterface {
