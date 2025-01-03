@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgStyle } from "@angular/common";
 import { ScoreboardPlayer, ScoreboardService } from "../../services/scoreboard.service";
 import gsap from 'gsap';
@@ -19,22 +19,22 @@ export class ScoreboardComponent {
     kill = false;
 
     constructor(private scoreboardService: ScoreboardService, private memory: MemoryService) {
-            memory.scoreboardKill.subscribe(() => this.kill = true)
-            scoreboardService.playerSubject.subscribe(playersDelayTupel => {
-                if (!this.kill) {
-                    if (this.players.length === 0) {
-                        this.players = playersDelayTupel[0];
-                        this.initPlace();
-                    }
-                    this.onPlayerUpdate(playersDelayTupel[0], [...this.players], playersDelayTupel[1]);
+        memory.scoreboardKill.subscribe(() => this.kill = true)
+        scoreboardService.playerSubject.subscribe(playersDelayTupel => {
+            if (!this.kill) {
+                if (this.players.length === 0) {
+                    this.players = playersDelayTupel[0];
+                    this.initPlace();
                 }
-            })
+                this.onPlayerUpdate(playersDelayTupel[0], [...this.players], playersDelayTupel[1]);
+            }
+        })
 
-            scoreboardService.sortSubject.subscribe(() => {
-                if (!this.kill) {
-                    this.sort();
-                }
-            })
+        scoreboardService.sortSubject.subscribe(() => {
+            if (!this.kill) {
+                this.sort();
+            }
+        })
         this.sort(true)
     }
 
@@ -66,11 +66,10 @@ export class ScoreboardComponent {
                     gsap.set('#player-square-text-' + player.name, {opacity: 0})
                     newPlayers.find(pla => pla.name === player.name)!.square!.squareText = player.square.squareText;
                 }
-                console.log(player.square.squareText)
                 if (player.square.squareText) gsap.to('#player-square-text-' + player.name, {opacity: 1})
             } else if (oldPlayers.find(oldPlayer => oldPlayer.name === player.name)!.square) {
                 gsap.to('#player-square-text-' + player.name, {opacity: 0})
-                gsap.to('#player-square-' + player.name, {x: 180, opacity: 1, scale: 0.8});
+                gsap.to('#player-square-' + player.name, {x: 180, opacity: 1, scale: 0.8, ease: "back.in"});
                 gsap.to('#player-information-' + player.name, {x: 50, scale: 1.2});
                 await new Promise(resolve => setTimeout(resolve, 100));
                 if (player.pointAward) {
@@ -91,6 +90,7 @@ export class ScoreboardComponent {
     }
 
     private async sort(initial = false) {
+        this.memory.players = [...this.memory.players.sort((a, b) => b.gameScore - a.gameScore)];
         let old = [...this.players];
         this.players = [...this.players.sort((a, b) => b.score - a.score)];
 
@@ -98,7 +98,7 @@ export class ScoreboardComponent {
         for (const player of this.players) {
             const selector = `#player-container-${player.name}`;
             if (initial) gsap.set(selector, {y: this.space * index});
-            else gsap.to(selector, {y: this.space * index, duration: 2, ease: 'back.inOut'});
+            else gsap.to(selector, {y: this.space * index, duration: 1, ease: 'back.in'});
             index++;
         }
         let changeHappened = false;
@@ -107,7 +107,7 @@ export class ScoreboardComponent {
             if (this.players.indexOf(player) !== old.indexOf(oldPlayer)) changeHappened = true;
         }
         if (changeHappened && !initial) {
-            await new Promise(resolve => setTimeout(resolve, 600));
+            await new Promise(resolve => setTimeout(resolve, 100));
             let audio = new Audio('/music/buzz/bmq-change_place.mp3')
             audio.volume = 0.2
             audio.play();

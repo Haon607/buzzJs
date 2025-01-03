@@ -238,17 +238,14 @@ export class CategoryComponent implements OnDestroy {
 //4
         await new Promise(resolve => setTimeout(resolve, 1735));
         this.stopLightCycle = true;
-        this.hue.setColor(HueLightService.primary.concat(HueLightService.secondary), '#FFFFFF', 250);
         gsap.to('#round-text', {x: -2000, opacity: 0, rotation: -180})
 //5
         await new Promise(resolve => setTimeout(resolve, 324));
-        this.hue.setColor(HueLightService.secondary, this.round.secondary, 0);
         gsap.to('#selected-category-container', {x: 2000, opacity: 0, rotation: -180})
         if (!this.round.category) gsap.to('#round-numbers-container', {y: 500, ease: 'back.out'});
 
 //6
         await new Promise(resolve => setTimeout(resolve, 337));
-        this.hue.setColor(HueLightService.primary, this.round.primary, 0, 254);
         gsap.to('#round-container', {y: -2500, opacity: 0, rotation: -180});
 
         this.stopBuzzCycle = true;
@@ -271,14 +268,15 @@ export class CategoryComponent implements OnDestroy {
 
     private async startLightCycle() {
         let lights: number[] = shuffleArray(HueLightService.primary.concat(HueLightService.secondary));
-        for (let i = 0; i < lights.length * 2; i++) {
+        for (let i = 0; i < lights.length * 2 && !this.stopLightCycle; i++) {
             let color = (i - lights.length >= 0) ? '#FFFFFF' : (randomNumber(1, 2) === 1 ? this.round.primary : this.round.secondary);
-
-            this.hue.setColor([lights[i % 4]], color, 250)
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            this.hue.setColor([lights[i % lights.length]], color, 250)
+            await new Promise((resolve) => setTimeout(resolve, 400 / lights.length));
             if (this.stopLightCycle) break;
-            if (i === 7) i = -1;
+            if (i === (lights.length*2)-1) i = -1;
         }
-        this.buzz.setLeds(new Array(4).fill(false));
+        await new Promise(resolve => setTimeout(resolve, 500))
+        this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254);
+        this.hue.setColor(HueLightService.primary, this.round.primary, 1000, 254);
     }
 }

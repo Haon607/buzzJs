@@ -11,8 +11,8 @@ export class HueLightService {
     private readonly API_KEY = 'accDyGkcUk0ZQhW5KU-ENr1Q83dgRqVJGoInANIO'; // Replace with your API key
     private readonly BASE_URL = `http://${this.BRIDGE_IP}/api/${this.API_KEY}`;
 
-    static primary = [1, 6];
-    static secondary = [2, 5];
+    static primary = [1, 6, 7];
+    static secondary = [2, 5, 8, 9];
 
     constructor(private http: HttpClient) {}
 
@@ -67,7 +67,7 @@ export class HueLightService {
             return this.http.request(method, url, { body: JSON.stringify(body), headers }).pipe(catchError(this.handleError));
         });
         forkJoin(requests).subscribe({
-            next: (responses) => {},
+            next: (responses) => {/*console.log(responses)*/},
             error: (err) => console.error('Error in requests:', err),
         });
     }

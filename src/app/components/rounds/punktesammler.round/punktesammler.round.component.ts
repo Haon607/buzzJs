@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { inputToColor } from "../../../../models";
+import { HueLightService } from "../../../services/hue-light.service";
 
 @Component({
     selector: 'app-punktesammler.round',
@@ -41,7 +42,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     private acceptInputsVar: boolean = false;
     questionFullWidth: boolean = false;
 
-    constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router) {
+    constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
         this.bgc = this.round.background;
         buzz.onPress(buttonState => this.onPress(buttonState));
@@ -145,6 +146,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             this.setupNextQuestion()
             await this.waitForSpace();
             this.displayQuestion(true)
+            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
             await new Promise(resolve => setTimeout(resolve, 500));
             await this.waitForSpace()
             this.displayAnswers(true)
@@ -152,6 +154,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             this.displayTimer(true)
             await this.waitForSpace()
             await this.startTimer();
+            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254)
             styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
             await new Promise(resolve => setTimeout(resolve, 1000))
             this.revealAnswers();

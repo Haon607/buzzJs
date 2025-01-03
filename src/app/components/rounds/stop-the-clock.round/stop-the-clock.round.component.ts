@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { inputToColor } from "../../../../models";
+import { HueLightService } from "../../../services/hue-light.service";
 
 @Component({
     selector: 'app-punktesammler.round',
@@ -41,7 +42,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
     private clocks: { timeLeft: number, controller: number }[] = [];
     private acceptInputsVar: boolean = false;
 
-    constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router) {
+    constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
         this.bgc = this.round.background;
         this.clocks = memory.players.map(player => {
@@ -230,8 +231,11 @@ export class StopTheClockRoundComponent implements OnDestroy {
     private async startTimer() {
         this.timer.startTimer()
         this.acceptInputs(true);
-        while (
-            this.clocks.filter(clock => clock.timeLeft <= 0).length + this.inputs.length < this.memory.players.length) {
+        let iteration = 0;
+        while (this.clocks.filter(clock => clock.timeLeft <= 0).length + this.inputs.length < this.memory.players.length) {
+            if (iteration % 5 === 0) {
+                this.hue.setColor(HueLightService.secondary, iteration % 10 === 0 ? this.round.primary : this.round.background, 100, 254);
+            }
             await new Promise(resolve => setTimeout(resolve, 100))
             let states: boolean[] = new Array(4);
             for (let clock of this.clocks) {
@@ -242,11 +246,11 @@ export class StopTheClockRoundComponent implements OnDestroy {
                 states[input.controller] = false;
             }
             this.buzz.setLeds(states);
+            iteration++;
             this.updateDisplayedTime()
         }
+        this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254);
         this.acceptInputs(false)
-
-
     }
 
     private acceptInputs(tf: boolean) {

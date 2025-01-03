@@ -111,6 +111,19 @@ export class QuestionLoader {
                     shuffle: true,
                 });
                 break;
+            case CategoryLoader.gadgetsAndGizmos.name:
+                questions.push({
+                    question: 'Welche Sprache spricht ein Furby?',
+                    answers: [{answer: "Furbish", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Für was steht die Abkürzung GPS?',
+                    answers: [{answer: "Global Positioning System", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
+                    shuffle: true,
+                });
+                break;
+
             case CategoryLoader.phobien.name:
                 questions.push({
                     question: "Vor welchen Brummern hat eine Person mit Apiphobie angst?",
@@ -162,6 +175,10 @@ export class CategoryLoader {
         name: "Literatur und Sprache",
         questionType: QuestionType.multipleChoice
     }
+    static gadgetsAndGizmos: Category = {
+        name: "Dinge",
+        questionType: QuestionType.multipleChoice
+    }
     static phobien: Category = {
         name: "Phobien",
         questionType: QuestionType.buzzer
@@ -191,6 +208,7 @@ export class CategoryLoader {
                 categories.push(CategoryLoader.traditionen);
                 categories.push(CategoryLoader.filmeUndSerien);
                 categories.push(CategoryLoader.literatur);
+                categories.push(CategoryLoader.gadgetsAndGizmos);
                 break;
             case QuestionType.buzzer:
                 categories.push(CategoryLoader.phobien);
