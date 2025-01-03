@@ -16,13 +16,13 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
+            Round.whatIsTheQuestion,
+            Round.shortFuse,
+            Round.iLiterallyJustToldYou,
             Round.punktesammler,
             Round.stopTheClock,
-            Round.iLiterallyJustToldYou,
-            Round.shortFuse,
             Round.wonderWall,
             Round.spotlight,
-            Round.whatIsTheQuestion,
         ];
         this.roundNumber = 0;
         this.players = [

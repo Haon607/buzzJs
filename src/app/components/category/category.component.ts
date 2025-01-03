@@ -205,7 +205,7 @@ export class CategoryComponent implements OnDestroy {
         gsap.to('#round-text', {x: -2000})
         gsap.to('#selected-category-container', {x: 250})
 
-        styledLogger(this.round.name + " " + this.selectedCategory.name, Style.speak)
+        styledLogger(this.round.name + " | " + this.selectedCategory.name, Style.speak)
 
         await new Promise(resolve => setTimeout(resolve, 1000));
         gsap.to('#round-text', {opacity: 1})
@@ -269,7 +269,7 @@ export class CategoryComponent implements OnDestroy {
     private async startLightCycle() {
         let lights: number[] = shuffleArray(HueLightService.primary.concat(HueLightService.secondary));
         for (let i = 0; i < lights.length * 2 && !this.stopLightCycle; i++) {
-            let color = (i - lights.length >= 0) ? '#FFFFFF' : (randomNumber(1, 2) === 1 ? this.round.primary : this.round.secondary);
+            let color = (i - lights.length >= 0) ? this.round.primary : this.round.secondary;
             this.hue.setColor([lights[i % lights.length]], color, 250)
             await new Promise((resolve) => setTimeout(resolve, 400 / lights.length));
             if (this.stopLightCycle) break;

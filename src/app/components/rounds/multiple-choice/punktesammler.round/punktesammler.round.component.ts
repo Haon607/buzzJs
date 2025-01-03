@@ -1,16 +1,16 @@
 import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
-import { MemoryService, RoundInterface } from "../../../services/memory.service";
+import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
+import { MemoryService, RoundInterface } from "../../../../services/memory.service";
 import { NgStyle } from "@angular/common";
-import { ScoreboardPlayer, ScoreboardService, ScoreboardSquare } from "../../../services/scoreboard.service";
+import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreboard.service";
 import gsap from 'gsap';
-import { Question, QuestionLoader } from "../../../../Loader";
-import { TimerComponent } from "../../timer/timer.component";
+import { Question, QuestionLoader } from "../../../../../Loader";
+import { TimerComponent } from "../../../timer/timer.component";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
-import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
-import { inputToColor } from "../../../../models";
-import { HueLightService } from "../../../services/hue-light.service";
+import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";
+import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
+import { inputToColor } from "../../../../../models";
+import { HueLightService } from "../../../../services/hue-light.service";
 
 @Component({
     selector: 'app-punktesammler.round',
@@ -23,7 +23,7 @@ import { HueLightService } from "../../../services/hue-light.service";
     standalone: true,
     styleUrl: '../multiple-choice.css'
 })
-export class StopTheClockRoundComponent implements OnDestroy {
+export class PunktesammlerRoundComponent implements OnDestroy {
     bgc: string;
     round: RoundInterface;
     currentQuestion: Question = {
@@ -35,19 +35,16 @@ export class StopTheClockRoundComponent implements OnDestroy {
     spacePressed: boolean = false;
     music: HTMLAudioElement = new Audio();
     timerDone: boolean = false;
+    amountOfQuestions = 7;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    maxTime: number = 0;
-    questionFullWidth: boolean = true;
+    maxTime: number = 15;
     private inputs: ButtonState[] = [];
-    private clocks: { timeLeft: number, controller: number }[] = [];
     private acceptInputsVar: boolean = false;
+    questionFullWidth: boolean = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
         this.bgc = this.round.background;
-        this.clocks = memory.players.map(player => {
-            return {timeLeft: 20, controller: player.controllerId}
-        })
         buzz.onPress(buttonState => this.onPress(buttonState));
         this.setupWithDelay();
         this.questions = this.questions.concat(QuestionLoader.loadQuestion(memory.category!));
@@ -142,23 +139,28 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private async startRound() {
-        this.music.src = "/music/buzz/BBotW-stop_the_clock.mp3";
+        this.music.src = "/music/buzz/BTV-BL_PB.mp3";
         this.music.loop = true
         this.music.play()
-        for (let i = 0; this.clocks.some(clock => clock.timeLeft > 0); i++) {
+        for (let i = 0; i < this.amountOfQuestions; i++) {
             this.setupNextQuestion()
             await this.waitForSpace();
+            new Audio('music/wwds/frage.mp3').play();
+            await new Promise(resolve => setTimeout(resolve, 250));
             this.displayQuestion(true)
-            this.updateDisplayedTime()
+            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
             await new Promise(resolve => setTimeout(resolve, 500));
             await this.waitForSpace()
             this.displayAnswers(true)
             await new Promise(resolve => setTimeout(resolve, 500));
+            this.displayTimer(true)
+            await this.waitForSpace()
             await this.startTimer();
+            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254)
             styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
             await new Promise(resolve => setTimeout(resolve, 1000))
             this.revealAnswers();
-            if (!this.clocks.some(clock => clock.timeLeft > 0)) {
+            if (i + 1 === this.amountOfQuestions) {
                 new MusicFader().fadeOut(this.music, 1000);
                 await new Promise(resolve => setTimeout(resolve, 500));
                 this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
@@ -166,41 +168,49 @@ export class StopTheClockRoundComponent implements OnDestroy {
                 this.memory.crossMusic.play()
             }
             await this.waitForSpace();
+            new Audio('music/wwds/richtig.mp3').play();
             this.revealCorrect();
             await new Promise(resolve => setTimeout(resolve, 500));
             this.flipToCorrect()
             await this.waitForSpace();
             this.flipToPoints()
             await new Promise(resolve => setTimeout(resolve, 1500));
+            this.collectPoints()
             this.displayTimer(false)
             this.displayQuestion(false)
             this.displayAnswers(false)
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            this.collectPoints()
             await new Promise(resolve => setTimeout(resolve, 1500));
             this.scoreboard.sortSubject.next();
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
         await this.waitForSpace()
         gsap.to('#scoreboard', {x: 600})
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 1000));
         this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
     }
 
     private onPress(buttonState: ButtonState) {
         if (this.acceptInputsVar && buttonState.button !== 0) {
-            if (this.clocks.some(clock => clock.timeLeft > 0 && clock.controller === buttonState.controller)) {
-                if (!this.inputs.some(input => input.controller === buttonState.controller)) {
-                    this.inputs.push(buttonState);
-                    let states = new Array(4).fill(true);
-                    for (let clock of this.clocks) {
-                        states[clock.controller] = clock.timeLeft > 0;
-                    }
-                    for (let input of this.inputs) {
-                        states[input.controller] = false;
-                    }
-                    this.buzz.setLeds(states);
+            if (!this.inputs.some(input => input.controller === buttonState.controller)) {
+                this.inputs.push(buttonState);
+                new Audio('music/wwds/einloggen.mp3').play();
+                let states = new Array(4).fill(true);
+                for (let input of this.inputs) {
+                    states[input.controller] = false;
                 }
+                this.buzz.setLeds(states);
+                this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                    return {
+                        name: player.name,
+                        score: player.gameScore,
+                        pointAward: undefined,
+                        square: this.inputs.some(input => input.controller === player.controllerId) ? {
+                            squareBackground: '#00000000',
+                            squareBorder: '#FFF'
+                        } : undefined,
+                        active: !this.inputs.some(input => input.controller === player.controllerId)
+                    }
+                }), false])
             }
         }
     }
@@ -229,28 +239,16 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private async startTimer() {
+        this.timerDone = false;
         this.timer.startTimer()
         this.acceptInputs(true);
-        let iteration = 0;
-        while (this.clocks.filter(clock => clock.timeLeft <= 0).length + this.inputs.length < this.memory.players.length) {
-            if (iteration % 5 === 0) {
-                this.hue.setColor(HueLightService.secondary, iteration % 10 === 0 ? this.round.primary : this.round.background, 100, 254);
-            }
+        while (!this.timerDone && this.inputs.length < this.memory.players.length) {
             await new Promise(resolve => setTimeout(resolve, 100))
-            let states: boolean[] = new Array(4);
-            for (let clock of this.clocks) {
-                if (!this.inputs.find(input => input.controller === clock.controller)) clock.timeLeft = Number((clock.timeLeft - 0.1).toFixed(1))
-                states[clock.controller] = clock.timeLeft > 0;
-            }
-            for (let input of this.inputs) {
-                states[input.controller] = false;
-            }
-            this.buzz.setLeds(states);
-            iteration++;
-            this.updateDisplayedTime()
         }
-        this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254);
+        this.timer.stopTimer()
         this.acceptInputs(false)
+
+
     }
 
     private acceptInputs(tf: boolean) {
@@ -258,11 +256,32 @@ export class StopTheClockRoundComponent implements OnDestroy {
         if (tf) {
             let states = new Array(4).fill(false);
             for (let player of this.memory.players) {
-                states[player.controllerId] = this.clocks.find(clock => clock.controller === player.controllerId)!.timeLeft > 0;
+                states[player.controllerId] = true;
             }
             this.buzz.setLeds(states);
+            this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                return {
+                    name: player.name,
+                    score: player.gameScore,
+                    pointAward: undefined,
+                    square: undefined,
+                    active: true
+                }
+            }), false])
         } else {
             this.buzz.setLeds(new Array(4).fill(false))
+            this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                return {
+                    name: player.name,
+                    score: player.gameScore,
+                    pointAward: undefined,
+                    square: this.inputs.some(input => input.controller === player.controllerId) ? {
+                        squareBackground: '#00000000',
+                        squareBorder: '#FFF'
+                    } : undefined,
+                    active: false
+                }
+            }), false])
         }
     }
 
@@ -303,7 +322,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
-                pointAward: undefined,
+                pointAward: 25,
                 square: input ? {
                     squareBackground: inputToColor(input.button),
                     squareBorder: input.button - 1 === correctInput ? '#00FF00' : '#FF0000',
@@ -317,7 +336,6 @@ export class StopTheClockRoundComponent implements OnDestroy {
     private flipToPoints() {
         let scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let clock = this.clocks.find(clock => clock.controller === player.controllerId);
             let input = this.inputs.find(input => input.controller === player.controllerId);
             let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
             scoreboardPlayers.push({
@@ -327,7 +345,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
                 square: input?.button === correctInput + 1 ? {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
-                    squareText: "+" + (Math.floor(clock!.timeLeft) + 10)
+                    squareText: "+25"
                 } : undefined,
                 active: false
             })
@@ -340,40 +358,14 @@ export class StopTheClockRoundComponent implements OnDestroy {
         let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
         this.memory.players.forEach((player) => {
             let input = this.inputs.find(input => input.controller === player.controllerId);
-            let clock = this.clocks.find(clock => clock.controller === player.controllerId);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
-                pointAward: input?.button === correctInput + 1 ? (Math.floor(clock!.timeLeft) + 10) : 0,
+                pointAward: input?.button === correctInput + 1 ? 25 : 0,
                 square: undefined,
                 active: false
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
-    }
-
-    private async updateDisplayedTime() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
-        this.memory.players.forEach((player) => {
-            let timeLeft = this.clocks.find(clock => clock.controller === player.controllerId)!.timeLeft
-            let playerInput = this.inputs.find(input => input.controller === player.controllerId);
-            let square: ScoreboardSquare = playerInput ? {
-                squareBorder: '#FFFFFF',
-                squareBackground: '#00000080',
-                squareText: "" + Math.floor(timeLeft)
-            } : {
-                squareBorder: '#000000',
-                squareBackground: '#00000080',
-                squareText: "Zeit: " + Math.floor(timeLeft)
-            }
-            scoreboardPlayers.push({
-                name: player.name,
-                score: player.gameScore,
-                pointAward: undefined,
-                square: timeLeft > 0 ? square : undefined,
-                active: this.acceptInputsVar && timeLeft > 0 && !playerInput
-            })
-        })
-        this.scoreboard.playerSubject.next([scoreboardPlayers, false])
     }
 }
