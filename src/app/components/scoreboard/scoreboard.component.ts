@@ -64,8 +64,9 @@ export class ScoreboardComponent {
                 } else gsap.to('#player-square-' + player.name, {x: 0, opacity: 1, scale: 1, borderColor: player.square.squareBorder, backgroundColor: player.square.squareBackground});
                 if (oldPlayers.find(oldPlayer => oldPlayer.name === player.name)?.square?.squareText !== player.square.squareText) {
                     gsap.set('#player-square-text-' + player.name, {opacity: 0})
-                    this.players.find(pla => pla.name === player.name)!.square!.squareText = player.square.squareText;
+                    newPlayers.find(pla => pla.name === player.name)!.square!.squareText = player.square.squareText;
                 }
+                console.log(player.square.squareText)
                 if (player.square.squareText) gsap.to('#player-square-text-' + player.name, {opacity: 1})
             } else if (oldPlayers.find(oldPlayer => oldPlayer.name === player.name)!.square) {
                 gsap.to('#player-square-text-' + player.name, {opacity: 0})

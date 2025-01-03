@@ -16,10 +16,10 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
+            Round.punktesammler,
             Round.stopTheClock,
             Round.wonderWall,
             Round.spotlight,
-            Round.punktesammler,
             Round.whatIsTheQuestion,
             Round.iLiterallyJustToldYou,
         ];

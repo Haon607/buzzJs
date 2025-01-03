@@ -36,9 +36,10 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     timerDone: boolean = false;
     amountOfQuestions = 7;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
+    maxTime: number = 15;
     private inputs: ButtonState[] = [];
     private acceptInputsVar: boolean = false;
-    maxTime: number = 15;
+    questionFullWidth: boolean = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router) {
         this.round = memory.rounds[memory.roundNumber];
@@ -64,6 +65,10 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         this.music.pause();
         this.buzz.removeAllListeners();
         this.memory.scoreboardKill.next()
+    }
+
+    onTimeExpired() {
+        this.timerDone = true
     }
 
     private async setupWithDelay() {
@@ -150,16 +155,16 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
             await new Promise(resolve => setTimeout(resolve, 1000))
             this.revealAnswers();
-            await this.waitForSpace();
-            this.revealCorrect();
-            await new Promise(resolve => setTimeout(resolve, 500));
-            if (i+1 === this.amountOfQuestions) {
+            if (i + 1 === this.amountOfQuestions) {
                 new MusicFader().fadeOut(this.music, 1000);
                 await new Promise(resolve => setTimeout(resolve, 500));
                 this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
                 this.memory.crossMusic.volume = 0.2;
                 this.memory.crossMusic.play()
             }
+            await this.waitForSpace();
+            this.revealCorrect();
+            await new Promise(resolve => setTimeout(resolve, 500));
             this.flipToCorrect()
             await this.waitForSpace();
             this.flipToPoints()
@@ -174,6 +179,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         }
         await this.waitForSpace()
         gsap.to('#scoreboard', {x: 600})
+        await new Promise(resolve => setTimeout(resolve, 1000));
         this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
     }
 
@@ -290,10 +296,6 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
     }
 
-    onTimeExpired() {
-        this.timerDone = true
-    }
-
     private revealCorrect() {
         if (this.currentQuestion.answers[0].correct) gsap.to('#blue', {duration: 0.5, borderWidth: 20})
         else gsap.to('#blue', {duration: 0.5, scale: 0.9});
@@ -316,7 +318,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
                 pointAward: 25,
                 square: input ? {
                     squareBackground: inputToColor(input.button),
-                    squareBorder: input.button-1 === correctInput ? '#00FF00' : '#FF0000',
+                    squareBorder: input.button - 1 === correctInput ? '#00FF00' : '#FF0000',
                 } : undefined,
                 active: false
             })
@@ -333,7 +335,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
                 name: player.name,
                 score: player.gameScore,
                 pointAward: undefined,
-                square: input?.button === correctInput+1 ? {
+                square: input?.button === correctInput + 1 ? {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
                     squareText: "+25"
@@ -352,7 +354,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
-                pointAward: input?.button === correctInput+1 ? 25 : 0,
+                pointAward: input?.button === correctInput + 1 ? 25 : 0,
                 square: undefined,
                 active: false
             })

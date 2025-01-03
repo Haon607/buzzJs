@@ -60,9 +60,24 @@ export class QuestionLoader {
                     shuffle: false,
                 });
                 questions.push({
-                    question: '',
-                    answers: [{answer: "1961", correct: false}, {answer: "1972", correct: true}, {answer: "1983", correct: false}, {answer: "1994", correct: false}],
+                    question: 'Wie viele Runden pro Rennen fährt man im klassischen Super Mario Kart für das SNES?',
+                    answers: [{answer: "1", correct: false}, {answer: "3", correct: false}, {answer: "5", correct: true}, {answer: "7", correct: false}],
                     shuffle: false,
+                });
+                questions.push({
+                    question: '',
+                    answers: [{answer: "Rollercoaster Tycoon", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: '',
+                    answers: [{answer: "Kingdom Hearts", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Wie heißt die erfolgreiche Globalstrategie-Computerspielreihe die von "Sid Meier" entwickelt wurde und 2025 den 7. Ableger bekommt?',
+                    answers: [{answer: "Civilization", correct: true}, {answer: "Rollercoaster Tycoon", correct: false}, {answer: "Monster Hunter", correct: false}, {answer: "X-COM", correct: false}],
+                    shuffle: true,
                 });
                 break;
             case CategoryLoader.traditionen.name:
@@ -71,11 +86,21 @@ export class QuestionLoader {
                     answers: [{answer: "Dezember oder Jänner", correct: false}, {answer: "Jänner oder Februar", correct: true}, {answer: "Februar oder März", correct: false}, {answer: "März oder April", correct: false}],
                     shuffle: false,
                 });
+                questions.push({
+                    question: 'Während bei uns am 26. Dezember Stefanitag ist, heißt der Feiertag in Großbritannien...',
+                    answers: [{answer: "Boxing Day", correct: true}, {answer: "Playing Day", correct: false}, {answer: "Sprinting Day", correct: false}, {answer: "Drinking Day", correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.filmeUndSerien.name:
                 questions.push({
                     question: 'Wie heißt das Stammcafé von Rachel, Phoebe, Monica, Joey, Ross und Chandler in dem US-Serienklassiker Friends',
                     answers: [{answer: "Central Perk", correct: true}, {answer: "Rock à Fella", correct: false}, {answer: "Mainhatten", correct: false}, {answer: "Coffeens", correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Welches Studio produziert günstige, profitable Horrorfilme wie "Paranormal Activity" und "The Purge"?',
+                    answers: [{answer: "Blumhouse Productions", correct: true}, {answer: "Studio Babelsberg", correct: false}, {answer: "Screen Gems", correct: false}, {answer: "Fine Line Features", correct: false}],
                     shuffle: true,
                 });
                 break;
@@ -95,6 +120,11 @@ export class QuestionLoader {
                 questions.push({
                     question: "Mit Cherophobie muss man ziemlich unglücklich Leben, denn diese Beschreibt die Angst vor...",
                     answers: [{answer: "Glücklichsein", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Die durch Soziale Netzwerke populär gewordene "FOMO" beschreibt welche Angst?',
+                    answers: [{answer: "FEAR OF MISSING OUT", correct: true}],
                     shuffle: false,
                 });
         }

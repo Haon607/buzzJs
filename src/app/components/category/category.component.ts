@@ -58,7 +58,7 @@ export class CategoryComponent implements OnDestroy {
             this.categories = CategoryLoader.loadCategories(this.round.questionType);
             this.displayHeadline = "Kategoriewahl";
             styledLogger(this.displayHeadline, Style.speak)
-            styledLogger("Zur Auswahl:\n" + this.categories.map(cat => cat.name).join('\n'), Style.speak)
+            styledLogger("Zur Auswahl:\n" + this.categories.map(cat => cat.name).slice(0, 4).join('\n'), Style.speak)
             styledLogger("Wähle jemanden zum Kategorie auswählen mit 1-4", Style.requiresInput)
             this.animateOnLoad();
             this.fadeToPageColor(2500);
