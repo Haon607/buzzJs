@@ -1,0 +1,13 @@
+<div class="background" [ngStyle]="{'background': bgc}">
+    <div id="question" [ngClass]="monospaceQuestion ? 'numbers' : ''" [ngStyle]="{'width': (questionFullWidth ? 96.8 : 65) +'vw'}">{{ currentQuestion.question }}</div>
+    <app-timer id="timer"
+               [size]="225"
+               [showTime]="true"
+               [duration]="maxTime"
+               (timerExpired)="onTimeExpired()"
+    ></app-timer>
+    <div class="answer-container" id="answer-container">
+        <div class="answer" id="answer"><span>{{ currentQuestion.answers[0].answer }}</span></div>
+    </div>
+    <app-scoreboard id="scoreboard" class="scoreboard"></app-scoreboard>
+</div>

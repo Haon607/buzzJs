@@ -8,7 +8,7 @@ export interface Question {
 
 export enum QuestionType {
     multipleChoice,
-    buzzer
+    openEnded
 }
 
 export interface Answer {
@@ -124,6 +124,8 @@ export class QuestionLoader {
                 });
                 break;
 
+
+
             case CategoryLoader.phobien.name:
                 questions.push({
                     question: "Vor welchen Brummern hat eine Person mit Apiphobie angst?",
@@ -140,6 +142,17 @@ export class QuestionLoader {
                     answers: [{answer: "FEAR OF MISSING OUT", correct: true}],
                     shuffle: false,
                 });
+                questions.push({
+                    question: 'Wie nennt man die Angst vor engen Räumen?',
+                    answers: [{answer: "Klaustrophobie", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Wie nennt man umgangssprachlich die Akrophobie, die beim Betreten von Hochhäusern, Brücken oder Aussichtstürmen auftreten kann?',
+                    answers: [{answer: "Höhenangst", correct: true}],
+                    shuffle: false,
+                });
+                break;
         }
 
         return shuffleArray(questions)
@@ -181,19 +194,19 @@ export class CategoryLoader {
     }
     static phobien: Category = {
         name: "Phobien",
-        questionType: QuestionType.buzzer
+        questionType: QuestionType.openEnded
     }
     static werBinIch: Category = {
         name: "Wer bin ich?",
-        questionType: QuestionType.buzzer
+        questionType: QuestionType.openEnded
     }
     static sehenswuerdigkeiten: Category = {
         name: "Sehenswürdigkeiten",
-        questionType: QuestionType.buzzer
+        questionType: QuestionType.openEnded
     }
     static inDiesemJahr: Category = {
         name: "In diesem Jahr...",
-        questionType: QuestionType.buzzer
+        questionType: QuestionType.openEnded
     }
 
     public static loadCategories(questionType: QuestionType) {
@@ -210,7 +223,7 @@ export class CategoryLoader {
                 categories.push(CategoryLoader.literatur);
                 categories.push(CategoryLoader.gadgetsAndGizmos);
                 break;
-            case QuestionType.buzzer:
+            case QuestionType.openEnded:
                 categories.push(CategoryLoader.phobien);
                 categories.push(CategoryLoader.werBinIch);
                 categories.push(CategoryLoader.inDiesemJahr);

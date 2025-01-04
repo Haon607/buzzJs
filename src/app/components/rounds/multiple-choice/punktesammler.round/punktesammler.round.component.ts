@@ -38,9 +38,9 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     amountOfQuestions = 7;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     maxTime: number = 15;
+    questionFullWidth: boolean = false;
     private inputs: ButtonState[] = [];
     private acceptInputsVar: boolean = false;
-    questionFullWidth: boolean = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
