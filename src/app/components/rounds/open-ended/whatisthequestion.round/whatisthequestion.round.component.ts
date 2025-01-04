@@ -12,7 +12,7 @@ import { HueLightService } from "../../../../services/hue-light.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
 
 @Component({
-    selector: 'app-punktesammler.round',
+    selector: 'app-whatisthequestion.round',
     imports: [
         ScoreboardComponent,
         NgStyle,
@@ -40,7 +40,6 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     maxTime: number = 30;
     monospaceQuestion: boolean = true;
-    questionFullWidth: boolean = false;
     private latestInput: ButtonState | null = null;
     private excludeIds: number[] = [];
     private acceptInputsVar: boolean = false;

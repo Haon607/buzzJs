@@ -74,7 +74,7 @@ export class ScoreboardComponent {
                 await new Promise(resolve => setTimeout(resolve, 100));
                 if (player.pointAward) {
                     if (player.pointAward > 0) new Audio('music/gen/bounceinpoints.mp3').play()
-                    if (player.pointAward < 0) new Audio('music/gen/bounceinnegativ.mp3').play()
+                    if (player.pointAward < 0) new Audio('music/gen/bounceinnegative.mp3').play()
                     this.players.find(pla => pla.name === player.name)!.score += player.pointAward
                     player.score += player.pointAward
                     this.memory.players.find(pla => pla.name === player.name)!.gameScore += player.pointAward

@@ -37,6 +37,16 @@ export class QuestionLoader {
                     answers: [{answer: "Knochen und Knochenkrankheiten", correct: true}, {answer: "Schmerzen und Schmerzenslinderung", correct: false}, {answer: "Kräuter und Heilkräuter", correct: false}, {answer: "Trauma und Traumatherapie", correct: false}],
                     shuffle: true,
                 });
+                questions.push({
+                    question: "Wo haben Menschen keine Muskeln?",
+                    answers: [{answer: "In den Fingern", correct: true}, {answer: "In den Ohren", correct: false}, {answer: "In der Nase", correct: false}, {answer: "In den Oberschenkeln", correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: "Im Ohr ist ein kleines Organ welches für welchen Sinn verantwortlich ist?",
+                    answers: [{answer: "In den Fingern", correct: true}, {answer: "In den Ohren", correct: false}, {answer: "In der Nase", correct: false}, {answer: "In den Oberschenkeln", correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.videogames.name:
                 questions.push({
@@ -157,6 +167,13 @@ export class QuestionLoader {
                 questions.push({
                     question: '',
                     answers: [{answer: "Neo (Matrix", correct: true}],
+                    shuffle: false,
+                });
+                break;
+            case CategoryLoader.sehenswuerdigkeiten.name:
+                questions.push({
+                    question: 'In welchem Land liegt die längste Mauer der Welt?',
+                    answers: [{answer: "China", correct: true}],
                     shuffle: false,
                 });
                 break;

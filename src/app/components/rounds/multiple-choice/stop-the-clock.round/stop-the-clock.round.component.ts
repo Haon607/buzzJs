@@ -13,7 +13,7 @@ import { inputToColor } from "../../../../../models";
 import { HueLightService } from "../../../../services/hue-light.service";
 
 @Component({
-    selector: 'app-punktesammler.round',
+    selector: 'app-stoptheclock.round',
     imports: [
         ScoreboardComponent,
         NgStyle,

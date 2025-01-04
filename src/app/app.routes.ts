@@ -5,6 +5,7 @@ import { PunktesammlerRoundComponent } from "./components/rounds/multiple-choice
 import { Round } from "./services/memory.service";
 import { StopTheClockRoundComponent } from "./components/rounds/multiple-choice/stop-the-clock.round/stop-the-clock.round.component";
 import { WhatisthequestionRoundComponent } from "./components/rounds/open-ended/whatisthequestion.round/whatisthequestion.round.component";
+import { SpotlightRoundComponent } from "./components/rounds/open-ended/spotlight.round/spotlight.round.component";
 
 export const routes: Routes = [
   {path: "", component: JoinGameComponent},
@@ -12,4 +13,5 @@ export const routes: Routes = [
   {path: "round"+Round.punktesammler.path, component: PunktesammlerRoundComponent},
   {path: "round"+Round.stopTheClock.path, component: StopTheClockRoundComponent},
   {path: "round"+Round.whatIsTheQuestion.path, component: WhatisthequestionRoundComponent},
+  {path: "round"+Round.spotlight.path, component: SpotlightRoundComponent},
 ];
