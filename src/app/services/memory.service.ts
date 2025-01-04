@@ -44,7 +44,7 @@ export class MemoryService {
                 gameScore: 0,
             },
         ]
-        this.category = CategoryLoader.phobien;
+        this.category = CategoryLoader.videogames;
     }
 
     print() {

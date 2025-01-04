@@ -38,7 +38,7 @@ export class QuestionLoader {
                     shuffle: true,
                 });
                 break;
-            case CategoryLoader.videospiele.name:
+            case CategoryLoader.videogames.name:
                 questions.push({
                     question: 'Aus wie vielen Quadraten bestehen alle "Tetris"-Blöcke?',
                     answers: [{answer: "Drei", correct: false}, {answer: "Vier", correct: true}, {answer: "Fünf", correct: false}, {answer: "Sechs", correct: false}],
@@ -153,6 +153,13 @@ export class QuestionLoader {
                     shuffle: false,
                 });
                 break;
+            case CategoryLoader.werBinIch.name:
+                questions.push({
+                    question: '',
+                    answers: [{answer: "Neo (Matrix", correct: true}],
+                    shuffle: false,
+                });
+                break;
         }
 
         return shuffleArray(questions)
@@ -164,7 +171,7 @@ export class CategoryLoader {
         name: "Der Menschliche Körper",
         questionType: QuestionType.multipleChoice
     }
-    static videospiele: Category = {
+    static videogames: Category = {
         name: "Videospiele",
         questionType: QuestionType.multipleChoice
     }
@@ -215,7 +222,7 @@ export class CategoryLoader {
         switch (questionType) {
             case QuestionType.multipleChoice:
                 categories.push(CategoryLoader.menschlicherKoerper);
-                categories.push(CategoryLoader.videospiele);
+                categories.push(CategoryLoader.videogames);
                 categories.push(CategoryLoader.fussball);
                 categories.push(CategoryLoader.essen);
                 categories.push(CategoryLoader.traditionen);

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgStyle } from "@angular/common";
+import { MusicFader } from "../../../utils";
 
 @Component({
     selector: 'app-timer',
@@ -20,6 +21,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     progress: number = NaN;
     radius: number = NaN;
     circumference: number = NaN;
+    music: HTMLAudioElement = new Audio('music/buzz/BTV-BL_ATA_Clock.mp3')
 
     private interval: any;
 
@@ -29,31 +31,43 @@ export class TimerComponent implements OnInit, OnDestroy {
         this.resetTimer();
     }
 
-    startTimer(): void {
+    startTimer(roundMusic: HTMLAudioElement | null = null): void {
         const totalProgress = this.circumference;
         const intervalTime = 100; // Interval in milliseconds
         const decrement = totalProgress / (this.duration * (1000 / intervalTime));
-
+        if (this.remainingTime < 12) {
+            this.music.currentTime--;
+            this.music.play()
+            if (roundMusic) roundMusic.volume = 0.7;
+        }
         this.interval = setInterval(() => {
             this.remainingTime -= intervalTime / 1000;
             this.progress += decrement;
+            if (this.remainingTime.toFixed(1) === "12.0") {
+                this.music.play()
+                if (roundMusic) roundMusic.volume = 0.7;
+            }
             if (this.remainingTime <= 0) {
                 clearInterval(this.interval);
+                this.progress = totalProgress;
                 this.remainingTime = 0;
                 this.timerExpired.emit();
             }
         }, intervalTime);
     }
 
-    stopTimer(): void {
+    stopTimer(roundMusic: HTMLAudioElement | null = null): void {
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
+            new MusicFader().fadeOut(this.music, 1000)
+            if (roundMusic) roundMusic.volume = 1;
         }
     }
 
     resetTimer(): void {
         this.stopTimer();
+        this.music.currentTime = 0;
         this.remainingTime = this.duration;
         this.progress = 0;
     }

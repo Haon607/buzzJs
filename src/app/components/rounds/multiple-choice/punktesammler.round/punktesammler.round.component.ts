@@ -240,12 +240,12 @@ export class PunktesammlerRoundComponent implements OnDestroy {
 
     private async startTimer() {
         this.timerDone = false;
-        this.timer.startTimer()
+        this.timer.startTimer(this.music)
         this.acceptInputs(true);
         while (!this.timerDone && this.inputs.length < this.memory.players.length) {
             await new Promise(resolve => setTimeout(resolve, 100))
         }
-        this.timer.stopTimer()
+        this.timer.stopTimer(this.music)
         this.acceptInputs(false)
 
 
