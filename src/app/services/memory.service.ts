@@ -16,11 +16,12 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
-            Round.fastestFinger,
+            Round.stopTheClock,
             // Round.wonderWall,
+            Round.musicBox,
+            Round.fastestFinger,
             Round.whatIsTheQuestion,
             Round.punktesammler,
-            Round.stopTheClock,
             Round.spotlight,
             // Round.shortFuse,
             // Round.iLiterallyJustToldYou,
@@ -129,7 +130,7 @@ export class Round {
         secondary: "#ffff00"
     }
     static fastestFinger = {
-        name: "Der schnellste Finger",
+        name: "Schnell am Drücker!",
         category: true,
         questionType: QuestionType.openEnded,
         path: "/fastest",
@@ -138,27 +139,66 @@ export class Round {
         primary: "#087E8B",
         secondary: "#FF5A5F"
     }
-    static musicbox = {
-        name: "",
+    static optIn = {
+        name: "Einsteigen bitte",
         category: true,
-        questionType: QuestionType.music,
-        path: "/musicbox",
-        iconPath: "M500-360q42 0 71-29t29-71v-220h120v-80H560v220q-13-10-28-15t-32-5q-42 0-71 29t-29 71q0 42 29 71t71 29ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z",
+        questionType: QuestionType.multipleChoice,
+        path: "/optin",
+        iconPath: "M320-200q-117 0-198.5-81.5T40-480q0-117 81.5-198.5T320-760h320q117 0 198.5 81.5T920-480q0 117-81.5 198.5T640-200H320Zm0-80h320q83 0 141.5-58.5T840-480q0-83-58.5-141.5T640-680H320q-83 0-141.5 58.5T120-480q0 83 58.5 141.5T320-280Zm10-80h60v-90h90v-60h-90v-90h-60v90h-90v60h90v90Zm290 0h60v-240H560v60h60v180ZM480-480Z",
         background: "",
         primary: "",
         secondary: ""
     }
-    static musicalHighlights = {
-        name: "",
+    static musicBox = {
+        name: "Ab der ersten Sekunde",
         category: true,
         questionType: QuestionType.music,
-        path: "/musichighlight",
+        path: "/musicbox",
+        iconPath: "M320-320h80v-320h-80v320Zm160 0 240-160-240-160v320Zm0 240q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z",
+        background: "#1A1F4A",
+        primary: "#6600ff",
+        secondary: "#00FFC3"
+    }
+    static musicalMemory = {
+        name: "Musikalisches Gedächtnis",
+        category: true,
+        questionType: QuestionType.music,
+        path: "/musicmemory",
         iconPath: "M140-640q38-109 131.5-174.5T480-880q82 0 155.5 35T760-746v-134h80v240H600v-80h76q-39-39-90-59.5T480-800q-81 0-149.5 43T227-640h-87ZM420-80q-58 0-99-41t-41-99q0-58 41-99t99-41q16 0 31 3t29 10v-213h200v80H560v260q0 58-41 99t-99 41Z",
         background: "",
         primary: "",
         secondary: ""
     }
-    // Lieder autism highlight multiselect
+    static textAware = {
+        name: "Textsicher",
+        category: true,
+        questionType: QuestionType.music,
+        path: "/textaware",
+        iconPath: "M120-200v-240h720v240H120Zm0-320v-80h720v80H120Zm0-160v-80h720v80H120Z",
+        background: "",
+        primary: "",
+        secondary: ""
+    }
+    static skipping = {
+        name: "Shuffleplatte",
+        category: true,
+        questionType: QuestionType.music,
+        path: "/musicskipping",
+        iconPath: "M560-160v-80h104L537-367l57-57 126 126v-102h80v240H560Zm-344 0-56-56 504-504H560v-80h240v240h-80v-104L216-160Zm151-377L160-744l56-56 207 207-56 56Z",
+        background: "",
+        primary: "",
+        secondary: ""
+    }
+    static soonerOrLater = {
+        name: "Hitster",
+        category: false,
+        questionType: QuestionType.music,
+        path: "/soonerorlater",
+        iconPath: "m360-240 56-56-62-64h166v-80H354l62-64-56-56-160 160 160 160Zm240-160 160-160-160-160-56 56 62 64H440v80h166l-62 64 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z",
+        background: "#B0C4DE",
+        primary: "#00CED1",
+        secondary: "#8B4513"
+    }
 }
 
 export interface RoundInterface {

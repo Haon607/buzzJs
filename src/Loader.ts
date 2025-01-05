@@ -1,4 +1,5 @@
 import { shuffleArray } from './utils';
+import { Genre, MusicQuestion } from "./MusicLoader";
 
 export interface Question {
     question: string;
@@ -20,6 +21,7 @@ export interface Answer {
 export interface Category {
     name: string;
     questionType: QuestionType;
+    musicFilterStatement?: (music: MusicQuestion) => boolean;
 }
 
 export class QuestionLoader {
@@ -136,7 +138,6 @@ export class QuestionLoader {
                 break;
 
 
-
             case CategoryLoader.phobien.name:
                 questions.push({
                     question: "Vor welchen Brummern hat eine Person mit Apiphobie angst?",
@@ -184,7 +185,6 @@ export class QuestionLoader {
                 });
                 break;
         }
-
         return shuffleArray(questions)
     }
 }
@@ -238,30 +238,56 @@ export class CategoryLoader {
         name: "In diesem Jahr...",
         questionType: QuestionType.openEnded
     }
+    static allMusic: Category = {
+        name: "Bunt gemischt",
+        questionType: QuestionType.music,
+        musicFilterStatement: (music: MusicQuestion) => {
+            return true
+        }
+    }
+    static popMusic: Category = {
+        name: "Pop",
+        questionType: QuestionType.music,
+        musicFilterStatement: (music: MusicQuestion) => {
+            return music.information.genre === Genre.pop
+        }
+    }
+    static schlagerMusic: Category = {
+        name: "Schlager",
+        questionType: QuestionType.music,
+        musicFilterStatement: (music: MusicQuestion) => {
+            return music.information.genre === Genre.schlager
+        }
+    }
+    static hipHopMusic: Category = {
+        name: "Hip Hop",
+        questionType: QuestionType.music,
+        musicFilterStatement: (music: MusicQuestion) => {
+            return music.information.genre === Genre.hiphop
+        }
+    }
 
     public static loadCategories(questionType: QuestionType) {
         let categories: Category[] = [];
 
-        switch (questionType) {
-            case QuestionType.multipleChoice:
-                categories.push(CategoryLoader.menschlicherKoerper);
-                categories.push(CategoryLoader.videogames);
-                categories.push(CategoryLoader.fussball);
-                categories.push(CategoryLoader.essen);
-                categories.push(CategoryLoader.traditionen);
-                categories.push(CategoryLoader.filmeUndSerien);
-                categories.push(CategoryLoader.literatur);
-                categories.push(CategoryLoader.gadgetsAndGizmos);
-                break;
-            case QuestionType.openEnded:
-                categories.push(CategoryLoader.phobien);
-                categories.push(CategoryLoader.werBinIch);
-                categories.push(CategoryLoader.inDiesemJahr);
-                categories.push(CategoryLoader.sehenswuerdigkeiten);
-                break;
-        }
+        categories.push(CategoryLoader.menschlicherKoerper);
+        categories.push(CategoryLoader.videogames);
+        categories.push(CategoryLoader.fussball);
+        categories.push(CategoryLoader.essen);
+        categories.push(CategoryLoader.traditionen);
+        categories.push(CategoryLoader.filmeUndSerien);
+        categories.push(CategoryLoader.literatur);
+        categories.push(CategoryLoader.gadgetsAndGizmos);
+        categories.push(CategoryLoader.phobien);
+        categories.push(CategoryLoader.werBinIch);
+        categories.push(CategoryLoader.inDiesemJahr);
+        categories.push(CategoryLoader.sehenswuerdigkeiten);
+        categories.push(CategoryLoader.allMusic);
+        categories.push(CategoryLoader.schlagerMusic);
+        categories.push(CategoryLoader.popMusic);
+        categories.push(CategoryLoader.hipHopMusic);
 
-        return shuffleArray(categories)
+        return shuffleArray(categories.filter(cat => cat.questionType === questionType))
     }
 
 }

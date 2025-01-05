@@ -71,9 +71,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
         this.memory.scoreboardKill.next()
     }
 
-    onTimeExpired() {
-        this.timerDone = true
-    }
+    onTimeExpired() {}
 
     private async setupWithDelay() {
         await new Promise(resolve => setTimeout(resolve, 100));
@@ -179,6 +177,13 @@ export class StopTheClockRoundComponent implements OnDestroy {
             this.displayAnswers(false)
             await new Promise(resolve => setTimeout(resolve, 1500));
             this.collectPoints()
+            if (!this.music.paused && !this.clocks.some(clock => clock.timeLeft > 0)) {
+                new MusicFader().fadeOut(this.music, 1000);
+                await new Promise(resolve => setTimeout(resolve, 500));
+                this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
+                this.memory.crossMusic.volume = 0.2;
+                this.memory.crossMusic.play()
+            }
             await new Promise(resolve => setTimeout(resolve, 1500));
             this.scoreboard.sortSubject.next();
             await new Promise(resolve => setTimeout(resolve, 1000));
@@ -215,7 +220,6 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private setupNextQuestion() {
-        this.timer.resetTimer();
         this.inputs = [];
         this.questions = this.questions.slice(1, this.questions.length);
         this.currentQuestion = this.questions[0];
@@ -232,7 +236,6 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private async startTimer() {
-        this.timer.startTimer()
         this.acceptInputs(true);
         let iteration = 0;
         while (this.clocks.filter(clock => clock.timeLeft <= 0).length + this.inputs.length < this.memory.players.length) {
@@ -331,7 +334,11 @@ export class StopTheClockRoundComponent implements OnDestroy {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
                     squareText: "+" + (Math.floor(clock!.timeLeft) + 10)
-                } : undefined,
+                } : (input ? {
+                    squareBackground: '#00000080',
+                    squareBorder: '#FF0000',
+                    squareText: "-3s"
+                } : undefined),
                 active: false
             })
         })
@@ -344,6 +351,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
         this.memory.players.forEach((player) => {
             let input = this.inputs.find(input => input.controller === player.controllerId);
             let clock = this.clocks.find(clock => clock.controller === player.controllerId);
+            if (clock && input && input.button !== correctInput+1) clock.timeLeft -= 3;
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
