@@ -38,7 +38,7 @@ export class TimerComponent implements OnInit, OnDestroy {
         if (this.remainingTime < 12) {
             this.music.currentTime--;
             this.music.play()
-            if (roundMusic) roundMusic.volume = 0.7;
+            if (roundMusic) roundMusic.volume = 0.3;
         }
         this.interval = setInterval(() => {
             this.remainingTime -= intervalTime / 1000;

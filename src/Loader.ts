@@ -8,7 +8,8 @@ export interface Question {
 
 export enum QuestionType {
     multipleChoice,
-    openEnded
+    openEnded,
+    music,
 }
 
 export interface Answer {
@@ -174,6 +175,11 @@ export class QuestionLoader {
                 questions.push({
                     question: 'In welchem Land liegt die längste Mauer der Welt?',
                     answers: [{answer: "China", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Mit 330 Metern höhe steht welches Bauwerk im 7. Arrondissement der viertgrößten Stadt Europas?',
+                    answers: [{answer: "Eiffelturm", correct: true}],
                     shuffle: false,
                 });
                 break;

@@ -16,13 +16,14 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
-            Round.spotlight,
-            Round.shortFuse,
+            Round.fastestFinger,
+            // Round.wonderWall,
             Round.whatIsTheQuestion,
-            Round.stopTheClock,
             Round.punktesammler,
-            Round.iLiterallyJustToldYou,
-            Round.wonderWall,
+            Round.stopTheClock,
+            Round.spotlight,
+            // Round.shortFuse,
+            // Round.iLiterallyJustToldYou,
         ];
         this.roundNumber = 0;
         this.players = [
@@ -30,21 +31,21 @@ export class MemoryService {
                 name: "Name",
                 controllerId: 0,
                 gameScore: 0,
-            },{
+            }, {
                 name: "Benedikt",
                 controllerId: 1,
                 gameScore: 0,
-            },{
+            }, {
                 name: "Waltraud",
                 controllerId: 2,
                 gameScore: 0,
-            },{
+            }, {
                 name: "Moritz",
                 controllerId: 3,
                 gameScore: 0,
             },
         ]
-        this.category = CategoryLoader.phobien ;
+        this.category = CategoryLoader.phobien;
     }
 
     print() {
@@ -127,7 +128,36 @@ export class Round {
         primary: "#ff8400",
         secondary: "#ffff00"
     }
-    // Liederbeginn Buzzing
+    static fastestFinger = {
+        name: "Der schnellste Finger",
+        category: true,
+        questionType: QuestionType.openEnded,
+        path: "/fastest",
+        iconPath: "m226-559 78 33q14-28 29-54t33-52l-56-11-84 84Zm142 83 114 113q42-16 90-49t90-75q70-70 109.5-155.5T806-800q-72-5-158 34.5T492-656q-42 42-75 90t-49 90Zm178-65q-23-23-23-56.5t23-56.5q23-23 57-23t57 23q23 23 23 56.5T660-541q-23 23-57 23t-57-23Zm19 321 84-84-11-56q-26 18-52 32.5T532-299l33 79Zm313-653q19 121-23.5 235.5T708-419l20 99q4 20-2 39t-20 33L538-80l-84-197-171-171-197-84 167-168q14-14 33.5-20t39.5-2l99 20q104-104 218-147t235-24ZM157-321q35-35 85.5-35.5T328-322q35 35 34.5 85.5T327-151q-25 25-83.5 43T82-76q14-103 32-161.5t43-83.5Zm57 56q-10 10-20 36.5T180-175q27-4 53.5-13.5T270-208q12-12 13-29t-11-29q-12-12-29-11.5T214-265Z",
+        background: "#232ED1",
+        primary: "#087E8B",
+        secondary: "#FF5A5F"
+    }
+    static musicbox = {
+        name: "",
+        category: true,
+        questionType: QuestionType.music,
+        path: "/musicbox",
+        iconPath: "M500-360q42 0 71-29t29-71v-220h120v-80H560v220q-13-10-28-15t-32-5q-42 0-71 29t-29 71q0 42 29 71t71 29ZM320-240q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z",
+        background: "",
+        primary: "",
+        secondary: ""
+    }
+    static musicalHighlights = {
+        name: "",
+        category: true,
+        questionType: QuestionType.music,
+        path: "/musichighlight",
+        iconPath: "M140-640q38-109 131.5-174.5T480-880q82 0 155.5 35T760-746v-134h80v240H600v-80h76q-39-39-90-59.5T480-800q-81 0-149.5 43T227-640h-87ZM420-80q-58 0-99-41t-41-99q0-58 41-99t99-41q16 0 31 3t29 10v-213h200v80H560v260q0 58-41 99t-99 41Z",
+        background: "",
+        primary: "",
+        secondary: ""
+    }
     // Lieder autism highlight multiselect
 }
 

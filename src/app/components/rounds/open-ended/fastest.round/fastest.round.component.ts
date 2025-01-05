@@ -1,5 +1,5 @@
+import { Component, HostListener, ViewChild } from '@angular/core';
 import gsap from 'gsap';
-import { Component, HostListener, OnDestroy, ViewChild } from "@angular/core";
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
 import { TimerComponent } from "../../../timer/timer.component";
@@ -12,7 +12,7 @@ import { HueLightService } from "../../../../services/hue-light.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
 
 @Component({
-    selector: 'app-whatisthequestion.round',
+    selector: 'app-fastest.round',
     imports: [
         ScoreboardComponent,
         NgStyle,
@@ -23,7 +23,7 @@ import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../ut
     standalone: true,
     styleUrl: '../open-ended.css'
 })
-export class WhatisthequestionRoundComponent implements OnDestroy {
+export class FastestRoundComponent {
     bgc: string;
     round: RoundInterface;
     currentQuestion: Question = {
@@ -36,13 +36,14 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
     music: HTMLAudioElement = new Audio();
     timerDone: boolean = false;
     gotCorrect: boolean = false;
-    amountOfQuestions = 5;
+    amountOfQuestions = 7;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    maxTime: number = 30;
-    monospaceQuestion: boolean = true;
+    maxTime: number = 15;
+    monospaceQuestion: boolean = false;
     private latestInput: ButtonState | null = null;
     private excludeIds: number[] = [];
     private acceptInputsVar: boolean = false;
+    private timerStarted: boolean = false;
     private stoppBuzzFlash: boolean = false
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
@@ -61,6 +62,14 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
         if (event.key === 'i') this.memory.print();
 
         if (event.key === 'r') this.setupNextQuestion();
+        if (event.key === 'd') {
+            this.displayQuestion(true);
+            this.timerStarted = true
+            await new Promise(resolve => setTimeout(resolve, 100));
+            this.displayTimer(true)
+            await new Promise(resolve => setTimeout(resolve, 400));
+            if (!this.latestInput) this.timer.startTimer()
+        }
 
         if (event.key === '+') this.correct();
         if (event.key === '-') this.incorrect();
@@ -125,7 +134,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
     }
 
     private async startRound() {
-        this.music.src = "/music/buzz/BTV-BL_PF.mp3";
+        this.music.src = "/music/buzz/BTV-BL_FF.mp3";
         this.music.loop = true
         this.music.play()
         for (let i = 0; i < this.amountOfQuestions; i++) {
@@ -133,14 +142,8 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
             await this.waitForSpace();
             new Audio('music/wwds/frage.mp3').play();
             await new Promise(resolve => setTimeout(resolve, 250));
-            let question = this.currentQuestion.question;
-            this.currentQuestion.question = "";
-            this.displayQuestion(true)
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
-            await new Promise(resolve => setTimeout(resolve, 100));
-            this.displayTimer(true)
-            await new Promise(resolve => setTimeout(resolve, 400));
-            await this.startTimer(question);
+            await this.startTimer();
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254)
             styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
             await new Promise(resolve => setTimeout(resolve, 1000))
@@ -174,6 +177,10 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
     private async onPress(buttonState: ButtonState) {
         if (this.acceptInputsVar && buttonState.button === 0) {
             if (!this.latestInput && !this.excludeIds.includes(buttonState.controller)) {
+                this.hue.setColor(HueLightService.primary, this.round.secondary, 0, 254);
+                this.hue.setColor(HueLightService.primary, this.round.primary, 2500, 254);
+                this.hue.setColor(HueLightService.secondary, this.round.primary, 0, 254);
+                this.hue.setColor(HueLightService.secondary, this.round.secondary, 2500, 50);
                 this.latestInput = buttonState;
                 this.timer.stopTimer(this.music)
                 new Audio('music/wwds/einloggen.mp3').play();
@@ -219,76 +226,17 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
     }
 
     private printQuestion() {
-        styledLogger(this.currentQuestion.question, Style.information)
+        styledLogger(this.currentQuestion.question, Style.speak)
         styledLogger(this.currentQuestion.answers[0].answer, Style.information)
     }
 
-    private async startTimer(question: string) {
+    private async startTimer() {
         this.timerDone = false;
-        this.timer.startTimer(this.music);
         this.acceptInputs(true);
-
-        // Initialize the currentQuestion with underscores for letters/numbers and keep other characters as is
-        this.currentQuestion.question = question
-            .split('')
-            .map(char => /[a-zA-Z0-9]/.test(char) ? '_' : char)
-            .join('');
-
-        // Extract indexes of letters and numbers only for revealing
-        const revealableIndexes = question
-            .split('')
-            .map((char, index) => /[a-zA-Z0-9]/.test(char) ? index : null)
-            .filter(index => index !== null) as number[];
-
-        // Calculate the interval duration for revealing letters/numbers
-        const revealInterval = 25000 / revealableIndexes.length;
-
-        // Shuffle the indexes for random order
-        for (let i = revealableIndexes.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [revealableIndexes[i], revealableIndexes[j]] = [revealableIndexes[j], revealableIndexes[i]];
-        }
-
-        // Initial reveal of some characters (1/3.5 of the total revealable characters)
-        let lettersRevealed = 0;
-        const initialReveals = Math.floor(revealableIndexes.length / 3.5);
-        while (lettersRevealed < initialReveals) {
-            const index = revealableIndexes[lettersRevealed];
-            this.currentQuestion.question = this.currentQuestion.question
-                .split('')
-                .map((char, i) => (i === index ? question[i] : char))
-                .join('');
-            lettersRevealed++;
-            await new Promise(resolve => setTimeout(resolve, 10));
-        }
-
-        // Progressive reveal loop
         while (!this.timerDone && !this.gotCorrect && this.excludeIds.length < this.memory.players.length) {
-            if (!this.latestInput) {
-                if (lettersRevealed < revealableIndexes.length) {
-                    const index = revealableIndexes[lettersRevealed];
-                    this.currentQuestion.question = this.currentQuestion.question
-                        .split('')
-                        .map((char, i) => (i === index ? question[i] : char))
-                        .join('');
-                    lettersRevealed++;
-                }
-            }
-            // Wait for the next reveal interval
-            await new Promise(resolve => setTimeout(resolve, revealInterval));
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
-
-        // Final reveal of remaining characters if needed
-        while (lettersRevealed < revealableIndexes.length) {
-            const index = revealableIndexes[lettersRevealed];
-            this.currentQuestion.question = this.currentQuestion.question
-                .split('')
-                .map((char, i) => (i === index ? question[i] : char))
-                .join('');
-            lettersRevealed++;
-            await new Promise(resolve => setTimeout(resolve, 10));
-        }
-
+        this.displayQuestion(true)
         this.timer.stopTimer(this.music);
         this.acceptInputs(false);
         this.gotCorrect = false;
@@ -337,7 +285,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                 square: this.latestInput?.controller === player.controllerId ? {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
-                    squareText: "+" + (Math.floor(this.timer.remainingTime) + 21)
+                    squareText: "+" + (Math.floor(this.timer.remainingTime) *2)
                 } : undefined,
                 active: false
             })
@@ -351,7 +299,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
-                pointAward: this.latestInput?.controller === player.controllerId ? Math.floor(this.timer.remainingTime) + 21 : undefined,
+                pointAward: this.latestInput?.controller === player.controllerId ? Math.floor(this.timer.remainingTime) *2 : undefined,
                 square: undefined,
                 active: false
             })
@@ -401,7 +349,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
         await new Promise(resolve => setTimeout(resolve, 1000))
         this.latestInput = null;
 
-        this.timer.startTimer(this.music);
+        if (this.timerStarted) this.timer.startTimer(this.music);
         let states = new Array(4).fill(true);
         for (let id of this.excludeIds) {
             states[id] = false;

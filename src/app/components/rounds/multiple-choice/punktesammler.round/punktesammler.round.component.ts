@@ -247,8 +247,6 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         }
         this.timer.stopTimer(this.music)
         this.acceptInputs(false)
-
-
     }
 
     private acceptInputs(tf: boolean) {
