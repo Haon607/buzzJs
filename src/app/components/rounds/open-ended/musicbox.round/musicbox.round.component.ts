@@ -70,6 +70,8 @@ export class MusicboxRoundComponent {
         this.round = memory.rounds[memory.roundNumber];
         this.bgc = this.round.background;
         buzz.onPress(buttonState => this.onPress(buttonState));
+        styledLogger(this.round.name, Style.speak)
+        styledLogger(this.round.rules, Style.speak)
         this.setupWithDelay();
         this.musicTracks = this.musicTracks.concat(Musicloader.loadMusic(memory.category!));
         this.startRound();
@@ -232,6 +234,7 @@ export class MusicboxRoundComponent {
 
     private async waitForSpace() {
         styledLogger("Space zum weitermachen", Style.requiresInput)
+        this.spacePressed = false
         while (!this.spacePressed) await new Promise(resolve => setTimeout(resolve, 250));
         this.spacePressed = false
     }
@@ -239,13 +242,13 @@ export class MusicboxRoundComponent {
     private setupNextQuestion() {
         this.timer.resetTimer();
         this.latestInput = null;
-        this.excludeIds = []
-        this.gotCorrect = false
-        this.timerShown = false
+        this.excludeIds = [];
+        this.gotCorrect = false;
+        this.timerShown = false;
         this.musicTracks = this.musicTracks.slice(1, this.musicTracks.length);
         this.currentTrack = this.musicTracks[0];
-        this.currentQuestion.answers[0].answer = ""
-        this.printTrack()
+        this.currentQuestion.answers[0].answer = this.currentTrack.information.title;
+        this.printTrack();
     }
 
     private printTrack() {
