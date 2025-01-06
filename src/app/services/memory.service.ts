@@ -16,6 +16,7 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
+            Round.skipping,
             Round.musicBox,
             // Round.wonderWall,
             Round.fastestFinger,
@@ -197,10 +198,10 @@ export class Round {
         questionType: QuestionType.music,
         path: "/musicskipping",
         iconPath: "M560-160v-80h104L537-367l57-57 126 126v-102h80v240H560Zm-344 0-56-56 504-504H560v-80h240v240h-80v-104L216-160Zm151-377L160-744l56-56 207 207-56 56Z",
-        background: "",
-        primary: "",
-        secondary: "",
-        rules: ""
+        background: "#7a5266",
+        primary: "#ff8800",
+        secondary: "#00ff00",
+        rules: "Teile eines Liedes in zufälliger reihenfolge spielen, wer glaubt es zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder der Liedtitel exakt richtig ist, oder der Interpret richtig ist und der Titel so ein bissl stimmt. Je schneller, desto mehr Punkte."
     } //shuffeln von segmenten, buzzern, titel und interpret
     static soonerOrLater = {
         name: "Hitster",
@@ -213,6 +214,17 @@ export class Round {
         secondary: "#8B4513",
         rules: ""
     } //lieder richtig in timeline einräumen
+    static waschmaschine = {
+        name: "Waschmaschine",
+        category: false,
+        questionType: QuestionType.music,
+        path: "/waschmaschine",
+        iconPath: "",
+        background: "",
+        primary: "",
+        secondary: "",
+        rules: ""
+    } //drei lieder gleichzeiting spielen mit so abwechselnder lautstärke, danach "welches lied war nicht zu hören ahh frage
 }
 
 export interface RoundInterface {

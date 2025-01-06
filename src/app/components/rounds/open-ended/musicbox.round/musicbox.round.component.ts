@@ -318,7 +318,7 @@ export class MusicboxRoundComponent {
                 square: this.latestInput?.controller === player.controllerId ? {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
-                    squareText: "+" + (Math.floor(this.timer.remainingTime))
+                    squareText: "+" + (Math.floor(this.timer.remainingTime*0.66))
                 } : undefined,
                 active: false
             })
@@ -332,7 +332,7 @@ export class MusicboxRoundComponent {
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
-                pointAward: this.latestInput?.controller === player.controllerId ? Math.floor(this.timer.remainingTime) : undefined,
+                pointAward: this.latestInput?.controller === player.controllerId ? Math.floor(this.timer.remainingTime*0.66) : undefined,
                 square: undefined,
                 active: false
             })
