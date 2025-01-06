@@ -15,14 +15,15 @@ export class TimerComponent implements OnInit, OnDestroy {
     @Input() duration: number = 100; // Default duration in seconds
     @Input() size: number = 200; // Default size in pixels
     @Input() showTime: boolean = true;
+    @Input() makeSound: boolean = true;
     @Output() timerExpired = new EventEmitter<void>();
 
     remainingTime: number = NaN;
     progress: number = NaN;
     radius: number = NaN;
     circumference: number = NaN;
-    music: HTMLAudioElement = new Audio('music/buzz/BTV-BL_ATA_Clock.mp3')
 
+    music: HTMLAudioElement = new Audio('music/buzz/BTV-BL_ATA_Clock.mp3')
     private interval: any;
 
     ngOnInit(): void {
@@ -35,7 +36,7 @@ export class TimerComponent implements OnInit, OnDestroy {
         const totalProgress = this.circumference;
         const intervalTime = 100; // Interval in milliseconds
         const decrement = totalProgress / (this.duration * (1000 / intervalTime));
-        if (this.remainingTime < 12) {
+        if (this.remainingTime < 12 && this.makeSound) {
             this.music.currentTime--;
             this.music.play()
             if (roundMusic) roundMusic.volume = 0.3;
@@ -43,7 +44,7 @@ export class TimerComponent implements OnInit, OnDestroy {
         this.interval = setInterval(() => {
             this.remainingTime -= intervalTime / 1000;
             this.progress += decrement;
-            if (this.remainingTime.toFixed(1) === "12.0") {
+            if (this.makeSound && this.remainingTime.toFixed(1) === "12.0") {
                 this.music.play()
                 if (roundMusic) roundMusic.volume = 0.7;
             }

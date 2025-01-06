@@ -39,6 +39,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
     amountOfQuestions = 5;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     maxTime: number = 30;
+    timerSound: boolean = true;
     monospaceQuestion: boolean = true;
     private latestInput: ButtonState | null = null;
     private excludeIds: number[] = [];

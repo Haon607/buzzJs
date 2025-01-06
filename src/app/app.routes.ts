@@ -7,6 +7,7 @@ import { StopTheClockRoundComponent } from "./components/rounds/multiple-choice/
 import { WhatisthequestionRoundComponent } from "./components/rounds/open-ended/whatisthequestion.round/whatisthequestion.round.component";
 import { SpotlightRoundComponent } from "./components/rounds/open-ended/spotlight.round/spotlight.round.component";
 import { FastestRoundComponent } from "./components/rounds/open-ended/fastest.round/fastest.round.component";
+import { MusicboxRoundComponent } from "./components/rounds/open-ended/musicbox.round/musicbox.round.component";
 
 export const routes: Routes = [
   {path: "", component: JoinGameComponent},
@@ -16,4 +17,5 @@ export const routes: Routes = [
   {path: "round"+Round.whatIsTheQuestion.path, component: WhatisthequestionRoundComponent},
   {path: "round"+Round.spotlight.path, component: SpotlightRoundComponent},
   {path: "round"+Round.fastestFinger.path, component: FastestRoundComponent},
+  {path: "round"+Round.musicBox.path, component: MusicboxRoundComponent},
 ];

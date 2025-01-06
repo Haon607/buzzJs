@@ -39,6 +39,7 @@ export class FastestRoundComponent {
     amountOfQuestions = 7;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     maxTime: number = 15;
+    timerSound: boolean = true;
     monospaceQuestion: boolean = false;
     private latestInput: ButtonState | null = null;
     private excludeIds: number[] = [];

@@ -16,9 +16,9 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
-            Round.stopTheClock,
-            // Round.wonderWall,
             Round.musicBox,
+            // Round.wonderWall,
+            Round.stopTheClock,
             Round.fastestFinger,
             Round.whatIsTheQuestion,
             Round.punktesammler,
@@ -46,7 +46,7 @@ export class MemoryService {
                 gameScore: 0,
             },
         ]
-        this.category = CategoryLoader.phobien;
+        this.category = CategoryLoader.allMusic;
     }
 
     print() {
@@ -158,7 +158,7 @@ export class Round {
         background: "#1A1F4A",
         primary: "#6600ff",
         secondary: "#00FFC3"
-    }
+    } //Von anfang an, buzzern, titel und interpret
     static musicalMemory = {
         name: "Musikalisches Gedächtnis",
         category: true,
@@ -168,7 +168,7 @@ export class Round {
         background: "",
         primary: "",
         secondary: ""
-    }
+    } // Nur memory segment, auch mehrmals, multiple choice
     static textAware = {
         name: "Textsicher",
         category: true,
@@ -178,7 +178,7 @@ export class Round {
         background: "",
         primary: "",
         secondary: ""
-    }
+    } // nur text, multiple choice, antwort nach geschwindigkeit
     static skipping = {
         name: "Shuffleplatte",
         category: true,
@@ -188,7 +188,7 @@ export class Round {
         background: "",
         primary: "",
         secondary: ""
-    }
+    } //shuffeln von segmenten, buzzern, titel und interpret
     static soonerOrLater = {
         name: "Hitster",
         category: false,
@@ -198,7 +198,7 @@ export class Round {
         background: "#B0C4DE",
         primary: "#00CED1",
         secondary: "#8B4513"
-    }
+    } //lieder richtig in timeline einräumen
 }
 
 export interface RoundInterface {

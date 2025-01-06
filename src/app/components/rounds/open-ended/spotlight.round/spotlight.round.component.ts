@@ -41,6 +41,7 @@ export class SpotlightRoundComponent implements OnDestroy {
     currentPlayer: number = NaN;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     maxTime: number = 12.1;
+    timerSound: boolean = true;
     monospaceQuestion: boolean = false;
     private latestInput: ButtonState | null = null;
     private doubtingPlayers: number[] = [];

@@ -9,7 +9,7 @@ export interface MusicQuestion {
         releaseYear: number
         group: boolean
         genre: Genre
-        language: [Language]
+        language: Language[]
     }
     memory: {
         from: number,
