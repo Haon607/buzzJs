@@ -9,7 +9,7 @@ import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device
 import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../../services/hue-light.service";
-import { MusicFader, randomNumber, Style, styledLogger } from "../../../../../utils";
+import { MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../../utils";
 import { Genre, Musicloader, MusicQuestion } from "../../../../../MusicLoader";
 
 @Component({
@@ -172,7 +172,7 @@ export class SkippingRoundComponent {
       this.displayAnswers(true);
       this.displayTimer(true)
       await new Promise(resolve => setTimeout(resolve, 500));
-      await this.waitForSpace();
+      await this.waitForSpace(true);
       if (i + 1 === this.amountOfTracks) {
         new MusicFader().fadeOut(this.music, 1000);
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -232,10 +232,16 @@ export class SkippingRoundComponent {
     }
   }
 
-  private async waitForSpace() {
+  private async waitForSpace(bounceLights = false) {
     styledLogger("Space zum weitermachen", Style.requiresInput)
     this.spacePressed = false
-    while (!this.spacePressed) await new Promise(resolve => setTimeout(resolve, 250));
+    const lights = shuffleArray(HueLightService.primary.concat(HueLightService.secondary));
+    let i = 0;
+    while (!this.spacePressed) {
+      if (bounceLights) this.hue.bounceLight([lights[i%lights.length]])
+      await new Promise(resolve => setTimeout(resolve, 250));
+      i++;
+    }
     this.spacePressed = false
   }
 

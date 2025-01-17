@@ -29,6 +29,7 @@ export enum Genre {
 export enum Language {
     german = "Deutsch",
     english = "Englisch",
+    other = "Andere Sprachen",
 }
 
 export class Musicloader {
@@ -175,6 +176,96 @@ export class Musicloader {
                 "There's no talking to you",
             ]
         });
+        musicQuestions.push({
+            path: "ABBA - Dancing Queen (Official Music Video).mp3",
+            information: {
+                title: "Dancing Queen",
+                interpret: "ABBA",
+                releaseYear: 1976,
+                group: true,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 60 + 48,
+            memory: {
+                from: 120 + 10,
+                to: 120 + 15
+            },
+            lyrics: [
+                "You can dance, you can jive",
+                "Having the time of your life, ooh",
+                "See that girl, watch that scene",
+                "Dig in the Dancing Queen"
+            ]
+        });
+        musicQuestions.push({
+            path: "Ai Se Eu Te Pego (Nossa Nossa).mp3",
+            information: {
+                title: "Ai se eu te pego (Nossa Nossa)",
+                interpret: "Michel Teló",
+                releaseYear: 2011,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.other]
+            },
+            highlightFrom: 52,
+            memory: {
+                from: 22,
+                to: 27
+            },
+            lyrics: [
+                "Nossa, hein?",
+                "Que que é isso!",
+                "Nossa (nossa)",
+                "(Assim você me mata)",
+                "Ai (se eu te pego)",
+                "(Ai, ai, se eu te pego)",
+                "Vamo que vamo, turma!"
+            ]
+        });
+        musicQuestions.push({
+            path: "Wencke Myhre - Er hat ein knallrotes Gummiboot 1970.mp3",
+            information: {
+                title: "Er hat ein knallrotes Gummiboot",
+                interpret: "Wencke Myhre",
+                releaseYear: 1970,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.german]
+            },
+            highlightFrom: 53.5,
+            memory: {
+                from: 15,
+                to: 16
+            },
+            lyrics: [
+                "Er hat ein knallrotes Gummiboot",
+                "Mit diesem Gummiboot fahren wir hinaus",
+                "Er hat ein knallrotes Gummiboot",
+                "Und erst im Abendrot kommen wir nach Haus"
+            ]
+        });
+        /*
+        musicQuestions.push({
+            path: "",
+            information: {
+                title: "",
+                interpret: "",
+                releaseYear: NaN,
+                group: false,
+                genre: Genre.pop,
+                language: []
+            },
+            highlightFrom: NaN,
+            memory: {
+                from: NaN,
+                to: NaN
+            },
+            lyrics: [
+
+            ]
+        });
+        */
 
 
         return shuffleArray(musicQuestions.filter(category.musicFilterStatement!));

@@ -50,6 +50,8 @@ export class SpotlightRoundComponent implements OnDestroy {
     private currentPlayerMayAnswer: boolean = false;
     private revealongoing: boolean = false;
 
+    //TODO ! PLAYER MAY CHOOSE ONE OF 2? CATEGORIES!
+
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
         this.bgc = this.round.background;

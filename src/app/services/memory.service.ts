@@ -16,14 +16,15 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
-            Round.skipping,
+            Round.soonerOrLater,
+            Round.spotlight,
             Round.musicBox,
             // Round.wonderWall,
+            Round.skipping,
             Round.fastestFinger,
             Round.stopTheClock,
             Round.whatIsTheQuestion,
             Round.punktesammler,
-            Round.spotlight,
             // Round.shortFuse,
             // Round.iLiterallyJustToldYou,
         ];
@@ -193,14 +194,14 @@ export class Round {
         rules: ""
     } // nur text, multiple choice, antwort nach geschwindigkeit
     static skipping = {
-        name: "Shuffleplatte",
+        name: "Mixtape",
         category: true,
         questionType: QuestionType.music,
         path: "/musicskipping",
         iconPath: "M560-160v-80h104L537-367l57-57 126 126v-102h80v240H560Zm-344 0-56-56 504-504H560v-80h240v240h-80v-104L216-160Zm151-377L160-744l56-56 207 207-56 56Z",
-        background: "#7a5266",
-        primary: "#ff8800",
-        secondary: "#00ff00",
+        background: "#1A1F4A",
+        primary: "#00FFC3",
+        secondary: "#6600ff",
         rules: "Teile eines Liedes in zufälliger reihenfolge spielen, wer glaubt es zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder der Liedtitel exakt richtig ist, oder der Interpret richtig ist und der Titel so ein bissl stimmt. Je schneller, desto mehr Punkte."
     } //shuffeln von segmenten, buzzern, titel und interpret
     static soonerOrLater = {
@@ -209,9 +210,9 @@ export class Round {
         questionType: QuestionType.music,
         path: "/soonerorlater",
         iconPath: "m360-240 56-56-62-64h166v-80H354l62-64-56-56-160 160 160 160Zm240-160 160-160-160-160-56 56 62 64H440v80h166l-62 64 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z",
-        background: "#B0C4DE",
-        primary: "#00CED1",
-        secondary: "#8B4513",
+        background: "#002929",
+        primary: "#5e60ce",
+        secondary: "#64dfdf",
         rules: ""
     } //lieder richtig in timeline einräumen
     static waschmaschine = {
@@ -225,6 +226,14 @@ export class Round {
         secondary: "",
         rules: ""
     } //drei lieder gleichzeiting spielen mit so abwechselnder lautstärke, danach "welches lied war nicht zu hören ahh frage
+    // Audience Knowledge?
+    // Autism Knowledge explaining
+
+    /*
+    background: "#FFFFFF",
+    primary: "#edb3d9",
+    secondary: "#a9d7e8",
+    */
 }
 
 export interface RoundInterface {

@@ -2,7 +2,6 @@
     <div id="question" [ngClass]="monospaceQuestion ? 'numbers' : ''">{{ currentQuestion.question }}</div>
     <app-timer id="timer"
                [size]="225"
-               [showTime]="true"
                [makeSound]="timerSound"
                [duration]="maxTime"
                (timerExpired)="onTimeExpired()"

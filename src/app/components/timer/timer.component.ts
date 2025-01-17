@@ -14,7 +14,7 @@ import { MusicFader } from "../../../utils";
 export class TimerComponent implements OnInit, OnDestroy {
     @Input() duration: number = 100; // Default duration in seconds
     @Input() size: number = 200; // Default size in pixels
-    @Input() showTime: boolean = true;
+    @Input() showTime: boolean = false;
     @Input() makeSound: boolean = true;
     @Output() timerExpired = new EventEmitter<void>();
 
