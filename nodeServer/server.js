@@ -9,6 +9,8 @@ const port = 3000;
 // Set up WebSocket server
 const wss = new WebSocket.Server({ noServer: true });
 
+wss.setMaxListeners(Infinity);
+
 // Function to find the buzzer device
 function findDeviceByName() {
   const buzzDevice = nodeHid.devices().find(d => d.product.match(/Buzz/));
