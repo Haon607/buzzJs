@@ -16,7 +16,7 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
-            Round.soonerOrLater,
+            Round.timeline,
             Round.spotlight,
             Round.musicBox,
             // Round.wonderWall,
@@ -204,11 +204,11 @@ export class Round {
         secondary: "#6600ff",
         rules: "Teile eines Liedes in zufälliger reihenfolge spielen, wer glaubt es zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder der Liedtitel exakt richtig ist, oder der Interpret richtig ist und der Titel so ein bissl stimmt. Je schneller, desto mehr Punkte."
     } //shuffeln von segmenten, buzzern, titel und interpret
-    static soonerOrLater = {
+    static timeline = {
         name: "Hitster",
         category: false,
         questionType: QuestionType.music,
-        path: "/soonerorlater",
+        path: "/timeline",
         iconPath: "m360-240 56-56-62-64h166v-80H354l62-64-56-56-160 160 160 160Zm240-160 160-160-160-160-56 56 62 64H440v80h166l-62 64 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z",
         background: "#002929",
         primary: "#5e60ce",

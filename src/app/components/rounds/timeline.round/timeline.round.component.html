@@ -1,0 +1,17 @@
+<div class="background" [ngStyle]="{'background': bgc}">
+    <app-timer id="timer"
+               [size]="225"
+               [makeSound]="false"
+               [duration]="60"
+               (timerExpired)="onTimeExpired()"
+    ></app-timer>
+    <app-scoreboard id="scoreboard" class="scoreboard" ></app-scoreboard>
+    <div id="track-list">
+        @for (track of trackList; track track.id) {
+            <div class="track" id="track-{{track.id}}">
+                <div><span class="track-title">{{track.information.title}}</span> - <span class="track-interpret">{{track.information.interpret}}</span></div>
+                <span class="track-year">{{track.information.releaseYear}}</span>
+            </div>
+        }
+    </div>
+</div>

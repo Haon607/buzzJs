@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import gsap from 'gsap';
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
@@ -24,7 +24,7 @@ import { Genre, Musicloader, MusicQuestion } from "../../../../../MusicLoader";
     standalone: true,
     styleUrl: '../open-ended.css'
 })
-export class MusicboxRoundComponent {
+export class MusicboxRoundComponent implements OnDestroy {
     bgc: string;
     round: RoundInterface;
     currentQuestion: Question = {
@@ -33,6 +33,7 @@ export class MusicboxRoundComponent {
         ], shuffle: false
     };
     currentTrack: MusicQuestion = {
+        id: NaN,
         path: "",
         information: {
             title: "",
@@ -238,7 +239,7 @@ export class MusicboxRoundComponent {
         const lights = shuffleArray(HueLightService.primary.concat(HueLightService.secondary));
         let i = 0;
         while (!this.spacePressed) {
-            if (bounceLights) this.hue.bounceLight([lights[i%lights.length]])
+            if (bounceLights) this.hue.bounceLight([lights[i % lights.length]])
             await new Promise(resolve => setTimeout(resolve, 250));
             i++;
         }
@@ -324,7 +325,7 @@ export class MusicboxRoundComponent {
                 square: this.latestInput?.controller === player.controllerId ? {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
-                    squareText: "+" + (Math.floor(this.timer.remainingTime*0.66))
+                    squareText: "+" + (Math.floor(this.timer.remainingTime * 0.66))
                 } : undefined,
                 active: false
             })
@@ -338,7 +339,7 @@ export class MusicboxRoundComponent {
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
-                pointAward: this.latestInput?.controller === player.controllerId ? Math.floor(this.timer.remainingTime*0.66) : undefined,
+                pointAward: this.latestInput?.controller === player.controllerId ? Math.floor(this.timer.remainingTime * 0.66) : undefined,
                 square: undefined,
                 active: false
             })

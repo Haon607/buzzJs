@@ -9,6 +9,7 @@ import { SpotlightRoundComponent } from "./components/rounds/open-ended/spotligh
 import { FastestRoundComponent } from "./components/rounds/open-ended/fastest.round/fastest.round.component";
 import { MusicboxRoundComponent } from "./components/rounds/open-ended/musicbox.round/musicbox.round.component";
 import { SkippingRoundComponent } from "./components/rounds/open-ended/skipping.round/skipping.round.component";
+import { TimelineRoundComponent } from "./components/rounds/timeline.round/timeline.round.component";
 
 export const routes: Routes = [
   {path: "", component: JoinGameComponent},
@@ -20,4 +21,5 @@ export const routes: Routes = [
   {path: "round"+Round.fastestFinger.path, component: FastestRoundComponent},
   {path: "round"+Round.musicBox.path, component: MusicboxRoundComponent},
   {path: "round"+Round.skipping.path, component: SkippingRoundComponent},
+  {path: "round"+Round.timeline.path, component: TimelineRoundComponent},
 ];

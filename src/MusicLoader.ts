@@ -2,6 +2,7 @@ import { shuffleArray } from './utils';
 import { Category } from "./Loader";
 
 export interface MusicQuestion {
+    id: number
     path: string
     information: {
         title: string
@@ -37,6 +38,7 @@ export class Musicloader {
         let musicQuestions: MusicQuestion[] = [];
 
         musicQuestions.push({
+            id: NaN,
             path: "a-ha - Take On Me (Official Video) [Remastered in 4K].mp3",
             information: {
                 title: "Take On Me",
@@ -61,6 +63,7 @@ export class Musicloader {
             ]
         });
         musicQuestions.push({
+            id: NaN,
             path: "$oho Bani, Herbert Grönemeyer - ZEIT, DASS SICH WAS DREHT (prod. by Ericson & Drunken Masters).mp3",
             information: {
                 title: "ZEIT, DASS SICH WAS DREHT",
@@ -83,6 +86,7 @@ export class Musicloader {
             ]
         });
         musicQuestions.push({
+            id: NaN,
             path: "Du hast mich tausendmal belogen.mp3",
             information: {
                 title: "Du hast mich tausendmal belogen",
@@ -105,6 +109,7 @@ export class Musicloader {
             ]
         });
         musicQuestions.push({
+            id: NaN,
             path: "American Authors - Best Day Of My Life.mp3",
             information: {
                 title: "Best Day of My Life",
@@ -131,6 +136,7 @@ export class Musicloader {
             ]
         });
         musicQuestions.push({
+            id: NaN,
             path: "Leider geil (Leider geil).mp3",
             information: {
                 title: "Leider geil (Leider geil)",
@@ -155,6 +161,7 @@ export class Musicloader {
             ]
         });
         musicQuestions.push({
+            id: NaN,
             path: "Cher - Believe (Official Music Video) [4K Remaster].mp3",
             information: {
                 title: "Believe",
@@ -177,6 +184,7 @@ export class Musicloader {
             ]
         });
         musicQuestions.push({
+            id: NaN,
             path: "ABBA - Dancing Queen (Official Music Video).mp3",
             information: {
                 title: "Dancing Queen",
@@ -199,6 +207,7 @@ export class Musicloader {
             ]
         });
         musicQuestions.push({
+            id: NaN,
             path: "Ai Se Eu Te Pego (Nossa Nossa).mp3",
             information: {
                 title: "Ai se eu te pego (Nossa Nossa)",
@@ -224,6 +233,7 @@ export class Musicloader {
             ]
         });
         musicQuestions.push({
+            id: NaN,
             path: "Wencke Myhre - Er hat ein knallrotes Gummiboot 1970.mp3",
             information: {
                 title: "Er hat ein knallrotes Gummiboot",
@@ -267,6 +277,9 @@ export class Musicloader {
         });
         */
 
+        for (let i = 0; i < musicQuestions.length; i++) {
+            musicQuestions[i].id = i;
+        }
 
         return shuffleArray(musicQuestions.filter(category.musicFilterStatement!));
     }

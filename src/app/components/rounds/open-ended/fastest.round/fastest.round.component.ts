@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import gsap from 'gsap';
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
@@ -23,7 +23,7 @@ import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../ut
     standalone: true,
     styleUrl: '../open-ended.css'
 })
-export class FastestRoundComponent {
+export class FastestRoundComponent implements OnDestroy {
     bgc: string;
     round: RoundInterface;
     currentQuestion: Question = {

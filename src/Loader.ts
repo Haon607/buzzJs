@@ -135,6 +135,11 @@ export class QuestionLoader {
                     answers: [{answer: "Global Positioning System", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
                     shuffle: true,
                 });
+                questions.push({
+                    question: 'Fast schon universal hat die "Erdung"-Ader in Stromkabeln welche farbe?',
+                    answers: [{answer: "Grün", correct: true}, {answer: "Rot", correct: false}, {answer: "Blau", correct: false}, {answer: "Schwarz", correct: false}],
+                    shuffle: true,
+                });
                 break;
 
 

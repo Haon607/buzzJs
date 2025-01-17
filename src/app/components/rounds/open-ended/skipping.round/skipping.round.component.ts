@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import gsap from 'gsap';
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
@@ -24,7 +24,7 @@ import { Genre, Musicloader, MusicQuestion } from "../../../../../MusicLoader";
   standalone: true,
   styleUrl: '../open-ended.css'
 })
-export class SkippingRoundComponent {
+export class SkippingRoundComponent implements OnDestroy {
   bgc: string;
   round: RoundInterface;
   currentQuestion: Question = {
@@ -33,6 +33,7 @@ export class SkippingRoundComponent {
     ], shuffle: false
   };
   currentTrack: MusicQuestion = {
+    id: NaN,
     path: "",
     information: {
       title: "",
