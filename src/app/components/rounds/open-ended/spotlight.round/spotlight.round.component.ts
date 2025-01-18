@@ -4,7 +4,7 @@ import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
 import { TimerComponent } from "../../../timer/timer.component";
 import { MemoryService, RoundInterface } from "../../../../services/memory.service";
-import { Question, QuestionLoader } from "../../../../../Loader";
+import { CategoryLoader, Question, QuestionLoader } from "../../../../../Loader";
 import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";
 import { ScoreboardPlayer, ScoreboardService, ScoreboardSquare } from "../../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -43,21 +43,18 @@ export class SpotlightRoundComponent implements OnDestroy {
     maxTime: number = 12.1;
     timerSound: boolean = true;
     monospaceQuestion: boolean = false;
-    private latestInput: ButtonState | null = null;
     private doubtingPlayers: number[] = [];
     private acceptInputsVar: boolean = false;
     private pointsPerQuestion: number = 60;
     private currentPlayerMayAnswer: boolean = false;
     private revealongoing: boolean = false;
-
-    //TODO ! PLAYER MAY CHOOSE ONE OF 2? CATEGORIES!
+    private categorySelect: boolean = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
         this.bgc = this.round.background;
         buzz.onPress(buttonState => this.onPress(buttonState));
         this.setupWithDelay();
-        this.questions = this.questions.concat(QuestionLoader.loadQuestion(memory.category!));
         this.startRound();
     }
 
@@ -70,9 +67,11 @@ export class SpotlightRoundComponent implements OnDestroy {
         }
         styledLogger("Reihenfolge:\n" + this.playerOrder.map(id => this.memory.players.find(player => player.controllerId === id)?.name).join(', '), Style.information)
         for (let i = 0; i < this.playerOrder.length; i++) {
-            this.setupNextQuestion()
+            this.setupNextRound()
             await this.waitForSpace();
             await this.selectPlayer(i);
+            await this.selectCategory();
+            this.setupNextQuestion()
             await this.waitForSpace();
             new Audio('music/wwds/frage.mp3').play();
             await new Promise(resolve => setTimeout(resolve, 250));
@@ -175,7 +174,7 @@ export class SpotlightRoundComponent implements OnDestroy {
         }
     }
 
-    private async displayAnswer(tf: boolean) {
+    private displayAnswer(tf: boolean) {
         if (tf) {
             gsap.to('#answer', {rotateY: 2, x: 30, ease: "back.inOut"})
         } else {
@@ -199,6 +198,9 @@ export class SpotlightRoundComponent implements OnDestroy {
                     active: false
                 }
             }), false])
+        }
+        if (this.currentPlayer === buttonState.controller && buttonState.button === 0 && this.categorySelect) {
+            this.categorySelect = false;
         }
         if (this.currentPlayer !== buttonState.controller && buttonState.button === 0 && this.acceptInputsVar && !(this.doubtingPlayers.some(id => buttonState.controller === id))) {
             new Audio('music/wwds/einloggen.mp3').play();
@@ -227,12 +229,20 @@ export class SpotlightRoundComponent implements OnDestroy {
         this.spacePressed = false
     }
 
-    private setupNextQuestion() {
+    private setupNextRound() {
         this.timer.resetTimer();
-        this.latestInput = null;
+        this.categorySelect = false
         this.doubtingPlayers = []
         this.currentPlayer = NaN
         this.selectedPlayerAnswered = false
+        this.questions = [{
+            question: "", answers: [
+                {answer: "", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false},
+            ], shuffle: false
+        }]
+    }
+
+    private setupNextQuestion() {
         this.questions = this.questions.slice(1, this.questions.length);
         this.currentQuestion = this.questions[0];
         if (this.currentQuestion.shuffle) this.currentQuestion.answers = shuffleArray(this.currentQuestion.answers);
@@ -410,7 +420,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                 this.scoreboard.playerSubject.next([scoreboardPlayers, false])
             }
         }
-        new Audio('music/div/spinresult.mp3').play()
+        await new Audio('music/div/spinresult.mp3').play()
         this.currentPlayer = this.playerOrder[questionNumber]
     }
 
@@ -434,5 +444,31 @@ export class SpotlightRoundComponent implements OnDestroy {
             this.revealongoing = false
             this.collectPoints(correct);
         }
+    }
+
+    private async selectCategory() {
+        this.displayAnswer(true);
+        this.categorySelect = true
+        let categories = shuffleArray(CategoryLoader.loadCategories(this.round.questionType)).slice(0,4);
+        let i = 0
+        for (; this.categorySelect; i++) {
+            let states = new Array(4).fill(false);
+            states[this.currentPlayer] = i%2 === 0
+            this.buzz.setLeds(states);
+            this.currentQuestion.answers[0].answer = categories[i%categories.length].name;
+            new Audio('music/div/spin' + i%4 + '.mp3').play();
+            await new Promise(resolve => setTimeout(resolve, randomNumber(100,300)));
+        }
+        i-- //????
+        this.categorySelect = false
+        let states = new Array(4).fill(false);
+        states[this.currentPlayer] = true
+        this.buzz.setLeds(states);
+        new Audio('music/div/spinresult.mp3').play();
+        this.questions = this.questions.concat(QuestionLoader.loadQuestion(categories[i%categories.length]));
+        styledLogger("Kategorie: " + categories[i%categories.length].name, Style.speak)
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        this.displayAnswer(false);
+        await new Promise(resolve => setTimeout(resolve, 1000))
     }
 }
