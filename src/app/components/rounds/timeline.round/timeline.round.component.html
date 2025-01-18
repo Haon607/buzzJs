@@ -5,13 +5,18 @@
                [duration]="60"
                (timerExpired)="onTimeExpired()"
     ></app-timer>
-    <app-scoreboard id="scoreboard" class="scoreboard" ></app-scoreboard>
+    <app-scoreboard id="scoreboard" class="scoreboard"></app-scoreboard>
     <div id="track-list">
-        @for (track of trackList; track track.id) {
+        @for (track of trackList; track track.id + track.highlightFrom) {
             <div class="track" id="track-{{track.id}}">
-                <div><span class="track-title">{{track.information.title}}</span> - <span class="track-interpret">{{track.information.interpret}}</span></div>
-                <span class="track-year">{{track.information.releaseYear}}</span>
+                <div><span class="track-title">{{ track.information.title }}</span> - <span class="track-interpret">{{ track.information.interpret }}</span></div>
+                <span class="track-year">{{ track.information.releaseYear }}</span>
             </div>
+        }
+        @for (marker of markers; track marker.after) {
+            <svg class="marker" id="marker-{{marker.after}}" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#000">
+                <path [attr.d]="isNaN(marker.after) ? 'M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z' : 'M400-120 160-360l241-241 56 57-144 144h367v-400h80v480H313l144 143-57 57Z'"/>
+            </svg>
         }
     </div>
 </div>

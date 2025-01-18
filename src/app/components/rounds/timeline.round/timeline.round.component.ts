@@ -9,8 +9,9 @@ import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.se
 import { ScoreboardService } from "../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../services/hue-light.service";
-import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
+import { MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { CategoryLoader } from "../../../../Loader";
+import { Colors, inputToColor } from "../../../../models";
 
 
 @Component({
@@ -51,7 +52,13 @@ export class TimelineRoundComponent implements OnDestroy {
     music: HTMLAudioElement = new Audio();
     timerDone: boolean = false;
     trackList: MusicQuestion[] = [];
+    markers: {
+        color: Colors | null,
+        after: number,
+        correct: boolean
+    }[] = [];
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
+    protected readonly isNaN = isNaN;
     private excludeIds: number[] = [];
     private inputs: ButtonState[] = [];
     private acceptInputsVar: boolean = false;
@@ -142,6 +149,7 @@ export class TimelineRoundComponent implements OnDestroy {
             this.setupNextQuestion()
             await this.waitForSpace();
             new Audio('music/wwds/frage.mp3').play();
+            this.placePins(this.currentTrack.information.releaseYear);
             await new Promise(resolve => setTimeout(resolve, 250));
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
             new MusicFader().fadeOut(this.backgroundMusic, 1000);
@@ -157,7 +165,7 @@ export class TimelineRoundComponent implements OnDestroy {
             this.displayTimer(true)
             await new Promise(resolve => setTimeout(resolve, 500));
             await this.waitForSpace(true);
-            if (this.excludeIds.length < this.memory.players.length) {
+            if (this.excludeIds.length === this.memory.players.length) {
                 new MusicFader().fadeOut(this.music, 1000);
                 await new Promise(resolve => setTimeout(resolve, 500));
                 this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
@@ -180,7 +188,9 @@ export class TimelineRoundComponent implements OnDestroy {
     }
 
     private async onPress(buttonState: ButtonState) {
-
+        if (buttonState.button !== 0 && !this.excludeIds.includes(buttonState.controller) && !this.inputs.some(input => input.button === buttonState.button)) {
+            this.inputs.push(buttonState)
+        }
     }
 
     private async waitForSpace(bounceLights = false) {
@@ -199,6 +209,7 @@ export class TimelineRoundComponent implements OnDestroy {
     private setupNextQuestion() {
         this.timer.resetTimer();
         this.inputs = [];
+        this.markers = [];
         this.timerShown = false;
         this.musicTracks = this.musicTracks.slice(1, this.musicTracks.length);
         this.currentTrack = this.musicTracks[0];
@@ -244,7 +255,7 @@ export class TimelineRoundComponent implements OnDestroy {
         this.trackList.push(question);
 
         const height = 1080;
-        const minusLast = 100;
+        const minusLast = 150;
 
         // Sort the trackList by release year first
         this.trackList.sort((a, b) => a.information.releaseYear - b.information.releaseYear);
@@ -261,7 +272,7 @@ export class TimelineRoundComponent implements OnDestroy {
         await new Promise((resolve) => setTimeout(resolve, 100));
 
         // Set initial position of the newly added track
-        gsap.set("#track-" + question.id, { x: -1500, y: 500 });
+        gsap.set("#track-" + question.id, {x: -1500, y: 500});
 
         // Loop through the track list and position them
         for (const track of this.trackList) {
@@ -274,7 +285,7 @@ export class TimelineRoundComponent implements OnDestroy {
 
             // Apply animation and background color
             gsap.to(`#track-${track.id}`, {
-                y: yPosition + 10,
+                y: yPosition + 35,
                 rotateY: 2,
                 x: 15,
                 opacity: 1,
@@ -286,5 +297,74 @@ export class TimelineRoundComponent implements OnDestroy {
         }
     }
 
+    private async placePins(releaseYear: number) {
+        // Sort track list by release year
+        this.trackList.sort((a, b) => a.information.releaseYear - b.information.releaseYear);
 
+        // Pick a random index for the correct answer (0 to 3)
+        const correctIndex = randomNumber(0, 3);
+        console.log(correctIndex);
+
+        // Find the correct track index
+        const correctTrackIndex = this.trackList.findIndex(track => track.information.releaseYear > releaseYear) - 1;
+        const correctTrack = this.trackList[correctTrackIndex];
+
+        // Make sure trackList is sorted again
+        this.trackList.sort((a, b) => a.information.releaseYear - b.information.releaseYear);
+
+        // Array to hold the markers
+        const markers: { correct: boolean; color: Colors| null; after: number }[] = [];
+
+        for (let i = 0; i < 4; i++) {
+            let after: MusicQuestion | undefined;
+
+            if (i === correctIndex) {
+                // Use the correct track for the correct index
+                after = correctTrack;
+            } else {
+                // Calculate the wrong track index based on the correct index
+                const wrongTrackIndex = correctTrackIndex + (i - correctIndex);
+
+                if (wrongTrackIndex >= 0 && wrongTrackIndex < this.trackList.length) {
+                    after = this.trackList[wrongTrackIndex];
+                } else {
+                    // Ensure that "after" is valid even if the index is out of bounds
+                    after = this.trackList[this.trackList.length - 1];
+                }
+
+                // Ensure there are no duplicates for the "after" year
+                while (this.markers.some(marker => (after === undefined ? isNaN(marker.after) : marker.after === after?.information.releaseYear))) {
+                    after = this.trackList[randomNumber(0, this.trackList.length - 1)];
+                }
+
+                console.log("WrongIndex" + wrongTrackIndex);
+                console.log("Tracklist length: " + this.trackList.length);
+            }
+
+            console.log(after);
+
+            // Push the marker with the calculated `after` value
+            markers.push({
+                correct: i === correctIndex,
+                color: inputToColor(i + 1)!,
+                after: after !== undefined ? after.information.releaseYear : NaN
+            });
+        }
+
+        // Assign the markers to the relevant property (assuming `this.markers` exists)
+        this.markers = markers;
+
+
+        console.log(this.markers)
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        for (const marker of this.markers) {
+            gsap.set("#marker-" + marker.after, {x: -1500, y: 500});
+        }
+
+
+        for (const marker of this.markers) {
+            gsap.to("#marker-" + marker.after, {y: 0, rotateY: 2, x: 15, opacity: 1, fill: marker.color!});
+        }
+    }
 }

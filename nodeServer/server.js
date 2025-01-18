@@ -9,7 +9,7 @@ const port = 3000;
 // Set up WebSocket server
 const wss = new WebSocket.Server({ noServer: true });
 
-wss.setMaxListeners(Infinity);
+wss.setMaxListeners(Infinity); // TODO seems like it didnt work
 
 // Function to find the buzzer device
 function findDeviceByName() {
