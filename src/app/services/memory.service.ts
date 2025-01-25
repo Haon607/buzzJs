@@ -199,10 +199,10 @@ export class Round {
         questionType: QuestionType.music,
         path: "/musicskipping",
         iconPath: "M560-160v-80h104L537-367l57-57 126 126v-102h80v240H560Zm-344 0-56-56 504-504H560v-80h240v240h-80v-104L216-160Zm151-377L160-744l56-56 207 207-56 56Z",
-        background: "#1A1F4A",
-        primary: "#00FFC3",
-        secondary: "#6600ff",
-        rules: "Teile eines Liedes in zufälliger reihenfolge spielen, wer glaubt es zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder der Liedtitel exakt richtig ist, oder der Interpret richtig ist und der Titel so ein bissl stimmt. Je schneller, desto mehr Punkte."
+        background: "#4e4a3d",
+        primary: "#99ff00",
+        secondary: "#ff003c",
+        rules: "Teile zwei Lieder werden in zufälliger reihenfolge gespielt, wer glaubt beide zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder die Liedtitel exakt richtig ist, oder die Interpreten richtig sind und die Titel so ein bissl stimmten. Je schneller, desto mehr Punkte."
     } //shuffeln von segmenten, buzzern, titel und interpret
     static timeline = {
         name: "Hitster",

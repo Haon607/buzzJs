@@ -32,7 +32,8 @@ export class SkippingRoundComponent implements OnDestroy {
       {answer: "", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false},
     ], shuffle: false
   };
-  currentTrack: MusicQuestion = {
+  currentTracks: MusicQuestion[] = []
+  musicTracks: MusicQuestion[] = [{
     id: NaN,
     path: "",
     information: {
@@ -49,11 +50,11 @@ export class SkippingRoundComponent implements OnDestroy {
       to: NaN
     },
     lyrics: []
-  }
-  musicTracks: MusicQuestion[] = [this.currentTrack];
+  }];
   spacePressed: boolean = false;
   backgroundMusic: HTMLAudioElement = new Audio();
-  music: HTMLAudioElement = new Audio();
+  music0: HTMLAudioElement = new Audio();
+  music1: HTMLAudioElement = new Audio();
   timerDone: boolean = false;
   gotCorrect: boolean = false;
   amountOfTracks = 5;
@@ -159,15 +160,20 @@ export class SkippingRoundComponent implements OnDestroy {
       await new Promise(resolve => setTimeout(resolve, 250));
       this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
       new MusicFader().fadeOut(this.backgroundMusic, 1000);
-      this.music.src = "musicround/" + this.currentTrack.path;
-      this.music.load();
+      this.music0.src = "musicround/" + this.currentTracks[0].path;
+      this.music1.src = "musicround/" + this.currentTracks[1].path;
+      this.music0.load();
+      this.music1.load();
       await new Promise(resolve => setTimeout(resolve, 500));
       await this.startTimer();
       this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254)
       styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
-      this.music.currentTime = this.currentTrack.highlightFrom;
-      this.music.play()
-      this.currentQuestion.answers[0].answer = this.currentTrack.information.title + " - " + this.currentTrack.information.interpret
+      this.music0.currentTime = this.currentTracks[0].highlightFrom;
+      this.music0.play()
+      await this.waitForSpace(true)
+      await new MusicFader().fadeOut(this.music0, 500);
+      this.music1.currentTime = this.currentTracks[1].highlightFrom;
+      this.music1.play()
       await new Promise(resolve => setTimeout(resolve, 1000))
       new Audio('music/wwds/richtig.mp3').play();
       this.displayAnswers(true);
@@ -175,7 +181,7 @@ export class SkippingRoundComponent implements OnDestroy {
       await new Promise(resolve => setTimeout(resolve, 500));
       await this.waitForSpace(true);
       if (i + 1 === this.amountOfTracks) {
-        new MusicFader().fadeOut(this.music, 1000);
+        new MusicFader().fadeOut(this.music1, 1000);
         await new Promise(resolve => setTimeout(resolve, 500));
         this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
         this.memory.crossMusic.volume = 0.2;
@@ -183,7 +189,7 @@ export class SkippingRoundComponent implements OnDestroy {
       }
       this.flipToPoints()
       await new Promise(resolve => setTimeout(resolve, 1500));
-      new MusicFader().fadeOut(this.music, 1000);
+      new MusicFader().fadeOut(this.music1, 1000);
       this.collectPoints()
       this.displayTimer(false)
       this.displayQuestion(false)
@@ -207,7 +213,8 @@ export class SkippingRoundComponent implements OnDestroy {
         this.hue.setColor(HueLightService.secondary, this.round.secondary, 2500, 50);
         this.latestInput = buttonState;
         this.timer.stopTimer()
-        new MusicFader().fadeOut(this.music, 1000);
+        new MusicFader().fadeOut(this.music0, 1000);
+        new MusicFader().fadeOut(this.music1, 1000);
         new Audio('music/wwds/einloggen.mp3').play();
         this.scoreboard.playerSubject.next([this.memory.players.map(player => {
           return {
@@ -252,38 +259,57 @@ export class SkippingRoundComponent implements OnDestroy {
     this.excludeIds = [];
     this.gotCorrect = false;
     this.timerShown = false;
-    this.musicTracks = this.musicTracks.slice(1, this.musicTracks.length);
-    this.currentTrack = this.musicTracks[0];
-    this.currentQuestion.answers[0].answer = this.currentTrack.information.title;
+    this.musicTracks = this.musicTracks.slice(2, this.musicTracks.length);
+    this.currentTracks[0] = this.musicTracks[0];
+    this.currentTracks[1] = this.musicTracks[1];
+    this.currentQuestion.answers[0].answer =
+        this.currentTracks[0].information.title + " - " + this.currentTracks[0].information.interpret +
+        "\nund\n" +
+        this.currentTracks[1].information.title + " - " + this.currentTracks[1].information.interpret;
     this.printTrack();
   }
 
   private printTrack() {
-    styledLogger(this.currentTrack.information.title, Style.information)
-    styledLogger(this.currentTrack.information.interpret, Style.information)
-    styledLogger(this.currentTrack.information.releaseYear.toString(), Style.information)
+    styledLogger(this.currentTracks[0].information.title + " - " + this.currentTracks[0].information.interpret + " " + this.currentTracks[0].information.releaseYear, Style.information)
+    styledLogger(this.currentTracks[1].information.title + " - " + this.currentTracks[1].information.interpret + " " + this.currentTracks[1].information.releaseYear, Style.information)
   }
 
   private async startTimer() {
     this.timer.startTimer();
-    this.music.play();
+    this.music0.play();
     this.timerDone = false;
     this.acceptInputs(true);
-    let skip = 0.5;
+    let altTrack = false
     while (!this.timerDone && !this.gotCorrect && this.excludeIds.length < this.memory.players.length) {
       await new Promise(resolve => setTimeout(resolve, 100));
+
       if (this.timer.remainingTime < 15.5 && !this.timerShown) {
         this.timerShown = true;
         this.displayTimer(true)
       }
-      if (Number(this.timer.remainingTime.toFixed(1)) % 0.5 === 0) {
-        this.music.currentTime = randomNumber(20, Math.floor(this.music.duration)-20 + Math.random())
-        skip = Math.random();
+      if (Number(this.timer.remainingTime.toFixed(1)) % 0.25 === 0) {
+        if (randomNumber(0, 4) === 0) {
+          altTrack = !altTrack
+          if (!(this.music0.paused && this.music1.paused))
+            if (altTrack) {
+              this.music0.pause()
+              this.music1.play()
+            } else {
+              this.music1.pause()
+              this.music0.play()
+            }
+        }
+        if (altTrack) {
+          this.music1.currentTime = randomNumber(20, Math.floor(this.music1.duration)-20 + Math.random())
+        } else {
+          this.music0.currentTime = randomNumber(20, Math.floor(this.music0.duration)-20 + Math.random())
+        }
       }
     }
     this.timer.stopTimer();
     this.acceptInputs(false);
-    this.music.pause()
+    this.music0.pause()
+    this.music1.pause()
     this.gotCorrect = false;
   }
 
@@ -395,7 +421,7 @@ export class SkippingRoundComponent implements OnDestroy {
     this.latestInput = null;
 
     this.timer.startTimer();
-    this.music.play()
+    this.music0.play()
 
     let states = new Array(4).fill(true);
     for (let id of this.excludeIds) {

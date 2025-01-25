@@ -167,7 +167,6 @@ export class MusicboxRoundComponent implements OnDestroy {
             styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
             this.music.currentTime = this.currentTrack.highlightFrom;
             this.music.play()
-            this.currentQuestion.answers[0].answer = this.currentTrack.information.title + " - " + this.currentTrack.information.interpret
             await new Promise(resolve => setTimeout(resolve, 1000))
             new Audio('music/wwds/richtig.mp3').play();
             this.displayAnswers(true);
@@ -254,7 +253,7 @@ export class MusicboxRoundComponent implements OnDestroy {
         this.timerShown = false;
         this.musicTracks = this.musicTracks.slice(1, this.musicTracks.length);
         this.currentTrack = this.musicTracks[0];
-        this.currentQuestion.answers[0].answer = this.currentTrack.information.title;
+        this.currentQuestion.answers[0].answer = this.currentTrack.information.title + " - " + this.currentTrack.information.interpret
         this.printTrack();
     }
 
