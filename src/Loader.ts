@@ -1,4 +1,4 @@
-import { shuffleArray } from './utils';
+import { randomNumber, shuffleArray } from './utils';
 import { Genre, MusicQuestion } from "./MusicLoader";
 
 export interface Question {
@@ -123,6 +123,11 @@ export class QuestionLoader {
                     answers: [{answer: "Moby Dick", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
                     shuffle: true,
                 });
+                questions.push({
+                    question: 'Das Buch "3096 Tage" ist die Autobiografie von...',
+                    answers: [{answer: "Natascha Kampusch", correct: true}, {answer: "Papst Franziskus", correct: false}, {answer: "Marina Nemat", correct: false}, {answer: "Helmut Berger", correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.gadgetsAndGizmos.name:
                 questions.push({
@@ -216,8 +221,13 @@ export class QuestionLoader {
                 break;
             case CategoryLoader.inDiesemJahr.name:
                 questions.push({
-                    question: 'Putin beginnt seine Zweite Amtszeit als Präsident von Russland, Heinz fischer wird zum Bundespräsidenten von Österreich gewählt und die Ukraine gewinnt den ESC',
+                    question: 'Putin beginnt seine Zweite Amtszeit als Präsident von Russland, Heinz Fischer wird zum Bundespräsidenten von Österreich gewählt und die Ukraine gewinnt den ESC',
                     answers: [{answer: "2004", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Natascha Kampusch entkommt ihren Entführer',
+                    answers: [{answer: "2006", correct: true}],
                     shuffle: false,
                 });
                 questions.push({
@@ -228,6 +238,41 @@ export class QuestionLoader {
                 questions.push({
                     question: 'Das letzte mal fand der ESC in Österreich statt, Amazon Echo Geräte werden das erste mal im Handel angeboten und 150 Jahre Wiener Ringstraße wurden gefeiert',
                     answers: [{answer: "2015", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Gustav Klimt ist seit 100 Jahren Tod, ',
+                    answers: [{answer: "2018", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Fortnite Weltmeisterschaft, Ibiza Affäre und Nationalratswahlen',
+                    answers: [{answer: "2019", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Weihnachten fällt auf den 25 Dezember, das Vereinigte Königreich tritt aus der EU aus, George Floyd wurde ermordet und Corona wird zur Pandemie erklärt',
+                    answers: [{answer: "2020", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Olaf Scholz wird Bundeskanzler von Deutschland, Alexander Schallenberg ist österreichischer Bundeskanzler und des Sueskanal wird für 6 Tage blockiert',
+                    answers: [{answer: "2021", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Der Sommer dieses Jahres war der heißeste seit beginn der Aufzeichnungen, Sebastian Vettel gibt das Ende seiner Formel-1-Karriere bekannt und Russland beginnt den Krieg gegen die Ukraine',
+                    answers: [{answer: "2022", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'In Deutschland werden die letzten Kernreaktoren abgeschaltet, das U-Boot des Unternehmens "OceanGate" implodiert und Finnland wird 31. Mitglied der NATO',
+                    answers: [{answer: "2023", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Österreich wählt einen Nationalrat, Hochwasser legte große Teile von Mitteleuropa lahm und die Schweiz gewinnt den ESC',
+                    answers: [{answer: "2024", correct: true}],
                     shuffle: false,
                 });
                 break;
@@ -295,7 +340,7 @@ export class CategoryLoader {
         questionType: QuestionType.openEnded
     }
     static allMusic: Category = {
-        name: "Bunt gemischt",
+        name: randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Bunt durchmischt" : "Alle" : randomNumber(0, 1) === 0 ? "Keine Grenzen" : '"Ich höre alle Genres"' : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Generationenübergreifend" : "Zufall" : randomNumber(0, 1) === 0 ? "Alle machen mit" : "Keine Ausgrenzung" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? '"I listen to everything"' : "Gruppen oder Einzelpersonen" : randomNumber(0, 1) === 0 ? "Alle Sprachen" : "Lass den Zufall entscheiden" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Komme was wolle" : "Mehr geht nicht" : randomNumber(0, 1) === 0 ? "Wilder Mix" : "Alles dabei!" ,
         questionType: QuestionType.music,
         musicFilterStatement: (music: MusicQuestion) => {
             return true

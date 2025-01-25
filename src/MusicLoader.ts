@@ -255,8 +255,59 @@ export class Musicloader {
                 "Und erst im Abendrot kommen wir nach Haus"
             ]
         });
+        musicQuestions.push({
+            id: NaN,
+            path: "2RAUMWOHNUNG - 36grad (Official Video).mp3",
+            information: {
+                title: "36grad",
+                interpret: "2raumwohnung",
+                releaseYear: 2007,
+                group: true,
+                genre: Genre.pop,
+                language: [Language.german]
+            },
+            highlightFrom: 54 ,
+            memory: {
+                from: 60 + 22,
+                to: 60 + 26
+            },
+            lyrics: [
+                "Ah-ah-ah",
+                "Ah-ah-ah",
+                "Ah-ah-ah",
+                "Ah-ah-ah",
+                "Guck mal, was die Jungs da hinten tun",
+                'Und sag ihnen: "Das will ich auch"',
+                "Denn immer wieder, wenn die Jungs das tun",
+                "Dann merk ich, was ich brauch",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "ATB, Topic, A7S - Your Love (9PM) (Official Music Video).mp3",
+            information: {
+                title: "Your Love (9PM)",
+                interpret: "A7S, ATB und Topic",
+                releaseYear: 2021,
+                group: true,
+                genre: Genre.hiphop,
+                language: [Language.english]
+            },
+            highlightFrom: 60 + 47,
+            memory: {
+                from: 120 + 6,
+                to: 120 + 9
+            },
+            lyrics: [
+                "Passin' every red light",
+                "I know I'm in over my head",
+                "A rebel and I don't hide",
+                "Remember all the words that you said",
+            ]
+        });
         /*
         musicQuestions.push({
+            id: NaN,
             path: "",
             information: {
                 title: "",

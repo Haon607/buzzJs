@@ -17,11 +17,11 @@ export class MemoryService {
     constructor() {
         this.rounds = [
             // Round.timeline,
-            Round.stopTheClock,
+            Round.skipping,
             Round.spotlight,
             // Round.wonderWall,
-            Round.skipping,
             Round.musicBox,
+            Round.stopTheClock,
             Round.fastestFinger,
             Round.punktesammler,
             Round.whatIsTheQuestion,
@@ -48,7 +48,7 @@ export class MemoryService {
                 gameScore: 0,
             },
         ]
-        this.category = CategoryLoader.videogames;
+        this.category = CategoryLoader.allMusic;
     }
 
     print() {
