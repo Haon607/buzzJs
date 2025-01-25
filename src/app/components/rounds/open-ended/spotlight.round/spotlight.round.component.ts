@@ -62,7 +62,7 @@ export class SpotlightRoundComponent implements OnDestroy {
         this.music.src = "/music/buzz/bqw-on_the_spot.mp3";
         this.music.loop = true
         this.music.play()
-        while (this.playerOrder.length < 8) {
+        while (this.playerOrder.length < 4) {
             this.playerOrder = this.playerOrder.concat(shuffleArray(this.memory.players.map(player => player.controllerId)));
         }
         styledLogger("Reihenfolge:\n" + this.playerOrder.map(id => this.memory.players.find(player => player.controllerId === id)?.name).join(', '), Style.information)
@@ -90,7 +90,6 @@ export class SpotlightRoundComponent implements OnDestroy {
             while (this.revealongoing) {
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
-            await this.waitForSpace()
             this.displayTimer(false)
             this.displayQuestion(false)
             this.displayAnswer(false)

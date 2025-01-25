@@ -16,10 +16,21 @@ import { MemoryService } from "../../services/memory.service";
 export class ScoreboardComponent {
     players: ScoreboardPlayer[] = [];
     space: number = 200;
+    preSpace: number;
     kill = false;
 
     constructor(private scoreboardService: ScoreboardService, private memory: MemoryService) {
         memory.scoreboardKill.subscribe(() => this.kill = true)
+        switch (this.memory.players.length) {
+            case 2:
+                this.preSpace = 200;
+                break;
+            case 3:
+                this.preSpace = 125;
+                break;
+            default:
+                this.preSpace = 0;
+        }
         scoreboardService.playerSubject.subscribe(playersDelayTupel => {
             if (!this.kill) {
                 if (this.players.length === 0) {
@@ -42,7 +53,7 @@ export class ScoreboardComponent {
         let initialIndex = 0;
         await new Promise((resolve) => setTimeout(resolve, 100));
         for (const player of this.players) {
-            gsap.set('#player-container-' + player.name, {y: this.space * initialIndex, rotateY: -5, x: -10})
+            gsap.set('#player-container-' + player.name, {y: this.preSpace + (this.space * initialIndex), rotateY: -5, x: -10})
             gsap.set('#player-square-text-' + player.name, {opacity: 0})
             gsap.set('#player-square-' + player.name, {x: 180, opacity: 1, scale: 0.8});
             initialIndex++;
@@ -99,8 +110,8 @@ export class ScoreboardComponent {
         let index = 0;
         for (const player of this.players) {
             const selector = `#player-container-${player.name}`;
-            if (initial) gsap.set(selector, {y: this.space * index});
-            else gsap.to(selector, {y: this.space * index, duration: 1, ease: 'back.in'});
+            if (initial) gsap.set(selector, {y: this.preSpace + (this.space * index)});
+            else gsap.to(selector, {y: this.preSpace + (this.space * index), duration: 1, ease: 'back.in'});
             index++;
         }
         let changeHappened = false;

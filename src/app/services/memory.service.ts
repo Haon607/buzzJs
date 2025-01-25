@@ -17,13 +17,13 @@ export class MemoryService {
     constructor() {
         this.rounds = [
             // Round.timeline,
-            Round.spotlight,
-            Round.punktesammler,
-            // Round.wonderWall,
-            Round.musicBox,
-            Round.skipping,
-            Round.fastestFinger,
             Round.stopTheClock,
+            Round.spotlight,
+            // Round.wonderWall,
+            Round.skipping,
+            Round.musicBox,
+            Round.fastestFinger,
+            Round.punktesammler,
             Round.whatIsTheQuestion,
             // Round.shortFuse,
             // Round.iLiterallyJustToldYou,
@@ -48,7 +48,7 @@ export class MemoryService {
                 gameScore: 0,
             },
         ]
-        this.category = CategoryLoader.allMusic;
+        this.category = CategoryLoader.videogames;
     }
 
     print() {
@@ -159,7 +159,7 @@ export class Round {
         primary: "",
         secondary: "",
         rules: ""
-    }
+    } //Maybe prozentuale punke
     static musicBox = {
         name: "Ab der ersten Sekunde",
         category: true,
@@ -225,9 +225,10 @@ export class Round {
         primary: "",
         secondary: "",
         rules: ""
-    } //drei lieder gleichzeiting spielen mit so abwechselnder lautstärke, danach "welches lied war nicht zu hören ahh frage
+    } //drei lieder gleichzeitig spielen mit so abwechselnder lautstärke, danach "welches lied war nicht zu hören" ahh frage ODER WAS IST MIT STEREO?? ODER DIMENSIONAL??
     // Audience Knowledge?
     // Autism Knowledge explaining
+    // Irgend eine art von Teamspiel
 
     /*
     background: "#FFFFFF",

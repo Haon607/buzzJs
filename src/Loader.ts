@@ -173,7 +173,32 @@ export class QuestionLoader {
             case CategoryLoader.werBinIch.name:
                 questions.push({
                     question: '',
-                    answers: [{answer: "Neo (Matrix", correct: true}],
+                    answers: [{answer: "Neo (Matrix)", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Auf meinen Weg nach Indien "entdeckte" ich Amerika',
+                    answers: [{answer: "Christoph Kolumbus", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: '',
+                    answers: [{answer: "Simon Cowell", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: '',
+                    answers: [{answer: "Jeff Bezos", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: '',
+                    answers: [{answer: "Mark Zuckerberg", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: '',
+                    answers: [{answer: "Boris Johnson", correct: true}],
                     shuffle: false,
                 });
                 break;
@@ -189,7 +214,33 @@ export class QuestionLoader {
                     shuffle: false,
                 });
                 break;
+            case CategoryLoader.inDiesemJahr.name:
+                questions.push({
+                    question: 'Putin beginnt seine Zweite Amtszeit als Präsident von Russland, Heinz fischer wird zum Bundespräsidenten von Österreich gewählt und die Ukraine gewinnt den ESC',
+                    answers: [{answer: "2004", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Die Olympischen Winterspiele sind in Vancouver, One Direction wird gegründet und in diesem Jahr hat "Lena" mit "Satellite" für Deutschland den ESC gewonnen',
+                    answers: [{answer: "2010", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Das letzte mal fand der ESC in Österreich statt, Amazon Echo Geräte werden das erste mal im Handel angeboten und 150 Jahre Wiener Ringstraße wurden gefeiert',
+                    answers: [{answer: "2015", correct: true}],
+                    shuffle: false,
+                });
+                break;
         }
+        // questions = questions.map(quest => {
+        //     return {
+        //         ...quest, question: quest.question.toUpperCase(), answers: quest.answers.map(ans => {
+        //             return {
+        //                 ...ans, answer: ans.answer.toUpperCase()
+        //             }
+        //         })
+        //     }
+        // })
         return shuffleArray(questions)
     }
 }
@@ -224,7 +275,7 @@ export class CategoryLoader {
         questionType: QuestionType.multipleChoice
     }
     static gadgetsAndGizmos: Category = {
-        name: "Dinge",
+        name: "Dinge und Geräte",
         questionType: QuestionType.multipleChoice
     }
     static phobien: Category = {
