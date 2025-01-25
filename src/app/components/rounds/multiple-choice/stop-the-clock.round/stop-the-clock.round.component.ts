@@ -37,6 +37,8 @@ export class StopTheClockRoundComponent implements OnDestroy {
     timerDone: boolean = false;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     maxTime: number = 0;
+    timerSound: boolean = true;
+    showTime: boolean = false;
     questionFullWidth: boolean = true;
     private inputs: ButtonState[] = [];
     private clocks: { timeLeft: number, controller: number }[] = [];

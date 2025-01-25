@@ -16,6 +16,7 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
+            Round.waitForIt,
             // Round.timeline,
             Round.skipping,
             Round.spotlight,
@@ -33,22 +34,22 @@ export class MemoryService {
             {
                 name: "Name",
                 controllerId: 0,
-                gameScore: 0,
+                gameScore: 100,
             }, {
                 name: "Benedikt",
                 controllerId: 1,
-                gameScore: 0,
+                gameScore: 70,
             }, {
                 name: "Waltraud",
                 controllerId: 2,
-                gameScore: 0,
+                gameScore: 50,
             }, {
                 name: "Moritz",
                 controllerId: 3,
-                gameScore: 0,
+                gameScore: 10,
             },
         ]
-        this.category = CategoryLoader.allMusic;
+        this.category = CategoryLoader.videogames;
     }
 
     print() {
@@ -149,6 +150,28 @@ export class Round {
         secondary: "#FF5A5F",
         rules: ""
     }
+    static stealing = {
+        name: "Diebstahl",
+        category: true,
+        questionType: QuestionType.openEnded,
+        path: "/stealing",
+        iconPath: "",
+        background: "",
+        primary: "",
+        secondary: "",
+        rules: ""
+    } // Buzzern? Prozentuales Stehlen von Punkten
+    static waitForIt = {
+        name: "Abwarten...",
+        category: true,
+        questionType: QuestionType.multipleChoice,
+        path: "/wait",
+        iconPath: "",
+        background: "#231c30",
+        primary: "#8F0000",
+        secondary: "#33009a",
+        rules: ""
+    } // Wait for it, Hintere Plätze maybe mehr punkte?
     static optIn = {
         name: "Einsteigen bitte",
         category: true,
@@ -159,7 +182,7 @@ export class Round {
         primary: "",
         secondary: "",
         rules: ""
-    } //Maybe prozentuale punke
+    } //Maybe prozentuale punkte
     static musicBox = {
         name: "Ab der ersten Sekunde",
         category: true,

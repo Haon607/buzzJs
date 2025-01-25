@@ -10,11 +10,13 @@ import { FastestRoundComponent } from "./components/rounds/open-ended/fastest.ro
 import { MusicboxRoundComponent } from "./components/rounds/open-ended/musicbox.round/musicbox.round.component";
 import { SkippingRoundComponent } from "./components/rounds/open-ended/skipping.round/skipping.round.component";
 import { TimelineRoundComponent } from "./components/rounds/timeline.round/timeline.round.component";
+import { WaitForItRoundComponent } from "./components/rounds/multiple-choice/wait-for-it.round/wait-for-it.round.component";
 
 export const routes: Routes = [
   {path: "", component: JoinGameComponent},
   {path: "category/:bgc", component: CategoryComponent},
   {path: "round"+Round.punktesammler.path, component: PunktesammlerRoundComponent},
+  {path: "round"+Round.waitForIt.path, component: WaitForItRoundComponent},
   {path: "round"+Round.stopTheClock.path, component: StopTheClockRoundComponent},
   {path: "round"+Round.whatIsTheQuestion.path, component: WhatisthequestionRoundComponent},
   {path: "round"+Round.spotlight.path, component: SpotlightRoundComponent},

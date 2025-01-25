@@ -3,6 +3,8 @@
     <app-timer id="timer"
                [size]="225"
                [duration]="maxTime"
+               [makeSound]="timerSound"
+               [showTime]="showTime"
                (timerExpired)="onTimeExpired()"
     ></app-timer>
     <div class="options-container" id="options-container">

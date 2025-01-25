@@ -2,18 +2,18 @@ import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { MemoryService, RoundInterface } from "../../../../services/memory.service";
 import { NgStyle } from "@angular/common";
-import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreboard.service";
+import { ScoreboardService } from "../../../../services/scoreboard.service";
 import gsap from 'gsap';
 import { Question, QuestionLoader } from "../../../../../Loader";
 import { TimerComponent } from "../../../timer/timer.component";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
-import { inputToColor } from "../../../../../models";
+import { inputToColor, Player } from "../../../../../models";
 import { HueLightService } from "../../../../services/hue-light.service";
 
 @Component({
-    selector: 'app-punktesammler.round',
+    selector: 'app-waitForIt.round',
     imports: [
         ScoreboardComponent,
         NgStyle,
@@ -23,7 +23,7 @@ import { HueLightService } from "../../../../services/hue-light.service";
     standalone: true,
     styleUrl: '../multiple-choice.css'
 })
-export class PunktesammlerRoundComponent implements OnDestroy {
+export class WaitForItRoundComponent implements OnDestroy {
     bgc: string;
     round: RoundInterface;
     currentQuestion: Question = {
@@ -35,14 +35,14 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     spacePressed: boolean = false;
     music: HTMLAudioElement = new Audio();
     timerDone: boolean = false;
-    amountOfQuestions = 7;
+    amountOfQuestions = 5;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    maxTime: number = 15;
-    timerSound: boolean = true;
-    questionFullWidth: boolean = false;
-    private inputs: ButtonState[] = [];
-    private acceptInputsVar: boolean = false;
+    maxTime: number = 1;
+    timerSound: boolean = false;
     showTime: boolean = false;
+    questionFullWidth: boolean = false;
+    private input?: ButtonState = undefined;
+    private acceptInputsVar: boolean = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -74,6 +74,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         this.timerDone = true
     }
 
+
     private async setupWithDelay() {
         await new Promise(resolve => setTimeout(resolve, 100));
         this.scoreboard.playerSubject.next([this.memory.players.map(player => {
@@ -85,6 +86,9 @@ export class PunktesammlerRoundComponent implements OnDestroy {
                 square: undefined
             }
         }), false])
+
+        this.hue.setColor(HueLightService.primary, this.round.primary, 2000, 1)
+        this.hue.setColor(HueLightService.secondary, this.round.secondary, 2000, 100)
 
         gsap.set('#scoreboard', {x: 600})
 
@@ -141,27 +145,32 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     }
 
     private async startRound() {
-        this.music.src = "/music/buzz/BTV-BL_PB.mp3";
-        this.music.loop = true
-        this.music.play()
         for (let i = 0; i < this.amountOfQuestions; i++) {
             this.setupNextQuestion()
             await this.waitForSpace();
             new Audio('music/wwds/frage.mp3').play();
             await new Promise(resolve => setTimeout(resolve, 250));
             this.displayQuestion(true)
-            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
+            this.music.src = "/music/ydkj/QuestionBedPre" + (i + 1) + ".mp3";
+            this.music.play()
+            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 10)
             await new Promise(resolve => setTimeout(resolve, 500));
             await this.waitForSpace()
             this.displayAnswers(true)
-            await new Promise(resolve => setTimeout(resolve, 500));
+            this.music.src = "/music/ydkj/QuestionBedAction" + (i + 1) + ".mp3";
+            this.music.load()
+            await new Promise(resolve => setTimeout(resolve, 100));
+            this.timer.remainingTime = Number(this.music.duration.toFixed(1)) - 1;
+            this.music.play()
             this.displayTimer(true)
-            await this.waitForSpace()
             await this.startTimer();
-            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254)
+            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 100)
             styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
-            await new Promise(resolve => setTimeout(resolve, 1000))
+            gsap.set('#timer', {rotateX: 0})
+            await this.waitForSpace();
             this.revealAnswers();
+            gsap.to('#timer', {rotateZ: 360, duration: 0.5})
+            this.showTime = true;
             if (i + 1 === this.amountOfQuestions) {
                 new MusicFader().fadeOut(this.music, 1000);
                 await new Promise(resolve => setTimeout(resolve, 500));
@@ -175,9 +184,8 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             await new Promise(resolve => setTimeout(resolve, 500));
             this.flipToCorrect()
             await this.waitForSpace();
-            this.flipToPoints()
-            await new Promise(resolve => setTimeout(resolve, 1500));
             this.collectPoints()
+            this.hue.setColor(HueLightService.primary, this.round.primary, 1000, 1)
             this.displayTimer(false)
             this.displayQuestion(false)
             this.displayAnswers(false)
@@ -193,31 +201,19 @@ export class PunktesammlerRoundComponent implements OnDestroy {
 
     private onPress(buttonState: ButtonState) {
         if (this.acceptInputsVar && buttonState.button !== 0) {
-            if (!this.inputs.some(input => input.controller === buttonState.controller)) {
-                this.inputs.push(buttonState);
-                new Audio('music/wwds/einloggen.mp3').play();
-                let states = new Array(4).fill(true);
-                for (let input of this.inputs) {
-                    states[input.controller] = false;
-                }
+            if (!this.input) {
+                this.input = buttonState
+                new Audio('music/div/buzzer.mp3').play();
+                let states = new Array(4).fill(false);
+                states[buttonState.controller] = false;
                 this.buzz.setLeds(states);
-                this.scoreboard.playerSubject.next([this.memory.players.map(player => {
-                    return {
-                        name: player.name,
-                        score: player.gameScore,
-                        pointAward: undefined,
-                        square: this.inputs.some(input => input.controller === player.controllerId) ? {
-                            squareBackground: '#00000000',
-                            squareBorder: '#FFF'
-                        } : undefined,
-                        active: !this.inputs.some(input => input.controller === player.controllerId)
-                    }
-                }), false])
+                this.updatePoints(this.timer.remainingTime, 'buzzed')
             }
         }
     }
 
     private async waitForSpace() {
+        this.spacePressed = false
         styledLogger("Space zum weitermachen", Style.requiresInput)
         while (!this.spacePressed) await new Promise(resolve => setTimeout(resolve, 250));
         this.spacePressed = false
@@ -225,7 +221,8 @@ export class PunktesammlerRoundComponent implements OnDestroy {
 
     private setupNextQuestion() {
         this.timer.resetTimer();
-        this.inputs = [];
+        this.showTime = false
+        this.input = undefined;
         this.questions = this.questions.slice(1, this.questions.length);
         this.currentQuestion = this.questions[0];
         if (this.currentQuestion.shuffle) this.currentQuestion.answers = shuffleArray(this.currentQuestion.answers);
@@ -242,11 +239,19 @@ export class PunktesammlerRoundComponent implements OnDestroy {
 
     private async startTimer() {
         this.timerDone = false;
+        const startTime = this.timer.remainingTime;
         this.timer.startTimer(this.music)
         this.acceptInputs(true);
-        while (!this.timerDone && this.inputs.length < this.memory.players.length) {
+        while (!this.timerDone && !this.input) {
+            if (Number(this.timer.remainingTime.toFixed(1)) % 1 === 0) {
+                this.hue.setColor(HueLightService.primary, this.round.primary, 250, Math.floor((startTime - Math.floor(this.timer.remainingTime)) * Math.floor(254 / Math.floor(startTime))))
+                // if (Number(this.timer.remainingTime.toFixed(1)) % 5 === 0) {
+                this.updatePoints(Math.floor(this.timer.remainingTime));
+                // }
+            }
             await new Promise(resolve => setTimeout(resolve, 100))
         }
+        new MusicFader().fadeOut(this.music, 1000)
         this.timer.stopTimer(this.music)
         this.acceptInputs(false)
     }
@@ -270,37 +275,26 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             }), false])
         } else {
             this.buzz.setLeds(new Array(4).fill(false))
+            if (!this.input) this.updatePoints(0, 'timeout')
+        }
+    }
+
+    private revealAnswers() {
+        if (this.input) {
             this.scoreboard.playerSubject.next([this.memory.players.map(player => {
                 return {
                     name: player.name,
                     score: player.gameScore,
                     pointAward: undefined,
-                    square: this.inputs.some(input => input.controller === player.controllerId) ? {
-                        squareBackground: '#00000000',
-                        squareBorder: '#FFF'
+                    square: player.controllerId === this.input!.controller ? {
+                        squareBorder: inputToColor(this.input!.button),
+                        squareBackground: inputToColor(this.input!.button) + '88',
+                        squareText: "±" + this.calculatePoints(player, this.timer.remainingTime)
                     } : undefined,
                     active: false
                 }
-            }), false])
+            }), true])
         }
-    }
-
-    private revealAnswers() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
-        this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            scoreboardPlayers.push({
-                name: player.name,
-                score: player.gameScore,
-                pointAward: undefined,
-                square: input ? {
-                    squareBackground: inputToColor(input.button) + '80',
-                    squareBorder: inputToColor(input.button)
-                } : undefined,
-                active: false
-            })
-        })
-        this.scoreboard.playerSubject.next([scoreboardPlayers, true])
     }
 
     private revealCorrect() {
@@ -315,57 +309,57 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     }
 
     private flipToCorrect() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
-        this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
-            scoreboardPlayers.push({
-                name: player.name,
-                score: player.gameScore,
-                pointAward: 25,
-                square: input ? {
-                    squareBackground: inputToColor(input.button),
-                    squareBorder: input.button - 1 === correctInput ? '#00FF00' : '#FF0000',
-                } : undefined,
-                active: false
-            })
-        })
-        this.scoreboard.playerSubject.next([scoreboardPlayers, true])
-    }
-
-    private flipToPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
-        this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
-            scoreboardPlayers.push({
-                name: player.name,
-                score: player.gameScore,
-                pointAward: undefined,
-                square: input?.button === correctInput + 1 ? {
-                    squareBackground: '#00000080',
-                    squareBorder: '#00FF00',
-                    squareText: "+25"
-                } : undefined,
-                active: false
-            })
-        })
-        this.scoreboard.playerSubject.next([scoreboardPlayers, true])
+        if (this.input) {
+            this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                return {
+                    name: player.name,
+                    score: player.gameScore,
+                    pointAward: undefined,
+                    square: player.controllerId === this.input!.controller ? {
+                        squareBorder: this.input!.button === this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(answer => answer.correct)!) + 1 ? '#00FF00' : '#FF0000',
+                        squareBackground: inputToColor(this.input!.button) + '88',
+                        squareText: (this.input!.button === this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(answer => answer.correct)!) + 1 ? '+' : '-') + this.calculatePoints(player, this.timer.remainingTime)
+                    } : undefined,
+                    active: false
+                }
+            }), false])
+        }
     }
 
     private async collectPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
-        let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
-        this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            scoreboardPlayers.push({
+        if (this.input) {
+            this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                return {
+                    name: player.name,
+                    score: player.gameScore,
+                    pointAward: (this.input!.button === this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(answer => answer.correct)!) + 1 ? this.calculatePoints(player, this.timer.remainingTime) : this.calculatePoints(player, this.timer.remainingTime) * -1),
+                    square: undefined,
+                    active: false
+                }
+            }), false])
+        }
+    }
+
+    private calculatePoints(player: Player, remainingTime: number): number {
+        const playerList = this.memory.players.slice().sort((a, b) => a.gameScore - b.gameScore)
+        const index = playerList.findIndex((pla: Player) => pla.controllerId === player.controllerId)
+        let reverseList = playerList.slice().reverse();
+        return Math.floor(reverseList[index].gameScore * ((40 - remainingTime) / 100))
+    }
+
+    private updatePoints(remainingTime: number, reason: 'timer' | 'buzzed' | 'timeout' = 'timer') {
+        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+            return {
                 name: player.name,
                 score: player.gameScore,
-                pointAward: input?.button === correctInput + 1 ? 25 : 0,
-                square: undefined,
-                active: false
-            })
-        })
-        this.scoreboard.playerSubject.next([scoreboardPlayers, true])
+                pointAward: undefined,
+                square: {
+                    squareBorder: reason === 'timer' ? '#FFFFFF' : (player.controllerId === this.input?.controller ? '#FFFF00' : '#666666'),
+                    squareBackground: this.round.secondary + '88',
+                    squareText: "±" + this.calculatePoints(player, remainingTime)
+                },
+                active: reason === 'timer'
+            }
+        }), false])
     }
 }

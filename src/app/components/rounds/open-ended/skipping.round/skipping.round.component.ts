@@ -264,7 +264,7 @@ export class SkippingRoundComponent implements OnDestroy {
     this.currentTracks[1] = this.musicTracks[1];
     this.currentQuestion.answers[0].answer =
         this.currentTracks[0].information.title + " - " + this.currentTracks[0].information.interpret +
-        "\nund\n" +
+        " & " +
         this.currentTracks[1].information.title + " - " + this.currentTracks[1].information.interpret;
     this.printTrack();
   }
