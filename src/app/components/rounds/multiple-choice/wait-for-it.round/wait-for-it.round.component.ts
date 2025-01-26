@@ -43,6 +43,8 @@ export class WaitForItRoundComponent implements OnDestroy {
     questionFullWidth: boolean = false;
     private input?: ButtonState = undefined;
     private acceptInputsVar: boolean = false;
+    private loans: { controller: number, amount: number }[] = [];
+    private questionNumber: number = 0;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -146,7 +148,54 @@ export class WaitForItRoundComponent implements OnDestroy {
 
     private async startRound() {
         for (let i = 0; i < this.amountOfQuestions; i++) {
+            this.questionNumber = i + 1
+            const minPointsNeeded = 25
+            if (this.memory.players.some(player => player.gameScore < minPointsNeeded)) {
+                if (i === 0) await new Promise(resolve => setTimeout(resolve, 2000));
+                styledLogger("Adjusting Scores", Style.information);
+
+                // Find the player with the smallest score
+                const minScore = Math.min(...this.memory.players.map(player => player.gameScore));
+
+                // Calculate the adjustment amount needed to bring the lowest score to 100
+                const adjustmentAmount = minPointsNeeded - minScore;
+
+                if (adjustmentAmount > 0) {
+                    for (const player of this.memory.players) {
+                        this.loans.push({controller: player.controllerId, amount: adjustmentAmount})
+                    }
+                    // Update the scoreboard to reflect the changes
+                    this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                        return {
+                            name: player.name,
+                            score: player.gameScore,
+                            pointAward: undefined,
+                            square: {
+                                squareBorder: '#FFFFFF',
+                                squareBackground: '#FFFFFF88',
+                                squareText: `Kredit +${adjustmentAmount}`,
+                            },
+                            active: false
+                        };
+                    }), false]);
+
+                    await this.waitForSpace()
+
+                    // Clear highlights from the scoreboard
+                    this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                        return {
+                            name: player.name,
+                            score: player.gameScore,
+                            pointAward: adjustmentAmount,
+                            square: undefined,
+                            active: false
+                        };
+                    }), false]);
+                }
+            }
+
             this.setupNextQuestion()
+            styledLogger("Next: Start Question", Style.information)
             await this.waitForSpace();
             new Audio('music/wwds/frage.mp3').play();
             await new Promise(resolve => setTimeout(resolve, 250));
@@ -189,6 +238,36 @@ export class WaitForItRoundComponent implements OnDestroy {
             this.displayTimer(false)
             this.displayQuestion(false)
             this.displayAnswers(false)
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            this.scoreboard.sortSubject.next();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        if (this.loans.length > 0) {
+            styledLogger("Kredite zurückzahlen", Style.information)
+            this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                return {
+                    name: player.name,
+                    score: player.gameScore,
+                    pointAward: undefined,
+                    square: this.loans.some(loan => loan.controller === player.controllerId) ? {
+                        squareBorder: '#000000',
+                        squareBackground: '#00000088',
+                        squareText: "Kredit: " + (this.loans.filter(loan => loan.controller === player.controllerId).map(loan => loan.amount).reduce((a, b) => a + b) * -1),
+                    } : undefined,
+                    active: false
+                }
+            }), false])
+            await this.waitForSpace()
+            this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                return {
+                    name: player.name,
+                    score: player.gameScore,
+                    pointAward: this.loans.some(loan => loan.controller === player.controllerId) ? this.loans.filter(loan => loan.controller === player.controllerId).map(loan => loan.amount).reduce((a, b) => a + b) * -1 : undefined,
+                    square: undefined,
+                    active: false
+                }
+            }), false])
+
             await new Promise(resolve => setTimeout(resolve, 1500));
             this.scoreboard.sortSubject.next();
             await new Promise(resolve => setTimeout(resolve, 1000));
@@ -294,6 +373,16 @@ export class WaitForItRoundComponent implements OnDestroy {
                     active: false
                 }
             }), true])
+        } else {
+            this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+                return {
+                    name: player.name,
+                    score: player.gameScore,
+                    pointAward: undefined,
+                    square: undefined,
+                    active: false
+                }
+            }), true])
         }
     }
 
@@ -344,7 +433,7 @@ export class WaitForItRoundComponent implements OnDestroy {
         const playerList = this.memory.players.slice().sort((a, b) => a.gameScore - b.gameScore)
         const index = playerList.findIndex((pla: Player) => pla.controllerId === player.controllerId)
         let reverseList = playerList.slice().reverse();
-        return Math.floor(reverseList[index].gameScore * ((40 - remainingTime) / 100))
+        return Math.floor(reverseList[index].gameScore * (((35 + (Math.pow(2, this.questionNumber))) - Math.floor(remainingTime)) / 100))
     }
 
     private updatePoints(remainingTime: number, reason: 'timer' | 'buzzed' | 'timeout' = 'timer') {
