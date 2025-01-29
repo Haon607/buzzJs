@@ -107,13 +107,53 @@ export class QuestionLoader {
                 break;
             case CategoryLoader.filmeUndSerien.name:
                 questions.push({
-                    question: 'Wie heißt das Stammcafé von Rachel, Phoebe, Monica, Joey, Ross und Chandler in dem US-Serienklassiker Friends',
+                    question: 'Wie heißt das Stammcafé von Rachel, Phoebe, Monica, Joey, Ross und Chandler in dem US-Serienklassiker Friends?',
                     answers: [{answer: "Central Perk", correct: true}, {answer: "Rock à Fella", correct: false}, {answer: "Mainhatten", correct: false}, {answer: "Coffeens", correct: false}],
                     shuffle: true,
                 });
                 questions.push({
                     question: 'Welches Studio produziert günstige, profitable Horrorfilme wie "Paranormal Activity" und "The Purge"?',
                     answers: [{answer: "Blumhouse Productions", correct: true}, {answer: "Studio Babelsberg", correct: false}, {answer: "Screen Gems", correct: false}, {answer: "Fine Line Features", correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Was hat Alfred Hitchcock im Film „Psycho“ als Blut verwendet?',
+                    answers: [{answer: 'Schokoladensirup', correct: true}, {answer: 'Ketchup', correct: false}, {answer: 'Lebensmittelfarbe', correct: false}, {answer: 'Ahornsirup', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Auf welcher Kultur basiert der Disney-Animationsfilm „Vaiana“ aus dem Jahr 2016?',
+                    answers: [{answer: 'Polynesisch', correct: true}, {answer: 'Amerikanischer Ureinwohner', correct: false}, {answer: 'Japanisch', correct: false}, {answer: 'Nordisch', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Nach welcher Tageszeit sollte man Mogwai im Film Gremlins nicht mehr füttern?',
+                    answers: [{answer: 'Mitternachts', correct: true}, {answer: 'Abends', correct: false}, {answer: 'Morgens', correct: false}, {answer: 'Nachmittags', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Welche Geschwindigkeit muss Doc Browns DeLorean im Film „Zurück in die Zukunft“ erreichen, um durch die Zeit zu reisen?',
+                    answers: [{answer: '140 km/h (88 mph)', correct: true}, {answer: '124 km/h (77 mph)', correct: false}, {answer: '160 km/h (100 mph)', correct: false}, {answer: '110 km/h (70 mph)', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Welche Fortsetzung eines Films hatte im Vergleich zum Originalfilm bessere Kassenergebnisse?',
+                    answers: [{answer: 'Toy Story 2', correct: true}, {answer: 'Sin City: A Dame to Kill For', correct: false}, {answer: 'Speed 2', correct: false}, {answer: 'Die Maske 2: Die nächste Generation', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Wie hieß der erste Bond-Film, der 1962 erschien?',
+                    answers: [{answer: 'James Bond – 007 jagt Dr. No', correct: true}, {answer: 'James Bond 007 – In tödlicher Mission', correct: false}, {answer: 'Goldfinger', correct: false}, {answer: 'Keine Zeit zu sterben', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'In welchem Film von 1973 spielt Yul Brynner einen Roboter-Cowboy, der eine Fehlfunktion hat und einen Amoklauf unternimmt?',
+                    answers: [{answer: 'Westworld', correct: true}, {answer: 'Runaway', correct: false}, {answer: 'Android', correct: false}, {answer: 'Terminator', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Bei welchem dieser Filmen war Quentin Tarantino nicht der Regisseur?',
+                    answers: [{answer: 'From Dusk till Dawn', correct: true}, {answer: 'Jackie Brown', correct: false}, {answer: 'Pulp Fiction', correct: false}, {answer: 'Reservoir Dogs', correct: false}],
                     shuffle: true,
                 });
                 break;
@@ -128,11 +168,16 @@ export class QuestionLoader {
                     answers: [{answer: "Natascha Kampusch", correct: true}, {answer: "Papst Franziskus", correct: false}, {answer: "Marina Nemat", correct: false}, {answer: "Helmut Berger", correct: false}],
                     shuffle: true,
                 });
+                questions.push({
+                    question: 'Das Wort "LASER" ist ein...',
+                    answers: [{answer: "Akronym", correct: true}, {answer: "Antonym", correct: false}, {answer: "Palindrom", correct: false}, {answer: "Tautonym", correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.gadgetsAndGizmos.name:
                 questions.push({
                     question: 'Welche Sprache spricht ein Furby?',
-                    answers: [{answer: "Furbish", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
+                    answers: [{answer: "Furbish", correct: true}, {answer: "Furrit", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
                     shuffle: true,
                 });
                 questions.push({
@@ -144,6 +189,31 @@ export class QuestionLoader {
                     question: 'Fast schon universal hat die "Erdung"-Ader in Stromkabeln welche farbe?',
                     answers: [{answer: "Grün", correct: true}, {answer: "Rot", correct: false}, {answer: "Blau", correct: false}, {answer: "Schwarz", correct: false}],
                     shuffle: true,
+                });
+                questions.push({
+                    question: 'Wer hat die Dampfmaschine, die Rotationsbewegung produziert, patentiert?',
+                    answers: [{answer: 'James Watt', correct: true}, {answer: 'Nikola Tesla', correct: false}, {answer: 'Albert Einstein', correct: false}, {answer: 'Alessandro Volta', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Welche dieser Smartphone produzierenden Firmen hat ihren Sitz nicht in Asien?',
+                    answers: [{answer: 'Nokia', correct: true}, {answer: 'LG Electronics', correct: false}, {answer: 'Samsung', correct: false}, {answer: 'HTC', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Die Firma "Blackberry" hat wurde in welchem Land gegründet?',
+                    answers: [{answer: 'Canada', correct: true}, {answer: 'Norway', correct: false}, {answer: 'United States of America', correct: false}, {answer: 'United Kingdom', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Welche Firma hat den "Walkman" produziert?',
+                    answers: [{answer: 'Sony', correct: true}, {answer: 'Panasonic', correct: false}, {answer: 'LG', correct: false}, {answer: 'Fujitsu', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Wann wurde das erste Tamagotchi im Handel erhältlich?',
+                    answers: [{answer: '1985', correct: false}, {answer: '1996', correct: true}, {answer: '2001', correct: false}, {answer: '2004', correct: false}],
+                    shuffle: false,
                 });
                 break;
 
@@ -220,6 +290,11 @@ export class QuestionLoader {
                 });
                 break;
             case CategoryLoader.inDiesemJahr.name:
+                questions.push({
+                    question: 'Titanik kommt raus',
+                    answers: [{answer: "?", correct: true}],
+                    shuffle: false,
+                });
                 questions.push({
                     question: 'Putin beginnt seine Zweite Amtszeit als Präsident von Russland, Heinz Fischer wird zum Bundespräsidenten von Österreich gewählt und die Ukraine gewinnt den ESC',
                     answers: [{answer: "2004", correct: true}],
@@ -340,7 +415,7 @@ export class CategoryLoader {
         questionType: QuestionType.openEnded
     }
     static allMusic: Category = {
-        name: randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Bunt durchmischt" : "Alle" : randomNumber(0, 1) === 0 ? "Keine Grenzen" : '"Ich höre alle Genres"' : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Generationenübergreifend" : "Zufall" : randomNumber(0, 1) === 0 ? "Alle machen mit" : "Keine Ausgrenzung" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? '"I listen to everything"' : "Gruppen oder Einzelpersonen" : randomNumber(0, 1) === 0 ? "Alle Sprachen" : "Lass den Zufall entscheiden" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Komme was wolle" : "Mehr geht nicht" : randomNumber(0, 1) === 0 ? "Wilder Mix" : "Alles dabei!" ,
+        name: randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Bunt durchmischt" : "Alle" : randomNumber(0, 1) === 0 ? "Keine Grenzen" : '"Ich höre alle Genres"' : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Generationenübergreifend" : "Zufall" : randomNumber(0, 1) === 0 ? "Alle machen mit" : "Keine Ausgrenzung" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? '"I listen to everything"' : "Gruppen oder Einzelpersonen" : randomNumber(0, 1) === 0 ? "Alle Sprachen" : "Lass den Zufall entscheiden" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Komme was wolle" : "Mehr geht nicht" : randomNumber(0, 1) === 0 ? "Wilder Mix" : "Alles dabei!",
         questionType: QuestionType.music,
         musicFilterStatement: (music: MusicQuestion) => {
             return true

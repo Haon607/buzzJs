@@ -25,6 +25,7 @@ export enum Genre {
     hiphop = "Hip Hop",
     schlager = "Schlager",
     rap = "Rap",
+    disco = "Disco",
 }
 
 export enum Language {
@@ -303,6 +304,147 @@ export class Musicloader {
                 "I know I'm in over my head",
                 "A rebel and I don't hide",
                 "Remember all the words that you said",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Alvaro Soler - La Cintura.mp3",
+            information: {
+                title: "La cintura",
+                interpret: "Álvaro Soler",
+                releaseYear: 2018,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.other]
+            },
+            highlightFrom: 47,
+            memory: {
+                from: 60 + 18,
+                to: 60 + 21
+            },
+            lyrics: [
+                "Destaca cuando anda, va causando impresión",
+                "Cada día cuando levanta, brilla como el sol",
+                "Su vestido de seda calienta mi corazón",
+                "Como en una novela en la televisión, eh",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Sophie Ellis-Bextor - Murder On The Dancefloor.mp3",
+            information: {
+                title: "Murder On The Dancefloor",
+                interpret: "Sophie Ellis-Bextor",
+                releaseYear: 2001,
+                group: false,
+                genre: Genre.disco,
+                language: [Language.english]
+            },
+            highlightFrom: 60 + 46,
+            memory: {
+                from: 60 + 1,
+                to: 60 + 3
+            },
+            lyrics: [
+                "It's murder on the dancefloor",
+                "But you better not kill the groove",
+                "DJ, gonna burn this goddamn house right down",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Jupiter Jones - Still Lyrics.mp3",
+            information: {
+                title: "Still",
+                interpret: "Jupiter Jones",
+                releaseYear: 2011,
+                group: true,
+                genre: Genre.pop,
+                language: [Language.german]
+            },
+            highlightFrom: 57,
+            memory: {
+                from: 60 + 23,
+                to: 60 + 27
+            },
+            lyrics: [
+                "So still, dass jeder von uns wusste, das hier ist für immer",
+                "Für immer und ein Leben und es war so still",
+                "Dass jeder von uns ahnte, hierfür gibt′s kein Wort",
+                "Das jemals das Gefühl beschreiben kann",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Stromae - Alors on danse (Official Video).mp3",
+            information: {
+                title: "Alors on danse",
+                interpret: "Stromae",
+                releaseYear: 2010,
+                group: false,
+                genre: Genre.hiphop,
+                language: [Language.other]
+            },
+            highlightFrom: 48,
+            memory: {
+                from: 120 + 19,
+                to: 120 + 21.5
+            },
+            lyrics: [
+                "Qui dit étude dit travail",
+                "Qui dit taf te dit les thunes",
+                "Qui dit argent dit dépenses",
+                "Et qui dit crédit dit créance",
+                "Qui dit dette te dit huissier",
+                "Et lui dit assis dans la merde",
+                "Qui dit amour dit les gosses",
+                "Dit toujours et dit divorce",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Village People - YMCA (OFFICIAL Music Video 1978).mp3",
+            information: {
+                title: "YMCA",
+                interpret: "Village People",
+                releaseYear: 1978,
+                group: true,
+                genre: Genre.disco,
+                language: [Language.english]
+            },
+            highlightFrom: 42,
+            memory: {
+                from: 120 + 50,
+                to: 120 + 52
+            },
+            lyrics: [
+                "Young man there′s no need to feel down",
+                "I said young man pick yourself off the ground",
+                "I said young man 'cause your in a new town",
+                "There′s no need to be unhappy",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Village People - YMCA (OFFICIAL Music Video 1978).mp3",
+            information: {
+                title: "YMCA",
+                interpret: "Village People",
+                releaseYear: 1978,
+                group: true,
+                genre: Genre.disco,
+                language: [Language.english]
+            },
+            highlightFrom: 42,
+            memory: {
+                from: 120 + 50,
+                to: 120 + 52
+            },
+            lyrics: [
+                "Young man there′s no need to feel down",
+                "I said young man pick yourself off the ground",
+                "I said young man 'cause your in a new town",
+                "There′s no need to be unhappy",
             ]
         });
         /*

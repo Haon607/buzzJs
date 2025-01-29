@@ -17,15 +17,16 @@ export class MemoryService {
     constructor() {
         this.rounds = [
             Round.waitForIt,
+            Round.stealing,
             // Round.timeline,
-            Round.skipping,
+            Round.whatIsTheQuestion,
             Round.spotlight,
             // Round.wonderWall,
+            Round.skipping,
             Round.musicBox,
             Round.stopTheClock,
             Round.fastestFinger,
             Round.punktesammler,
-            Round.whatIsTheQuestion,
             // Round.shortFuse,
             // Round.iLiterallyJustToldYou,
         ];
@@ -34,22 +35,22 @@ export class MemoryService {
             {
                 name: "Name",
                 controllerId: 0,
-                gameScore: 100,
+                gameScore: 11,
             }, {
                 name: "Benedikt",
                 controllerId: 1,
-                gameScore: 70,
+                gameScore: 10,
             }, {
                 name: "Waltraud",
                 controllerId: 2,
-                gameScore: 50,
+                gameScore: 0,
             }, {
                 name: "Moritz",
                 controllerId: 3,
-                gameScore: 10,
+                gameScore: -10,
             },
         ]
-        this.category = CategoryLoader.videogames;
+        this.category = CategoryLoader.filmeUndSerien;
     }
 
     print() {
@@ -156,17 +157,17 @@ export class Round {
         questionType: QuestionType.openEnded,
         path: "/stealing",
         iconPath: "",
-        background: "",
-        primary: "",
-        secondary: "",
+        background: "#3f126c",
+        primary: "#000080",
+        secondary: "#4c2a91",
         rules: ""
-    } // Buzzern? Prozentuales Stehlen von Punkten
+    } // Buzzern? Prozentuales Stehlen von Punkten GLOBALER TIMER
     static waitForIt = {
         name: "Abwarten...",
         category: true,
         questionType: QuestionType.multipleChoice,
         path: "/wait",
-        iconPath: "",
+        iconPath: "M340-520q42 0 71-29t29-71v-100H240v100q0 42 29 71t71 29ZM240-240h200v-100q0-42-29-71t-71-29q-42 0-71 29t-29 71v100Zm-140 80v-80h60v-100q0-42 18-78t50-62q-32-26-50-62t-18-78v-100h-60v-80h480v80h-60v100q0 42-18 78t-50 62q32 26 50 62t18 78v100h60v80H100Zm640 0v-488l-44 44-56-56 140-140 140 140-57 56-43-43v487h-80ZM340-720Zm0 480Z",
         background: "#231c30",
         primary: "#8F0000",
         secondary: "#33009a",
@@ -252,6 +253,7 @@ export class Round {
     // Audience Knowledge?
     // Autism Knowledge explaining
     // Irgend eine art von Teamspiel
+    // Pikmin 3
 
     /*
     background: "#FFFFFF",

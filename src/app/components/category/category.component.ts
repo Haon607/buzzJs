@@ -9,6 +9,7 @@ import { ColorFader, MusicFader, randomNumber, shuffleArray, Style, styledLogger
 import gsap from 'gsap';
 import { ScoreboardPlayer, ScoreboardService } from "../../services/scoreboard.service";
 import { ScoreboardComponent } from "../scoreboard/scoreboard.component";
+import { inputToColor } from "../../../models";
 
 @Component({
     selector: 'app-category',
@@ -74,7 +75,7 @@ export class CategoryComponent implements OnDestroy {
 
         if (event.key === 'i') this.memory.print();
 
-        if (this.selectedCategory && event.key === " ") this.introduceRound()
+        if (this.memory.category && event.key === " ") this.introduceRound()
     }
 
     ngOnDestroy(): void {
@@ -89,24 +90,10 @@ export class CategoryComponent implements OnDestroy {
             if (input.button === 0) input.button = randomNumber(1, 4);
             this.selectedCategory = this.categories[input.button - 1];
             styledLogger("Kategorie gewählt: " + this.selectedCategory.name, Style.speak)
-            let color: string = "";
             this.music.src = "/music/buzz/BTV-ChooseEnd.mp3";
             this.music.play();
             this.hue.setColor(HueLightService.primary, '#505050', 1000);
-            switch (input.button) {
-                case 1:
-                    color = '#2CADFA';
-                    break;
-                case 2:
-                    color = '#F86613';
-                    break;
-                case 3:
-                    color = '#11BC20';
-                    break;
-                case 4:
-                    color = '#FFFF00';
-                    break;
-            }
+            const color = inputToColor(input.button)!
             await new Promise(resolve => setTimeout(resolve, 1150));
             if (input.button === 1) gsap.to('#blue', {scale: 2, y: 100, x: 480}); else gsap.to('#blue', {opacity: 0.5, scale: 0.2, x: -400});
             if (input.button === 2) gsap.to('#orange', {scale: 2, y: 100, x: -480}); else gsap.to('#orange', {opacity: 0.5, scale: 0.2, x: 400});
@@ -273,7 +260,7 @@ export class CategoryComponent implements OnDestroy {
             this.hue.setColor([lights[i % lights.length]], color, 250)
             await new Promise((resolve) => setTimeout(resolve, 400 / lights.length));
             if (this.stopLightCycle) break;
-            if (i === (lights.length*2)-1) i = -1;
+            if (i === (lights.length * 2) - 1) i = -1;
         }
         await new Promise(resolve => setTimeout(resolve, 500))
         this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254);

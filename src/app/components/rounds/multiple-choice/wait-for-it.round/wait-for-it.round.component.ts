@@ -149,7 +149,7 @@ export class WaitForItRoundComponent implements OnDestroy {
     private async startRound() {
         for (let i = 0; i < this.amountOfQuestions; i++) {
             this.questionNumber = i + 1
-            const minPointsNeeded = 25
+            const minPointsNeeded = Math.max(this.memory.roundNumber * 25, 10);
             if (this.memory.players.some(player => player.gameScore < minPointsNeeded)) {
                 if (i === 0) await new Promise(resolve => setTimeout(resolve, 2000));
                 styledLogger("Adjusting Scores", Style.information);
@@ -215,7 +215,7 @@ export class WaitForItRoundComponent implements OnDestroy {
             await this.startTimer();
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 100)
             styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
-            gsap.set('#timer', {rotateX: 0})
+            gsap.set('#timer', {rotateZ: 0})
             await this.waitForSpace();
             this.revealAnswers();
             gsap.to('#timer', {rotateZ: 360, duration: 0.5})
@@ -443,7 +443,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 square: {
-                    squareBorder: reason === 'timer' ? '#FFFFFF' : (player.controllerId === this.input?.controller ? '#FFFF00' : '#666666'),
+                    squareBorder: reason === 'timer' ? '#FFFFFF' : (player.controllerId === this.input?.controller ? '#FF0000' : '#666666'),
                     squareBackground: this.round.secondary + '88',
                     squareText: "±" + this.calculatePoints(player, remainingTime)
                 },
