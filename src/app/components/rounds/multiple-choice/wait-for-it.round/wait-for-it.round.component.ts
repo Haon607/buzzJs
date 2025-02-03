@@ -147,6 +147,8 @@ export class WaitForItRoundComponent implements OnDestroy {
     }
 
     private async startRound() {
+        this.music.src = '/music/mp/smpj-dc2.mp3'
+        this.music.play()
         for (let i = 0; i < this.amountOfQuestions; i++) {
             this.questionNumber = i + 1
             const minPointsNeeded = Math.max(this.memory.roundNumber * 25, 10);
@@ -197,6 +199,7 @@ export class WaitForItRoundComponent implements OnDestroy {
             this.setupNextQuestion()
             styledLogger("Next: Start Question", Style.information)
             await this.waitForSpace();
+            await new MusicFader().fadeOut(this.music, 500)
             new Audio('music/wwds/frage.mp3').play();
             await new Promise(resolve => setTimeout(resolve, 250));
             this.displayQuestion(true)

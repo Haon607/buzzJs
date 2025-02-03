@@ -6,6 +6,9 @@
                [duration]="maxTime"
                (timerExpired)="onTimeExpired()"
     ></app-timer>
+    @if (currentQuestion.answers[1]) {
+        <span id="in-timer-text" class="numbers">{{ currentQuestion.answers[1].answer }}</span>
+    }
     <div class="answer-container" id="answer-container">
         <div class="answer" id="answer"><span>{{ currentQuestion.answers[0].answer }}</span></div>
     </div>

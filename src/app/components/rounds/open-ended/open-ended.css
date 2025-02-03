@@ -66,5 +66,14 @@
     opacity: 0;
     border-color: #000000;
     background:   #00000088;
+}
 
+#in-timer-text {
+    top: 100px;
+    right: 300px;
+    position: absolute;
+    font-size: 75px;
+    font-weight: bold;
+    color: #FFF;
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
 }

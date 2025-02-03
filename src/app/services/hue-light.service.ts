@@ -26,8 +26,9 @@ export class HueLightService {
         });
     }
 
-    turnOn(lightIds: number[]): void {
-        const payload = { on: true };
+    turnOn(lightIds: number[], fadeMs: number = 0): void {
+        const payload: any = { on: true };
+        payload.transitiontime = fadeMs === 0 ? 0 : Math.round(fadeMs / 100); // Convert to deciseconds
         this.sendRequests('PUT', lightIds, '/state', payload);
     }
 
