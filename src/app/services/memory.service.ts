@@ -16,7 +16,6 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
-            Round.stealing,
             Round.waitForIt,
             Round.whatIsTheQuestion,
             Round.spotlight,
@@ -28,6 +27,7 @@ export class MemoryService {
             // Round.wonderWall,
             // Round.timeline,
             // Round.shortFuse,
+            // Round.stealing,
             // Round.iLiterallyJustToldYou,
         ];
         this.roundNumber = 0;
@@ -184,6 +184,17 @@ export class Round {
         secondary: "",
         rules: ""
     } //Maybe prozentuale punkte
+    static massAnswers = {
+        name: "Massenhafte Antworten",
+        category: true,
+        questionType: QuestionType.openEnded,
+        path: "/mass",
+        iconPath: "",
+        background: "",
+        primary: "",
+        secondary: "",
+        rules: ""
+    } //drawful (2) music, buzz to answer
     static musicBox = {
         name: "Ab der ersten Sekunde",
         category: true,
@@ -250,11 +261,22 @@ export class Round {
         secondary: "",
         rules: ""
     } //drei lieder gleichzeitig spielen mit so abwechselnder lautstärke, danach "welches lied war nicht zu hören" ahh frage ODER WAS IST MIT STEREO?? ODER DIMENSIONAL??
+    static drawing = {
+        name: "Mal'mal",
+        category: false,
+        questionType: QuestionType.,
+        path: "/drawing",
+        iconPath: "m499-287 335-335-52-52-335 335 52 52Zm-261 87q-100-5-149-42T40-349q0-65 53.5-105.5T242-503q39-3 58.5-12.5T320-542q0-26-29.5-39T193-600l7-80q103 8 151.5 41.5T400-542q0 53-38.5 83T248-423q-64 5-96 23.5T120-349q0 35 28 50.5t94 18.5l-4 80Zm280 7L353-358l382-382q20-20 47.5-20t47.5 20l70 70q20 20 20 47.5T900-575L518-193Zm-159 33q-17 4-30-9t-9-30l33-159 165 165-159 33Z",
+        background: "",
+        primary: "",
+        secondary: "",
+        rules: ""
+    }
     // Audience Knowledge?
     // Autism Knowledge explaining
     // Irgend eine art von Teamspiel
     // Streak?
-    // Pikmin 3
+    // Pikmin 3 formidable oak
 
     /*
     background: "#FFFFFF",
