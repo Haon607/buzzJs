@@ -12,6 +12,7 @@ import { SkippingRoundComponent } from "./components/rounds/open-ended/skipping.
 import { TimelineRoundComponent } from "./components/rounds/timeline.round/timeline.round.component";
 import { WaitForItRoundComponent } from "./components/rounds/multiple-choice/wait-for-it.round/wait-for-it.round.component";
 import { StealingRoundComponent } from "./components/rounds/open-ended/stealing.round/stealing.round.component";
+import { DrawingRoundComponent } from "./components/rounds/drawing.round/drawing.round.component";
 
 export const routes: Routes = [
     {path: "", component: JoinGameComponent},
@@ -26,5 +27,6 @@ export const routes: Routes = [
     {path: "round" + Round.musicBox.path, component: MusicboxRoundComponent},
     {path: "round" + Round.skipping.path, component: SkippingRoundComponent},
     {path: "round" + Round.timeline.path, component: TimelineRoundComponent},
+    {path: "round" + Round.drawing.path, component: DrawingRoundComponent},
     /*TODO Scoreboard*/
 ];

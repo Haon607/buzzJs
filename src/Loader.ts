@@ -11,6 +11,7 @@ export enum QuestionType {
     multipleChoice,
     openEnded,
     music,
+    drawing,
 }
 
 export interface Answer {
@@ -154,6 +155,11 @@ export class QuestionLoader {
                 questions.push({
                     question: 'Bei welchem dieser Filmen war Quentin Tarantino nicht der Regisseur?',
                     answers: [{answer: 'From Dusk till Dawn', correct: true}, {answer: 'Jackie Brown', correct: false}, {answer: 'Pulp Fiction', correct: false}, {answer: 'Reservoir Dogs', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Welchen Namen hatte Mulan, als sie sich als Krieger ausgegeben hat?',
+                    answers: [{answer: 'Ping', correct: true}, {answer: 'Fa Zhou', correct: false}, {answer: 'Ling', correct: false}, {answer: 'Shang', correct: false}],
                     shuffle: true,
                 });
                 break;
@@ -417,7 +423,7 @@ export class CategoryLoader {
     static allMusic: Category = {
         name: randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Bunt durchmischt" : "Alle" : randomNumber(0, 1) === 0 ? "Keine Grenzen" : '"Ich höre alle Genres"' : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Generationenübergreifend" : "Zufall" : randomNumber(0, 1) === 0 ? "Alle machen mit" : "Keine Ausgrenzung" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? '"I listen to everything"' : "Gruppen oder Einzelpersonen" : randomNumber(0, 1) === 0 ? "Alle Sprachen" : "Lass den Zufall entscheiden" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Komme was wolle" : "Mehr geht nicht" : randomNumber(0, 1) === 0 ? "Wilder Mix" : "Alles dabei!",
         questionType: QuestionType.music,
-        musicFilterStatement: (music: MusicQuestion) => {
+        musicFilterStatement: () => {
             return true
         }
     }
@@ -442,6 +448,10 @@ export class CategoryLoader {
             return music.information.genre === Genre.hiphop
         }
     }
+    static drawing: Category = {
+        name: "Malen",
+        questionType: QuestionType.drawing,
+    }
 
     public static loadCategories(questionType: QuestionType) {
         let categories: Category[] = [];
@@ -462,6 +472,7 @@ export class CategoryLoader {
         categories.push(CategoryLoader.schlagerMusic);
         categories.push(CategoryLoader.popMusic);
         categories.push(CategoryLoader.hipHopMusic);
+        categories.push(CategoryLoader.drawing);
 
         return shuffleArray(categories.filter(cat => cat.questionType === questionType))
     }
