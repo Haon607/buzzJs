@@ -82,6 +82,8 @@
 }
 
 #round-icon {
+    -webkit-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 1));
+    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 1));
     height: 650px;
     width: 650px;
 }

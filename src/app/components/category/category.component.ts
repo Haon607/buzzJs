@@ -62,7 +62,7 @@ export class CategoryComponent implements OnDestroy {
             styledLogger("Zur Auswahl:\n" + this.categories.map(cat => cat.name).slice(0, 4).join('\n'), Style.speak)
             styledLogger("Wähle jemanden zum Kategorie auswählen mit 1-4", Style.requiresInput)
             this.animateOnLoad();
-            this.fadeToPageColor(2500);
+            this.fadeToPageColor(2500, this.round.questionType === QuestionType.music ? '#800080' : '#000080');
             this.music.play()
         }
     }
@@ -106,9 +106,9 @@ export class CategoryComponent implements OnDestroy {
         }
     }
 
-    private fadeToPageColor(time: number) {
-        new ColorFader().fadeColor(this.bgc, '#000080', time, color => this.bgc = color);
-        this.hue.setColor(HueLightService.primary, "#000080", time, 254)
+    private fadeToPageColor(time: number, pageColor: string) {
+        new ColorFader().fadeColor(this.bgc, pageColor, time, color => this.bgc = color);
+        this.hue.setColor(HueLightService.primary, pageColor, time, 254)
     }
 
     private async animateOnLoad() {

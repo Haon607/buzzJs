@@ -35,6 +35,27 @@ export enum Language {
 }
 
 export class Musicloader {
+    static empty: MusicQuestion = {
+        id: NaN,
+        path: "",
+        information: {
+            title: "",
+            interpret: "",
+            releaseYear: NaN,
+            group: false,
+            genre: Genre.pop,
+            language: []
+        },
+        highlightFrom: NaN,
+        memory: {
+            from: NaN,
+            to: NaN
+        },
+        lyrics: [
+
+        ]
+    }
+
     public static loadMusic(category: Category): MusicQuestion[] {
         let musicQuestions: MusicQuestion[] = [];
 
@@ -399,29 +420,6 @@ export class Musicloader {
                 "Et lui dit assis dans la merde",
                 "Qui dit amour dit les gosses",
                 "Dit toujours et dit divorce",
-            ]
-        });
-        musicQuestions.push({
-            id: NaN,
-            path: "Village People - YMCA (OFFICIAL Music Video 1978).mp3",
-            information: {
-                title: "YMCA",
-                interpret: "Village People",
-                releaseYear: 1978,
-                group: true,
-                genre: Genre.disco,
-                language: [Language.english]
-            },
-            highlightFrom: 42,
-            memory: {
-                from: 120 + 50,
-                to: 120 + 52
-            },
-            lyrics: [
-                "Young man there′s no need to feel down",
-                "I said young man pick yourself off the ground",
-                "I said young man 'cause your in a new town",
-                "There′s no need to be unhappy",
             ]
         });
         musicQuestions.push({

@@ -16,6 +16,7 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
+            Round.textAware,
             // Round.washingMachine,
             // Round.drawing,
             Round.waitForIt,
@@ -225,9 +226,9 @@ export class Round {
         questionType: QuestionType.music,
         path: "/textaware",
         iconPath: "M120-200v-240h720v240H120Zm0-320v-80h720v80H120Zm0-160v-80h720v80H120Z",
-        background: "",
-        primary: "",
-        secondary: "",
+        background: "#adc2ea",
+        primary: "#35568f",
+        secondary: "#e1fffd",
         rules: ""
     } // nur text, multiple choice, antwort nach geschwindigkeit
     static skipping = {

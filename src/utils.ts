@@ -2,7 +2,8 @@ export function styledLogger(message: string, style: Style): void {
   const styles = [
     'color: red; font-weight: bold;',
     'color: yellow; text-decoration: underline;',
-    'color: green; font-family: monospace; font-style: italic;'
+    'color: green; font-family: monospace; font-style: italic;',
+    'color: green; font-family: monospace; font-style: italic; font-weight: bold;',
   ];
 
   console.log(`%c${message}`, styles[style]);
@@ -11,7 +12,8 @@ export function styledLogger(message: string, style: Style): void {
 export enum Style {
   speak,
   requiresInput,
-  information
+  information,
+  highlightInformation
 }
 
 export function shuffleArray<T>(array: T[]): T[] {

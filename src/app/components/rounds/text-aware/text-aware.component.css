@@ -1,0 +1,122 @@
+.background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    color: white;
+    perspective: 1000px;
+}
+
+.lyrics-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lyric {
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 50px;
+    position: absolute;
+    font-size: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 95vw;
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+    opacity: 0;
+}
+
+.progress-bar {
+    border: 10px solid black;
+    border-radius: 100px;
+    background: linear-gradient(270deg, rgb(108, 17, 17) 0%, rgb(122, 42, 18) 100%);
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    font-size: 100px;
+    height: 10vh;
+    width: 60vw;
+    opacity: 0;
+}
+
+.bar {
+    border-radius: 100px;
+    background: linear-gradient(270deg, rgb(17, 35, 108) 0%, rgba(18,58,122,1) 100%);
+    position: absolute;
+    height: 10vh;
+    transition: width 0.1s;
+    z-index: 1;
+}
+
+.points {
+    z-index: 2;
+    border: 10px solid black;
+    border-radius: 100px;
+    background: linear-gradient(90deg, rgb(24, 46, 135) 0%, rgb(28, 103, 230) 100%);
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+    padding-left: 25px;
+    padding-right: 25px;
+    height: 10vh;
+    width: 10vw;
+}
+
+.options-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    height: 25vh;
+    width: 67vw;
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+    perspective: 1000px;
+}
+
+.option {
+    border-style: solid;
+    border-width: 5px;
+    width: 100%;
+    height: 5vh;
+    border-radius: 50px;
+    font-size: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    opacity: 0;
+}
+
+#blue {
+    border-color: #2CADFA;
+    background: #2CADFA88;
+}
+
+#orange {
+    border-color: #F86613;
+    background: #F8661388;
+}
+
+#green {
+    border-color: #11BC20;
+    background: #11BC2088;
+}
+
+#yellow {
+    border-color: #FFFF00;
+    background: #FFFF0088;
+}

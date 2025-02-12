@@ -1,0 +1,18 @@
+<div class="background" [ngStyle]="{'background': bgc}">
+    <div class="progress-bar" id="progress-bar">
+        <div class="bar" id="bar" [ngStyle]="{'width': (barWidth + 10) + 'vw'}"></div>
+        <div class="points numbers" id="points"><span>{{possiblePoints}}</span></div>
+    </div>
+    <div class="lyrics-container" id="lyrics-container">
+        @for (lyric of displayObject.lyrics; track lyric) {
+            <div class="lyric" id="lyric-{{lyric.trackId}}.{{lyric.order}}"><span>{{ lyric.text }}</span></div>
+        }
+    </div>
+    <div class="options-container" id="options-container">
+        <div class="option numbers" id="blue"><span>{{ displayObject.answers[0].answer }}</span></div>
+        <div class="option numbers" id="orange"><span>{{ displayObject.answers[1].answer }}</span></div>
+        <div class="option numbers" id="green"><span>{{ displayObject.answers[2].answer }}</span></div>
+        <div class="option numbers" id="yellow"><span>{{ displayObject.answers[3].answer }}</span></div>
+    </div>
+    <app-scoreboard id="scoreboard" class="scoreboard"></app-scoreboard>
+</div>
