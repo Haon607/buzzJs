@@ -13,6 +13,7 @@ import { TimelineRoundComponent } from "./components/rounds/timeline.round/timel
 import { WaitForItRoundComponent } from "./components/rounds/multiple-choice/wait-for-it.round/wait-for-it.round.component";
 import { StealingRoundComponent } from "./components/rounds/open-ended/stealing.round/stealing.round.component";
 import { DrawingRoundComponent } from "./components/rounds/drawing.round/drawing.round.component";
+import { WashingMachineRoundComponent } from "./components/rounds/multiple-choice/washing-machine.round/washing-machine.round.component";
 
 export const routes: Routes = [
     {path: "", component: JoinGameComponent},
@@ -28,5 +29,6 @@ export const routes: Routes = [
     {path: "round" + Round.skipping.path, component: SkippingRoundComponent},
     {path: "round" + Round.timeline.path, component: TimelineRoundComponent},
     {path: "round" + Round.drawing.path, component: DrawingRoundComponent},
+    {path: "round" + Round.washingMachine.path, component: WashingMachineRoundComponent},
     /*TODO Scoreboard*/
 ];

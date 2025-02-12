@@ -447,6 +447,130 @@ export class Musicloader {
                 "There′s no need to be unhappy",
             ]
         });
+        musicQuestions.push({
+            id: NaN,
+            path: "Capital Cities - Safe And Sound.mp3",
+            information: {
+                title: "Safe And Sound",
+                interpret: "Capital Cities",
+                releaseYear: 2011,
+                group: true,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 54,
+            memory: {
+                from: 32.5,
+                to: 35
+            },
+            lyrics: [
+                "I could lift you up",
+                "I could show you what you want to see",
+                "And take you where you want to be",
+                "You could be my luck",
+                "Even if the sky is falling down",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Neil Diamond - Sweet Caroline (Audio).mp3",
+            information: {
+                title: "Sweet Caroline",
+                interpret: "Neil Diamond",
+                releaseYear: 1969,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 120 + 10,
+            memory: {
+                from: 60 + 5.5,
+                to: 60 + 7.5
+            },
+            lyrics: [
+                "Where it began",
+                "I can't begin to know when",
+                "But then I know it's growin' strong",
+                "Was in the spring",
+                "And spring became the summer",
+                "Who'd have believe you'd come along?",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Haus am See.mp3",
+            information: {
+                title: "Haus am See",
+                interpret: "Peter Fox",
+                releaseYear: 2008,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.german]
+            },
+            highlightFrom: 60 + 1,
+            memory: {
+                from: 180 + 3,
+                to: 180 + 10
+            },
+            lyrics: [
+                "Hier bin ich gebor'n und laufe durch die Straßen",
+                "Kenn die Gesichter, jedes Haus und jeden Laden",
+                "Ich muss ma' weg, kenn jede Taube hier beim Namen",
+                "Daumen raus, ich warte auf 'ne schicke Frau mit schnellem Wagen",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Eddy Grant - Gimme Hope Jo Anna  1988.mp3",
+            information: {
+                title: "Gimme Hope Jo Anna",
+                interpret: "Eddy Gran",
+                releaseYear: 1988,
+                group: false,
+                genre: Genre.schlager,
+                language: [Language.english]
+            },
+            highlightFrom: 44,
+            memory: {
+                from: 7,
+                to: 10
+            },
+            lyrics: [
+                "Well Jo'anna she runs a country",
+                "She runs in Durban and the Transvaal",
+                "She makes a few of her people happy oh",
+                "She don't care about the rest at all",
+                "She's got a system they call apartheid",
+                "It keeps a brother in subjection",
+                "But maybe pressure will make Jo'anna see",
+                "How everybody could live as one",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Train - Drive By (Video).mp3",
+            information: {
+                title: "Drive By",
+                interpret: "Train",
+                releaseYear: 2012,
+                group: true,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 37,
+            memory: {
+                from: 2,
+                to: 5
+            },
+            lyrics: [
+                "On the other side of a street I knew",
+                "Stood a girl that looked like you",
+                "I guess that's déjà vu",
+                "But I thought this can't be true 'cause",
+                "You moved to west L.A., or New York or Santa Fe",
+                "Or wherever, to get away from me",
+            ]
+        });
         /*
         musicQuestions.push({
             id: NaN,
