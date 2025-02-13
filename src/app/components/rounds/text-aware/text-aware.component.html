@@ -5,7 +5,7 @@
     </div>
     <div class="lyrics-container" id="lyrics-container">
         @for (lyric of displayObject.lyrics; track lyric) {
-            <div class="lyric" id="lyric-{{lyric.trackId}}.{{lyric.order}}"><span>{{ lyric.text }}</span></div>
+            <div class="lyric" id="lyric-{{lyric.trackId}}-{{lyric.order}}"><span>{{ lyric.text }}</span></div>
         }
     </div>
     <div class="options-container" id="options-container">

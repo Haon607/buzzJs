@@ -30,6 +30,7 @@
     width: 95vw;
     text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
     opacity: 0;
+
 }
 
 .progress-bar {
@@ -46,6 +47,7 @@
     height: 10vh;
     width: 60vw;
     opacity: 0;
+    z-index: 1;
 }
 
 .bar {
@@ -53,7 +55,7 @@
     background: linear-gradient(270deg, rgb(17, 35, 108) 0%, rgba(18,58,122,1) 100%);
     position: absolute;
     height: 10vh;
-    transition: width 0.1s;
+    transition: width 0.5s;
     z-index: 1;
 }
 
@@ -67,8 +69,6 @@
     justify-content: center;
     align-items: center;
     font-size: 100px;
-    padding-left: 25px;
-    padding-right: 25px;
     height: 10vh;
     width: 10vw;
 }

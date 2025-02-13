@@ -1,23 +1,21 @@
-import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
-import { TimerComponent } from "../../timer/timer.component";
 import { MemoryService, RoundInterface } from "../../../services/memory.service";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../services/hue-light.service";
 import gsap from "gsap";
-import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
-import { inputToColor } from "../../../../models";
-import { Musicloader, MusicQuestion } from "../../../../MusicLoader";
+import { ColorFader, countWithDelay, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
+import { Colors, inputToColor } from "../../../../models";
+import { Language, Musicloader, MusicQuestion } from "../../../../MusicLoader";
 
 @Component({
     selector: 'app-text-aware',
     imports: [
         ScoreboardComponent,
-        NgStyle,
-        TimerComponent
+        NgStyle
     ],
     templateUrl: './text-aware.component.html',
     standalone: true,
@@ -43,12 +41,13 @@ export class TextAwareComponent implements OnDestroy {
     timerDone: boolean = false;
     amountOfQuestions = 5;
     maxTime: number = 30;
+    possiblePoints: number = 0;
+    barWidth: number = 50;
     private inputs: ButtonState[] = [];
     private excludedIds: number[] = [];
     private acceptInputsVar: boolean = false;
     private acceptColors: boolean = false;
-    possiblePoints: number = 0;
-    barWidth: number = 50;
+    private isCorrect: boolean = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -67,6 +66,8 @@ export class TextAwareComponent implements OnDestroy {
 
         if (event.key === 'r') this.setupNextQuestion();
 
+        //TODO +-
+
         if (event.key === ' ') this.spacePressed = true;
     }
 
@@ -74,10 +75,6 @@ export class TextAwareComponent implements OnDestroy {
         this.music.pause();
         this.buzz.removeAllListeners();
         this.memory.scoreboardKill.next()
-    }
-
-    onTimeExpired() {
-        this.timerDone = true
     }
 
     private async setupWithDelay() {
@@ -99,13 +96,12 @@ export class TextAwareComponent implements OnDestroy {
         gsap.set('#orange', away)
         gsap.set('#green', away)
         gsap.set('#yellow', away)
-        gsap.set('#question', {y: -300, rotationX: -45, opacity: 1, ease: "back.inOut"})
         gsap.set('#progress-bar', {y: -300, rotationX: -45, opacity: 1, ease: "back.inOut"})
 
-/*        await new Promise(resolve => setTimeout(resolve, 750));
-        this.displayAnswers(true)
-        this.displayBar(true)
-        this.displayScoreboard(true)*/
+        /*        await new Promise(resolve => setTimeout(resolve, 750));
+                this.displayAnswers(true)
+                this.displayBar(true)
+                this.displayScoreboard(true)*/
     }
 
     private displayScoreboard(tf: boolean) {
@@ -118,9 +114,9 @@ export class TextAwareComponent implements OnDestroy {
 
     private displayBar(tf: boolean) {
         if (tf) {
-            gsap.to('#progress-bar', {y: 0, rotationX: 0, ease: 'back.inOut'})
+            gsap.to('#progress-bar', {y: 0, x: 0, rotationX: 0, rotate: 0, ease: 'back.inOut'})
         } else {
-            gsap.to('#progress-bar', {y: -300, rotationX: -45, ease: "back.inOut"})
+            gsap.to('#progress-bar', {y: -300, x: 0, rotationX: -45, rotate: 0, ease: "back.inOut"})
         }
     }
 
@@ -160,16 +156,7 @@ export class TextAwareComponent implements OnDestroy {
             new Audio('music/wwds/frage.mp3').play();
             await new Promise(resolve => setTimeout(resolve, 250));
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
-            gsap.to('#progress-bar', {borderColor: '#FFF'})
-            gsap.to('#points', {borderColor: '#FFF'})
-            this.acceptInputs(true)
-
-            for (let i = 0; i < this.displayObject.lyrics.length; i++) {
-                await new Promise(resolve => setTimeout(resolve, 250));
-
-            }
-
-            this.acceptInputs(false)
+            await this.play();
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254)
             styledLogger("Richtige Antwort: " + this.displayObject.answers.find(ans => ans.correct)?.answer, Style.information)
             await new Promise(resolve => setTimeout(resolve, 1000))
@@ -202,12 +189,137 @@ export class TextAwareComponent implements OnDestroy {
         this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
     }
 
+    private async play() {
+        gsap.to('#progress-bar', {borderColor: '#FFF'})
+        gsap.to('#points', {borderColor: '#FFF'})
+        this.acceptInputs(true)
+
+        // this.displayObject.lyrics.map(lyric => lyric.text = "DAS IST HOFFENTLICH DREI ZEILEN LANG UND KEIN BISSCHEN KÜRZER, NUR SO FÜR TESTZWECKE UND SO")
+
+        const maxPoints = this.possiblePoints;
+        const lyricColor = randomNumber(1, 3);
+        let lyricIndex = 0;
+        let double = false;
+        const loops = 20 /*250*/;
+        for (let i = 0; i < loops; i++) {
+            this.barWidth -= .2;
+            if (i % 5 === 0) {
+                this.barWidth = Number(this.barWidth.toFixed(0))
+            }
+            await new Promise(resolve => setTimeout(resolve, 200));
+            let bool = false;
+            while (this.inputs.length > 0) {
+                bool = !bool;
+                await new Promise(resolve => setTimeout(resolve, 100));
+                gsap.to('#points', {borderColor: bool ? inputToColor(0) : '#FFF', duration: 0.1})
+            }
+            if ((i === 0 || i % Math.floor(loops / this.displayObject.lyrics.length) === 0) && i != loops && lyricIndex < this.displayObject.lyrics.length) {
+                await this.showNextLyric(lyricIndex, lyricColor);
+                if (i !== 0) {
+                    for (let o = 0; o < Math.floor((maxPoints - 10) / this.displayObject.lyrics.length); o++) {
+                        if (double) countWithDelay(this.possiblePoints, this.possiblePoints-2, 100, value => this.possiblePoints = value)
+                        else this.possiblePoints -= 1;
+                        bool = !bool;
+                        gsap.to('#points', {borderColor: bool ? inputToColor(2) : '#FFF', duration: 0.1})
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                    }
+                    double = false;
+                } else {
+                    double = true;
+                }
+                gsap.to('#points', {borderColor: '#FFF', duration: 0.1})
+                lyricIndex++;
+            }
+        }
+        countWithDelay(this.possiblePoints, 10, 50, value => this.possiblePoints = value)
+
+        this.acceptInputs(false)
+
+        gsap.to('#progress-bar', {borderColor: '#000'})
+        gsap.to('#points', {borderColor: '#000'})
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        this.barWidth = 50
+        await this.showLyricsList(lyricColor);
+        await this.displayAnswers(true);
+        this.displayScoreboard(true);
+        this.acceptColors = true
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        this.acceptInputs(true);
+        let timerMusic = new Audio('music/buzz/BTV-BL_ATA_Clock.mp3');
+        await this.waitForSpace();
+        timerMusic.play();
+        for (let i = 0; i < 24 && this.inputs.length < this.memory.players.length; i++) {
+            this.barWidth -= 50/24;
+                await new Promise(resolve => setTimeout(resolve, 500));
+        }
+        new MusicFader().fadeOut(timerMusic, 500)
+        this.acceptInputs(false)
+    }
+
+    private async showNextLyric(lyricIndex: number, lyricColor: number) {
+        gsap.set('#lyric-' + this.displayObject.lyrics[lyricIndex].trackId + '-' + this.displayObject.lyrics[lyricIndex].order, {y: 1000, opacity: 1})
+        for (let o = lyricIndex; o >= 0; o--) {
+            const lyric = this.displayObject.lyrics[lyricIndex - o];
+            const elementId = `#lyric-${lyric.trackId}-${lyric.order}`;
+            const isEven = o % 2 === 0;
+            const xOffset = (o === 0 ? 0 : 450) * (isEven ? 1.1 : -1);
+            const yOffset = 320 - (o * 200) - (o === 1 ? 100 : 0);
+            const scaleValue = o === 0 ? 1 : 0.5;
+            const bgColor = ColorFader.adjustBrightness(inputToColor(lyricColor) || '#FFF', o*-20);
+            const borderColor = o === 0 ? '#FFF' : '#000';
+            const opacityValue = o > 3 ? 0 : 1;
+            const rotation = (o * 2) * (isEven ? 1 : -1);
+
+            gsap.to(elementId, {
+                x: xOffset,
+                y: yOffset,
+                scale: scaleValue,
+                ease: 'back.inOut',
+                background: bgColor,
+                borderColor: borderColor,
+                opacity: opacityValue,
+                rotate: rotation
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+    }
+
+    private async showLyricsList(lyricColor: number) {
+        gsap.to('#progress-bar', {x: 350, y: 10, rotate: 2, ease: 'back.inOut'})
+        // gsap.set('#lyric-' + this.displayObject.lyrics[lyricIndex].trackId + '-' + this.displayObject.lyrics[lyricIndex].order, {y: 1000, opacity: 1})
+        for (let o = 0; o < this.displayObject.lyrics.length; o++) {
+            const lyric = this.displayObject.lyrics[o];
+            const elementId = `#lyric-${lyric.trackId}-${lyric.order}`;
+            const xOffset = o > 5 ? 0 : -600
+            const yOffset = -450 + ((o > 5 ? o -4 : o) * 110);
+            const scaleValue = 0.3
+            const bgColor = ColorFader.adjustBrightness(inputToColor(lyricColor) || '#FFFFFF', (this.displayObject.lyrics.length-o)*-5);
+            const borderColor = ColorFader.adjustBrightness('#FFFFFF', (this.displayObject.lyrics.length-o)*-5);
+            const opacityValue = 1;
+            const rotation = 0;
+
+            gsap.to(elementId, {
+                x: xOffset,
+                y: yOffset,
+                scale: scaleValue,
+                ease: 'back.inOut',
+                background: bgColor,
+                borderColor: borderColor,
+                opacity: opacityValue,
+                rotate: rotation
+            });
+
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+    }
+
     private onPress(buttonState: ButtonState) {
         if (this.acceptInputsVar && !this.acceptColors && !this.excludedIds.some(id => buttonState.controller === id) && buttonState.button === 0) {
             this.acceptInputs(false);
             this.inputs.push(buttonState);
             new Audio('music/wwds/einloggen.mp3').play();
-            gsap.to('#points', {borderColor: inputToColor(0), ease: "bounce.out"})
         }
         if (this.acceptInputsVar && this.acceptColors && !this.excludedIds.some(id => buttonState.controller === id) && buttonState.button !== 0) {
             if (!this.inputs.some(input => input.controller === buttonState.controller)) {
@@ -236,6 +348,7 @@ export class TextAwareComponent implements OnDestroy {
 
     private async waitForSpace() {
         styledLogger("Space zum weitermachen", Style.requiresInput)
+        this.spacePressed = false
         while (!this.spacePressed) await new Promise(resolve => setTimeout(resolve, 250));
         this.spacePressed = false
     }
@@ -243,10 +356,11 @@ export class TextAwareComponent implements OnDestroy {
     private setupNextQuestion() {
         // this.timer.resetTimer();
         this.inputs = [];
+        this.excludedIds = [];
+        this.isCorrect = false
         this.acceptColors = false;
-        this.possiblePoints = 100
         this.allTracks = this.allTracks.slice(4, this.allTracks.length);
-        let lyrics: {text: string, order: number, trackId: number}[] = [];
+        let lyrics: { text: string, order: number, trackId: number }[] = [];
         for (let i = 0; i < this.allTracks[0].lyrics.length; i++) {
             lyrics.push({text: this.allTracks[0].lyrics[i], order: i, trackId: this.allTracks[0].id});
         }
@@ -264,7 +378,23 @@ export class TextAwareComponent implements OnDestroy {
             }
             this.displayObject.answers[i].correct = order[i] === 0;
         }
+
+        this.calculatePossiblePoints();
+
         this.printQuestion()
+    }
+
+    private calculatePossiblePoints() {
+        let pointsWorth = 50;
+        const amountOfMusicsInList = Musicloader.loadMusic(this.memory.category!).length;
+
+        if (amountOfMusicsInList < 50) pointsWorth -= 50 - amountOfMusicsInList;
+
+        if (this.allTracks[0].information.releaseYear < 2000) pointsWorth += (2000 - this.allTracks[0].information.releaseYear) / 5;
+
+        if (this.allTracks[0].information.language.includes(Language.other)) pointsWorth *= 2;
+
+        countWithDelay(this.possiblePoints, Math.floor(pointsWorth), 10, value => this.possiblePoints = value);
     }
 
     private printQuestion() {

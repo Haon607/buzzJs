@@ -169,3 +169,19 @@ export class MusicFader {
 export function randomNumber(from: number, to: number): number {
   return Math.floor(Math.random() * (to - from + 1) + from);
 }
+
+export function countWithDelay(start: number, end: number, delay: number, emit: (value: number) => void): Promise<void> {
+  return new Promise((resolve) => {
+    let current = start;
+    const step = start < end ? 1 : -1;
+
+    const interval = setInterval(() => {
+      emit(current);
+      if (current === end) {
+        clearInterval(interval);
+        resolve();
+      }
+      current += step;
+    }, delay);
+  });
+}
