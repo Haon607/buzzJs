@@ -24,7 +24,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     circumference = NaN;
 
     music: HTMLAudioElement = new Audio('music/buzz/BTV-BL_ATA_Clock.mp3')
-    private interval: number;
+    private interval: number = NaN;
 
     ngOnInit(): void {
         this.radius = this.size / 2 - 10; // Padding for the stroke width

@@ -48,6 +48,7 @@ export class TextAwareComponent implements OnDestroy {
     private acceptInputsVar = false;
     private acceptColors = false;
     private isCorrect = false;
+    private stoppBuzzFlash = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -66,7 +67,8 @@ export class TextAwareComponent implements OnDestroy {
 
         if (event.key === 'r') this.setupNextQuestion();
 
-        //TODO +-
+        if (event.key === '+') this.correct();
+        if (event.key === '-') this.incorrect();
 
         if (event.key === ' ') this.spacePressed = true;
     }
@@ -161,19 +163,21 @@ export class TextAwareComponent implements OnDestroy {
             styledLogger("Richtige Antwort: " + this.displayObject.answers.find(ans => ans.correct)?.answer, Style.information)
             await new Promise(resolve => setTimeout(resolve, 1000))
             this.revealAnswers();
-            if (i + 1 === this.amountOfQuestions) {
-                new MusicFader().fadeOut(this.music, 1000);
-                await new Promise(resolve => setTimeout(resolve, 500));
-                this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
-                this.memory.crossMusic.volume = 0.2;
-                this.memory.crossMusic.play()
-            }
             await this.waitForSpace();
             new Audio('music/wwds/richtig.mp3').play();
             this.revealCorrect();
             await new Promise(resolve => setTimeout(resolve, 500));
             this.flipToCorrect()
+            let music = new Audio("musicround/" + this.allTracks[0].path)
+            music.currentTime = this.allTracks[0].highlightFrom;
+            music.play();
             await this.waitForSpace();
+            if (i + 1 === this.amountOfQuestions) {
+                new MusicFader().fadeOut(music, 1000);
+                await new Promise(resolve => setTimeout(resolve, 500));
+                this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
+                this.memory.crossMusic.play()
+            }
             this.flipToPoints()
             await new Promise(resolve => setTimeout(resolve, 1500));
             this.collectPoints()
@@ -182,6 +186,7 @@ export class TextAwareComponent implements OnDestroy {
             await new Promise(resolve => setTimeout(resolve, 1500));
             this.scoreboard.sortSubject.next();
             await new Promise(resolve => setTimeout(resolve, 1000));
+            new MusicFader().fadeOut(music, 1000);
         }
         await this.waitForSpace()
         gsap.to('#scoreboard', {x: 600})
@@ -227,9 +232,9 @@ export class TextAwareComponent implements OnDestroy {
                 } else {
                     double = true;
                 }
-                gsap.to('#points', {borderColor: '#FFF', duration: 0.1})
                 lyricIndex++;
             }
+            gsap.to('#points', {borderColor: '#FFF', duration: 0.1})
         }
         countWithDelay(this.possiblePoints, 10, 50, value => this.possiblePoints = value)
 
@@ -249,12 +254,23 @@ export class TextAwareComponent implements OnDestroy {
         const timerMusic = new Audio('music/buzz/BTV-BL_ATA_Clock.mp3');
         await this.waitForSpace();
         timerMusic.play();
-        for (let i = 0; i < 24 && this.inputs.length < this.memory.players.length; i++) {
+        for (let i = 0; i < 24 && this.inputs.length + this.excludedIds.length < this.memory.players.length; i++) {
             this.barWidth -= 50/24;
-                await new Promise(resolve => setTimeout(resolve, 500));
+            for (let o = 0; o < this.displayObject.lyrics.length; o++) {
+                const lyric = this.displayObject.lyrics[o];
+                const elementId = `#lyric-${lyric.trackId}-${lyric.order}`;
+                const borderColor = ((i % 2 === 0 || o % 2 === 0) && !(i % 2 === 0 && o % 2 === 0)) ? '#FFF' : '#000'
+                gsap.to(elementId, {borderColor: borderColor});
+            }
+            await new Promise(resolve => setTimeout(resolve, 500));
         }
         new MusicFader().fadeOut(timerMusic, 500)
         this.acceptInputs(false)
+        for (let o = 0; o < this.displayObject.lyrics.length; o++) {
+            const lyric = this.displayObject.lyrics[o];
+            const elementId = `#lyric-${lyric.trackId}-${lyric.order}`;
+            gsap.to(elementId, {borderColor: '#000'});
+        }
     }
 
     private async showNextLyric(lyricIndex: number, lyricColor: number) {
@@ -359,6 +375,7 @@ export class TextAwareComponent implements OnDestroy {
         this.excludedIds = [];
         this.isCorrect = false
         this.acceptColors = false;
+        this.barWidth = 50
         this.allTracks = this.allTracks.slice(4, this.allTracks.length);
         const lyrics: { text: string, order: number, trackId: number }[] = [];
         for (let i = 0; i < this.allTracks[0].lyrics.length; i++) {
@@ -469,14 +486,14 @@ export class TextAwareComponent implements OnDestroy {
     }
 
     private flipToCorrect() {
-        /*let scoreboardPlayers: ScoreboardPlayer[] = [];
+        let scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
           let input = this.inputs.find(input => input.controller === player.controllerId);
-          let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
+          let correctInput = this.displayObject.answers.indexOf(this.displayObject.answers.find(ans => ans.correct)!);
           scoreboardPlayers.push({
             name: player.name,
             score: player.gameScore,
-            pointAward: 25,
+            pointAward: this.possiblePoints,
             square: input ? {
               squareBackground: inputToColor(input.button),
               squareBorder: input.button - 1 === correctInput ? '#00FF00' : '#FF0000',
@@ -484,14 +501,14 @@ export class TextAwareComponent implements OnDestroy {
             active: false
           })
         })
-        this.scoreboard.playerSubject.next([scoreboardPlayers, true])*/
+        this.scoreboard.playerSubject.next([scoreboardPlayers, true])
     }
 
     private flipToPoints() {
-        /*let scoreboardPlayers: ScoreboardPlayer[] = [];
+        let scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
           let input = this.inputs.find(input => input.controller === player.controllerId);
-          let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
+          let correctInput = this.displayObject.answers.indexOf(this.displayObject.answers.find(ans => ans.correct)!);
           scoreboardPlayers.push({
             name: player.name,
             score: player.gameScore,
@@ -499,27 +516,45 @@ export class TextAwareComponent implements OnDestroy {
             square: input?.button === correctInput + 1 ? {
               squareBackground: '#00000080',
               squareBorder: '#00FF00',
-              squareText: "+25"
+              squareText: "+" + this.possiblePoints
             } : undefined,
             active: false
           })
         })
-        this.scoreboard.playerSubject.next([scoreboardPlayers, true])*/
+        this.scoreboard.playerSubject.next([scoreboardPlayers, true])
     }
 
     private async collectPoints() {
-        /*let scoreboardPlayers: ScoreboardPlayer[] = [];
-        let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
+        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        let correctInput = this.displayObject.answers.indexOf(this.displayObject.answers.find(ans => ans.correct)!);
         this.memory.players.forEach((player) => {
           let input = this.inputs.find(input => input.controller === player.controllerId);
           scoreboardPlayers.push({
             name: player.name,
             score: player.gameScore,
-            pointAward: input?.button === correctInput + 1 ? 25 : 0,
+            pointAward: input?.button === correctInput + 1 ? this.possiblePoints : 0,
             square: undefined,
             active: false
           })
         })
-        this.scoreboard.playerSubject.next([scoreboardPlayers, true])*/
+        this.scoreboard.playerSubject.next([scoreboardPlayers, true])
+    }
+
+    private correct() {
+        this.stoppBuzzFlash = true;
+        this.isCorrect = true;
+    }
+
+    private async incorrect() {
+        this.excludedIds.push(this.inputs[0].controller)
+        this.stoppBuzzFlash = true;
+
+        this.inputs = [];
+
+        const states = new Array(4).fill(true);
+        for (const id of this.excludedIds) {
+            states[id] = false;
+        }
+        this.buzz.setLeds(states);
     }
 }

@@ -169,7 +169,7 @@ export class TimelineRoundComponent implements OnDestroy {
                 new MusicFader().fadeOut(this.music, 1000);
                 await new Promise(resolve => setTimeout(resolve, 500));
                 this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
-                this.memory.crossMusic.volume = 0.2;
+                // this.memory.crossMusic.volume = 0.2;
                 this.memory.crossMusic.play()
             }
             this.flipToPoints()
