@@ -15,7 +15,7 @@ import { MemoryService } from "../../services/memory.service";
 })
 export class ScoreboardComponent {
     players: ScoreboardPlayer[] = [];
-    space: number = 200;
+    space = 200;
     preSpace: number;
     kill = false;
 
@@ -67,7 +67,7 @@ export class ScoreboardComponent {
         for (const player of newPlayers) {
             if (player.square) {
                 if (oldPlayers.find(oldPlayer => oldPlayer.name === player.name)!.square) {
-                    let oldSquare = oldPlayers.find(oldPlayer => oldPlayer.name === player.name)!.square;
+                    const oldSquare = oldPlayers.find(oldPlayer => oldPlayer.name === player.name)!.square;
                     if (player.square.squareBorder !== oldSquare?.squareBorder || player.square.squareBackground !== oldSquare?.squareBackground || player.square.squareText !== oldSquare?.squareText) {
                         gsap.set('#player-square-' + player.name, {rotateX: 0});
                         gsap.to('#player-square-' + player.name, {rotateX: 360, borderColor: player.square.squareBorder, backgroundColor: player.square.squareBackground});
@@ -104,7 +104,7 @@ export class ScoreboardComponent {
 
     private async sort(initial = false) {
         this.memory.players = [...this.memory.players.sort((a, b) => b.gameScore - a.gameScore)];
-        let old = [...this.players];
+        const old = [...this.players];
         this.players = [...this.players.sort((a, b) => b.score - a.score)];
 
         let index = 0;
@@ -121,7 +121,7 @@ export class ScoreboardComponent {
         }
         if (changeHappened && !initial) {
             await new Promise(resolve => setTimeout(resolve, 100));
-            let audio = new Audio('/music/buzz/bmq-change_place.mp3')
+            const audio = new Audio('/music/buzz/bmq-change_place.mp3')
             audio.volume = 0.2
             audio.play();
         }

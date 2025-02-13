@@ -47,10 +47,10 @@ export class TimelineRoundComponent implements OnDestroy {
         lyrics: []
     }
     musicTracks: MusicQuestion[] = [this.currentTrack];
-    spacePressed: boolean = false;
+    spacePressed = false;
     backgroundMusic: HTMLAudioElement = new Audio();
     music: HTMLAudioElement = new Audio();
-    timerDone: boolean = false;
+    timerDone = false;
     trackList: MusicQuestion[] = [];
     markers: {
         color: Colors | null,
@@ -61,8 +61,8 @@ export class TimelineRoundComponent implements OnDestroy {
     protected readonly isNaN = isNaN;
     private excludeIds: number[] = [];
     private inputs: ButtonState[] = [];
-    private acceptInputsVar: boolean = false;
-    private timerShown: boolean = false;
+    private acceptInputsVar = false;
+    private timerShown = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];

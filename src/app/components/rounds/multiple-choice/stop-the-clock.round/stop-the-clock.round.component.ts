@@ -32,17 +32,17 @@ export class StopTheClockRoundComponent implements OnDestroy {
         ], shuffle: false
     };
     questions: Question[] = [this.currentQuestion];
-    spacePressed: boolean = false;
+    spacePressed = false;
     music: HTMLAudioElement = new Audio();
-    timerDone: boolean = false;
+    timerDone = false;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    maxTime: number = 0;
-    timerSound: boolean = true;
-    showTime: boolean = false;
-    questionFullWidth: boolean = true;
+    maxTime = 0;
+    timerSound = true;
+    showTime = false;
+    questionFullWidth = true;
     private inputs: ButtonState[] = [];
     private clocks: { timeLeft: number, controller: number }[] = [];
-    private acceptInputsVar: boolean = false;
+    private acceptInputsVar = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -89,7 +89,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
 
         gsap.set('#scoreboard', {x: 600})
 
-        let away = {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"}
+        const away = {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"}
         gsap.set('#blue', away)
         gsap.set('#orange', away)
         gsap.set('#green', away)
@@ -119,9 +119,9 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private async displayAnswers(tf: boolean) {
-        let time = 100;
-        let see = {rotateY: 2, x: 30, ease: "back.inOut"}
-        let away = {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"}
+        const time = 100;
+        const see = {rotateY: 2, x: 30, ease: "back.inOut"}
+        const away = {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"}
         if (tf) {
             gsap.to('#blue', see)
             await new Promise(resolve => setTimeout(resolve, time));
@@ -202,11 +202,11 @@ export class StopTheClockRoundComponent implements OnDestroy {
                 if (!this.inputs.some(input => input.controller === buttonState.controller)) {
                     this.inputs.push(buttonState);
                     new Audio('music/wwds/einloggen.mp3').play();
-                    let states = new Array(4).fill(true);
-                    for (let clock of this.clocks) {
+                    const states = new Array(4).fill(true);
+                    for (const clock of this.clocks) {
                         states[clock.controller] = clock.timeLeft > 0;
                     }
-                    for (let input of this.inputs) {
+                    for (const input of this.inputs) {
                         states[input.controller] = false;
                     }
                     this.buzz.setLeds(states);
@@ -245,12 +245,12 @@ export class StopTheClockRoundComponent implements OnDestroy {
                 this.hue.setColor(HueLightService.secondary, iteration % 10 === 0 ? this.round.primary : this.round.background, 100, 254);
             }
             await new Promise(resolve => setTimeout(resolve, 100))
-            let states: boolean[] = new Array(4);
-            for (let clock of this.clocks) {
+            const states: boolean[] = new Array(4);
+            for (const clock of this.clocks) {
                 if (!this.inputs.find(input => input.controller === clock.controller)) clock.timeLeft = Number((clock.timeLeft - 0.1).toFixed(1))
                 states[clock.controller] = clock.timeLeft > 0;
             }
-            for (let input of this.inputs) {
+            for (const input of this.inputs) {
                 states[input.controller] = false;
             }
             this.buzz.setLeds(states);
@@ -264,8 +264,8 @@ export class StopTheClockRoundComponent implements OnDestroy {
     private acceptInputs(tf: boolean) {
         this.acceptInputsVar = tf;
         if (tf) {
-            let states = new Array(4).fill(false);
-            for (let player of this.memory.players) {
+            const states = new Array(4).fill(false);
+            for (const player of this.memory.players) {
                 states[player.controllerId] = this.clocks.find(clock => clock.controller === player.controllerId)!.timeLeft > 0;
             }
             this.buzz.setLeds(states);
@@ -275,9 +275,9 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private revealAnswers() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -304,10 +304,10 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private flipToCorrect() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
+            const correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -323,11 +323,11 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private flipToPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let clock = this.clocks.find(clock => clock.controller === player.controllerId);
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
+            const clock = this.clocks.find(clock => clock.controller === player.controllerId);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
+            const correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -348,11 +348,11 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private async collectPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
-        let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
+        const correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            let clock = this.clocks.find(clock => clock.controller === player.controllerId);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
+            const clock = this.clocks.find(clock => clock.controller === player.controllerId);
             if (clock && input && input.button !== correctInput+1) clock.timeLeft -= 3;
             scoreboardPlayers.push({
                 name: player.name,
@@ -366,11 +366,11 @@ export class StopTheClockRoundComponent implements OnDestroy {
     }
 
     private async updateDisplayedTime() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let timeLeft = this.clocks.find(clock => clock.controller === player.controllerId)!.timeLeft
-            let playerInput = this.inputs.find(input => input.controller === player.controllerId);
-            let square: ScoreboardSquare = playerInput ? {
+            const timeLeft = this.clocks.find(clock => clock.controller === player.controllerId)!.timeLeft
+            const playerInput = this.inputs.find(input => input.controller === player.controllerId);
+            const square: ScoreboardSquare = playerInput ? {
                 squareBorder: '#FFFFFF',
                 squareBackground: '#00000080',
                 squareText: "" + Math.floor(timeLeft)

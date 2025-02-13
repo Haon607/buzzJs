@@ -12,19 +12,19 @@ import { MusicFader } from "../../../utils";
     styleUrls: ['./timer.component.css']
 })
 export class TimerComponent implements OnInit, OnDestroy {
-    @Input() duration: number = 100; // Default duration in seconds
-    @Input() size: number = 200; // Default size in pixels
-    @Input() showTime: boolean = false;
-    @Input() makeSound: boolean = true;
+    @Input() duration = 100; // Default duration in seconds
+    @Input() size = 200; // Default size in pixels
+    @Input() showTime = false;
+    @Input() makeSound = true;
     @Output() timerExpired = new EventEmitter<void>();
 
-    remainingTime: number = NaN;
-    progress: number = NaN;
-    radius: number = NaN;
-    circumference: number = NaN;
+    remainingTime = NaN;
+    progress = NaN;
+    radius = NaN;
+    circumference = NaN;
 
     music: HTMLAudioElement = new Audio('music/buzz/BTV-BL_ATA_Clock.mp3')
-    private interval: any;
+    private interval: number;
 
     ngOnInit(): void {
         this.radius = this.size / 2 - 10; // Padding for the stroke width
@@ -60,7 +60,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     stopTimer(roundMusic: HTMLAudioElement | null = null): void {
         if (this.interval) {
             clearInterval(this.interval);
-            this.interval = null;
+            this.interval = NaN;
             new MusicFader().fadeOut(this.music, 1000)
             if (roundMusic) roundMusic.volume = 1;
         }

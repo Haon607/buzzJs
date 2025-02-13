@@ -33,21 +33,21 @@ export class  StealingRoundComponent implements OnDestroy{
     ], shuffle: false
   };
   questions: Question[] = [this.currentQuestion];
-  spacePressed: boolean = false;
+  spacePressed = false;
   music: HTMLAudioElement = new Audio();
-  timerDone: boolean = false;
+  timerDone = false;
   amountOfQuestions = NaN;
   @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-  maxTime: number = 120;
-  timerSound: boolean = false;
-  monospaceQuestion: boolean = false;
+  maxTime = 120;
+  timerSound = false;
+  monospaceQuestion = false;
   private latestInput: ButtonState | null = null;
-  private acceptInputsVar: boolean = false;
-  private stoppBuzzFlash: boolean = false;
-  private revealongoing: boolean = false;
-  private skipVar: boolean = false;
+  private acceptInputsVar = false;
+  private stoppBuzzFlash = false;
+  private revealongoing = false;
+  private skipVar = false;
   private isCorrect: boolean | null = null;
-  private percentCounter: number = 400;
+  private percentCounter = 400;
   private readonly percentThrough = 40;
 
   constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
@@ -212,7 +212,7 @@ export class  StealingRoundComponent implements OnDestroy{
           }
         }), false])
 
-        let states = new Array(4).fill(false);
+        const states = new Array(4).fill(false);
         while (!this.stoppBuzzFlash) {
           states[buttonState.controller] = !states[buttonState.controller];
           this.buzz.setLeds(states);
@@ -269,8 +269,8 @@ export class  StealingRoundComponent implements OnDestroy{
   private acceptInputs(tf: boolean) {
     this.acceptInputsVar = tf;
     if (tf) {
-      let states = new Array(4).fill(false);
-      for (let player of this.memory.players) {
+      const states = new Array(4).fill(false);
+      for (const player of this.memory.players) {
         states[player.controllerId] = true;
       }
       this.buzz.setLeds(states);
@@ -289,7 +289,7 @@ export class  StealingRoundComponent implements OnDestroy{
   }
 
   private async collectPoints() {
-    let scoreboardPlayers: ScoreboardPlayer[] = [];
+    const scoreboardPlayers: ScoreboardPlayer[] = [];
     this.memory.players.forEach((player) => {
       scoreboardPlayers.push({
         name: player.name,
@@ -308,7 +308,7 @@ export class  StealingRoundComponent implements OnDestroy{
     this.isCorrect = true;
     this.hue.setColor(HueLightService.secondary, "#00FF00", 100);
 
-    let scoreboardPlayers: ScoreboardPlayer[] = [];
+    const scoreboardPlayers: ScoreboardPlayer[] = [];
     this.memory.players.forEach((player) => {
       scoreboardPlayers.push({
         name: player.name,
@@ -331,7 +331,7 @@ export class  StealingRoundComponent implements OnDestroy{
     this.isCorrect = false;
     this.hue.setColor(HueLightService.secondary, "#FF0000", 100);
 
-    let scoreboardPlayers: ScoreboardPlayer[] = [];
+    const scoreboardPlayers: ScoreboardPlayer[] = [];
     this.memory.players.forEach((player) => {
       scoreboardPlayers.push({
         name: player.name,

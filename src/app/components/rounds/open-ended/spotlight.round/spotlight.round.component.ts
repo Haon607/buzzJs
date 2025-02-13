@@ -33,22 +33,22 @@ export class SpotlightRoundComponent implements OnDestroy {
         ], shuffle: false
     };
     questions: Question[] = [this.currentQuestion];
-    spacePressed: boolean = false;
+    spacePressed = false;
     music: HTMLAudioElement = new Audio();
-    timerDone: boolean = false;
+    timerDone = false;
     playerOrder: number[] = [];
-    selectedPlayerAnswered: boolean = false;
-    currentPlayer: number = NaN;
+    selectedPlayerAnswered = false;
+    currentPlayer = NaN;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    maxTime: number = 12.1;
-    timerSound: boolean = true;
-    monospaceQuestion: boolean = false;
+    maxTime = 12.1;
+    timerSound = true;
+    monospaceQuestion = false;
     private doubtingPlayers: number[] = [];
-    private acceptInputsVar: boolean = false;
-    private pointsPerQuestion: number = 60;
-    private currentPlayerMayAnswer: boolean = false;
-    private revealongoing: boolean = false;
-    private categorySelect: boolean = false;
+    private acceptInputsVar = false;
+    private pointsPerQuestion = 60;
+    private currentPlayerMayAnswer = false;
+    private revealongoing = false;
+    private categorySelect = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -204,9 +204,9 @@ export class SpotlightRoundComponent implements OnDestroy {
         if (this.currentPlayer !== buttonState.controller && buttonState.button === 0 && this.acceptInputsVar && !(this.doubtingPlayers.some(id => buttonState.controller === id))) {
             new Audio('music/wwds/einloggen.mp3').play();
             this.doubtingPlayers.push(buttonState.controller)
-            let states = new Array(4).fill(false);
+            const states = new Array(4).fill(false);
             this.scoreboard.playerSubject.next([this.memory.players.map(player => {
-                let square = this.getSquare(player)
+                const square = this.getSquare(player)
                 if (player.controllerId !== this.currentPlayer && square) square.squareText = "⚡";
                 states[player.controllerId] = !this.doubtingPlayers.some(id => id === player.controllerId) && player.controllerId !== this.currentPlayer
                 return {
@@ -268,8 +268,8 @@ export class SpotlightRoundComponent implements OnDestroy {
     private acceptInputs(tf: boolean) {
         this.acceptInputsVar = tf;
         if (tf) {
-            let states = new Array(4).fill(false);
-            for (let player of this.memory.players) {
+            const states = new Array(4).fill(false);
+            for (const player of this.memory.players) {
                 states[player.controllerId] = player.controllerId !== this.currentPlayer;
             }
             this.buzz.setLeds(states);
@@ -288,7 +288,7 @@ export class SpotlightRoundComponent implements OnDestroy {
         } else {
             this.buzz.setLeds(new Array(4).fill(false))
             this.scoreboard.playerSubject.next([this.memory.players.map(player => {
-                let square = this.getSquare(player);
+                const square = this.getSquare(player);
                 if (player.controllerId !== this.currentPlayer && square) square.squareText = "⚡";
                 return {
                     name: player.name,
@@ -315,9 +315,9 @@ export class SpotlightRoundComponent implements OnDestroy {
     }
 
     private flipToPossiblePoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let square = this.getSquare(player)
+            const square = this.getSquare(player)
             if (square) square.squareText = this.getPointsAtStake(this.currentPlayer === player.controllerId, this.doubtingPlayers.length)
             scoreboardPlayers.push({
                 name: player.name,
@@ -331,10 +331,10 @@ export class SpotlightRoundComponent implements OnDestroy {
     }
 
     private flipToActualPoints(correct: boolean) {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let square = this.getSquare(player, correct)
-            let points = this.getPoints(this.currentPlayer === player.controllerId, this.doubtingPlayers.length, correct)
+            const square = this.getSquare(player, correct)
+            const points = this.getPoints(this.currentPlayer === player.controllerId, this.doubtingPlayers.length, correct)
             if (square) square.squareText = (points > 0 ? "+" : "") + points
             scoreboardPlayers.push({
                 name: player.name,
@@ -364,7 +364,7 @@ export class SpotlightRoundComponent implements OnDestroy {
     }
 
     private async collectPoints(correct: boolean) {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
             scoreboardPlayers.push({
                 name: player.name,
@@ -378,16 +378,16 @@ export class SpotlightRoundComponent implements OnDestroy {
     }
 
     private async selectPlayer(questionNumber: number) {
-        let possible = this.memory.players.map(player => player.controllerId);
+        const possible = this.memory.players.map(player => player.controllerId);
         const spinAmount = randomNumber(10,20);
         styledLogger("Nächster Spieler: " + this.memory.players.find(player => player.controllerId === this.playerOrder[questionNumber])?.name, Style.information)
         for (let i = 0; i < spinAmount; i++) {
             await new Promise(resolve => setTimeout(resolve, Math.pow(i, 2)))
             new Audio('music/div/spin' + i % 4 + '.mp3').play();
 
-            let selected = i < spinAmount -1 ? shuffleArray(possible)[0] : this.playerOrder[questionNumber];
+            const selected = i < spinAmount -1 ? shuffleArray(possible)[0] : this.playerOrder[questionNumber];
 
-            let states = new Array(4).fill(false);
+            const states = new Array(4).fill(false);
             states[selected] = true;
             this.buzz.setLeds(states);
 
@@ -448,10 +448,10 @@ export class SpotlightRoundComponent implements OnDestroy {
     private async selectCategory() {
         this.displayAnswer(true);
         this.categorySelect = true
-        let categories = shuffleArray(CategoryLoader.loadCategories(this.round.questionType)).slice(0,4);
+        const categories = shuffleArray(CategoryLoader.loadCategories(this.round.questionType)).slice(0,4);
         let i = 0
         for (; this.categorySelect; i++) {
-            let states = new Array(4).fill(false);
+            const states = new Array(4).fill(false);
             states[this.currentPlayer] = i%2 === 0
             this.buzz.setLeds(states);
             this.currentQuestion.answers[0].answer = categories[i%categories.length].name;
@@ -460,7 +460,7 @@ export class SpotlightRoundComponent implements OnDestroy {
         }
         i-- //????
         this.categorySelect = false
-        let states = new Array(4).fill(false);
+        const states = new Array(4).fill(false);
         states[this.currentPlayer] = true
         this.buzz.setLeds(states);
         new Audio('music/div/spinresult.mp3').play();

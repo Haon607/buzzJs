@@ -26,19 +26,19 @@ export class HueLightService {
         });
     }
 
-    turnOn(lightIds: number[], fadeMs: number = 0): void {
+    turnOn(lightIds: number[], fadeMs = 0): void {
         const payload: any = { on: true };
         payload.transitiontime = fadeMs === 0 ? 0 : Math.round(fadeMs / 100); // Convert to deciseconds
         this.sendRequests('PUT', lightIds, '/state', payload);
     }
 
-    turnOff(lightIds: number[], fadeMs: number = 0): void {
+    turnOff(lightIds: number[], fadeMs = 0): void {
         const payload: any = { on: false };
         payload.transitiontime = fadeMs === 0 ? 0 : Math.round(fadeMs / 100); // Convert to deciseconds
         this.sendRequests('PUT', lightIds, '/state', payload);
     }
 
-    setColor(lightIds: number[], hexColor: string, fadeMs: number = 0, brightnessOverride?: number): void {
+    setColor(lightIds: number[], hexColor: string, fadeMs = 0, brightnessOverride?: number): void {
         const rgb = this.hexToRgb(hexColor);
         if (!rgb) {
             console.error('Invalid hex color provided:', hexColor);
@@ -76,7 +76,7 @@ export class HueLightService {
             return this.http.request(method, url, { body: JSON.stringify(body), headers }).pipe(catchError(this.handleError));
         });
         forkJoin(requests).subscribe({
-            next: (responses) => {/*console.log(responses)*/},
+            next: (/*responses*/) => {/*console.log(responses)*/},
             error: (err) => console.error('Error in requests:', err),
         });
     }

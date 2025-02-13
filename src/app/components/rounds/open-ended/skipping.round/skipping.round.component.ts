@@ -51,22 +51,22 @@ export class SkippingRoundComponent implements OnDestroy {
     },
     lyrics: []
   }];
-  spacePressed: boolean = false;
+  spacePressed = false;
   backgroundMusic: HTMLAudioElement = new Audio();
   music0: HTMLAudioElement = new Audio();
   music1: HTMLAudioElement = new Audio();
-  timerDone: boolean = false;
-  gotCorrect: boolean = false;
+  timerDone = false;
+  gotCorrect = false;
   amountOfTracks = 5;
   @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-  maxTime: number = 60;
-  timerSound: boolean = false;
-  monospaceQuestion: boolean = false;
+  maxTime = 60;
+  timerSound = false;
+  monospaceQuestion = false;
   private latestInput: ButtonState | null = null;
   private excludeIds: number[] = [];
-  private acceptInputsVar: boolean = false;
-  private timerShown: boolean = false;
-  private stoppBuzzFlash: boolean = false
+  private acceptInputsVar = false;
+  private timerShown = false;
+  private stoppBuzzFlash = false
 
   constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
     this.round = memory.rounds[memory.roundNumber];
@@ -229,7 +229,7 @@ export class SkippingRoundComponent implements OnDestroy {
           }
         }), false])
 
-        let states = new Array(4).fill(false);
+        const states = new Array(4).fill(false);
         while (!this.stoppBuzzFlash) {
           states[buttonState.controller] = !states[buttonState.controller];
           this.buzz.setLeds(states);
@@ -316,8 +316,8 @@ export class SkippingRoundComponent implements OnDestroy {
   private acceptInputs(tf: boolean) {
     this.acceptInputsVar = tf;
     if (tf) {
-      let states = new Array(4).fill(false);
-      for (let player of this.memory.players) {
+      const states = new Array(4).fill(false);
+      for (const player of this.memory.players) {
         states[player.controllerId] = true;
       }
       this.buzz.setLeds(states);
@@ -347,7 +347,7 @@ export class SkippingRoundComponent implements OnDestroy {
   }
 
   private flipToPoints() {
-    let scoreboardPlayers: ScoreboardPlayer[] = [];
+    const scoreboardPlayers: ScoreboardPlayer[] = [];
     this.memory.players.forEach((player) => {
       scoreboardPlayers.push({
         name: player.name,
@@ -365,7 +365,7 @@ export class SkippingRoundComponent implements OnDestroy {
   }
 
   private async collectPoints() {
-    let scoreboardPlayers: ScoreboardPlayer[] = [];
+    const scoreboardPlayers: ScoreboardPlayer[] = [];
     this.memory.players.forEach((player) => {
       scoreboardPlayers.push({
         name: player.name,
@@ -382,7 +382,7 @@ export class SkippingRoundComponent implements OnDestroy {
     this.stoppBuzzFlash = true;
     this.gotCorrect = true;
 
-    let scoreboardPlayers: ScoreboardPlayer[] = [];
+    const scoreboardPlayers: ScoreboardPlayer[] = [];
     this.memory.players.forEach((player) => {
       scoreboardPlayers.push({
         name: player.name,
@@ -423,8 +423,8 @@ export class SkippingRoundComponent implements OnDestroy {
     this.timer.startTimer();
     this.music0.play()
 
-    let states = new Array(4).fill(true);
-    for (let id of this.excludeIds) {
+    const states = new Array(4).fill(true);
+    for (const id of this.excludeIds) {
       states[id] = false;
     }
     this.buzz.setLeds(states);

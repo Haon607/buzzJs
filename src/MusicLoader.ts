@@ -57,7 +57,7 @@ export class Musicloader {
     }
 
     public static loadMusic(category: Category): MusicQuestion[] {
-        let musicQuestions: MusicQuestion[] = [];
+        const musicQuestions: MusicQuestion[] = [];
 
         musicQuestions.push({
             id: NaN,

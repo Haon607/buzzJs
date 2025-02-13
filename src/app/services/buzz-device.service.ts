@@ -18,7 +18,7 @@ export class BuzzDeviceService implements OnDestroy {
   };
 
   private previousStates: boolean[] = new Array(20).fill(false);
-  private listeners: { [key: string]: Array<(payload: any) => void> } = {
+  private listeners: Record<string, ((payload: any) => void)[]> = {
     press: [],
     release: [],
     change: [],
@@ -89,7 +89,7 @@ export class BuzzDeviceService implements OnDestroy {
     try {
       // Send the LED control message to the WebSocket server
       this.ws.send(JSON.stringify({ event: 'setLeds', states }));
-    } catch (e) {
+    } catch {
       this.triggerEvent(this.EVENTS.ERROR, 'Error sending LED control message');
     }
   }

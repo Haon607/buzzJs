@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../services/hue-light.service";
 import gsap from "gsap";
 import { ColorFader, countWithDelay, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
-import { Colors, inputToColor } from "../../../../models";
+import { inputToColor } from "../../../../models";
 import { Language, Musicloader, MusicQuestion } from "../../../../MusicLoader";
 
 @Component({
@@ -36,18 +36,18 @@ export class TextAwareComponent implements OnDestroy {
         ]
     }
     allTracks: MusicQuestion[] = new Array(4).fill(Musicloader.empty);
-    spacePressed: boolean = false;
+    spacePressed = false;
     music: HTMLAudioElement = new Audio();
-    timerDone: boolean = false;
+    timerDone = false;
     amountOfQuestions = 5;
-    maxTime: number = 30;
-    possiblePoints: number = 0;
-    barWidth: number = 50;
+    maxTime = 30;
+    possiblePoints = 0;
+    barWidth = 50;
     private inputs: ButtonState[] = [];
     private excludedIds: number[] = [];
-    private acceptInputsVar: boolean = false;
-    private acceptColors: boolean = false;
-    private isCorrect: boolean = false;
+    private acceptInputsVar = false;
+    private acceptColors = false;
+    private isCorrect = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -91,7 +91,7 @@ export class TextAwareComponent implements OnDestroy {
 
         gsap.set('#scoreboard', {x: 600})
 
-        let away = {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"}
+        const away = {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"}
         gsap.set('#blue', away)
         gsap.set('#orange', away)
         gsap.set('#green', away)
@@ -121,9 +121,9 @@ export class TextAwareComponent implements OnDestroy {
     }
 
     private async displayAnswers(tf: boolean) {
-        let time = 100;
-        let see = {rotateY: 2, x: 30, ease: "back.inOut"}
-        let away = {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"}
+        const time = 100;
+        const see = {rotateY: 2, x: 30, ease: "back.inOut"}
+        const away = {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"}
         if (tf) {
             gsap.to('#blue', see)
             await new Promise(resolve => setTimeout(resolve, time));
@@ -246,7 +246,7 @@ export class TextAwareComponent implements OnDestroy {
         this.acceptColors = true
         await new Promise(resolve => setTimeout(resolve, 1000));
         this.acceptInputs(true);
-        let timerMusic = new Audio('music/buzz/BTV-BL_ATA_Clock.mp3');
+        const timerMusic = new Audio('music/buzz/BTV-BL_ATA_Clock.mp3');
         await this.waitForSpace();
         timerMusic.play();
         for (let i = 0; i < 24 && this.inputs.length < this.memory.players.length; i++) {
@@ -325,8 +325,8 @@ export class TextAwareComponent implements OnDestroy {
             if (!this.inputs.some(input => input.controller === buttonState.controller)) {
                 this.inputs.push(buttonState);
                 new Audio('music/wwds/einloggen.mp3').play();
-                let states = new Array(4).fill(true);
-                for (let input of this.inputs) {
+                const states = new Array(4).fill(true);
+                for (const input of this.inputs) {
                     states[input.controller] = false;
                 }
                 this.buzz.setLeds(states);
@@ -360,7 +360,7 @@ export class TextAwareComponent implements OnDestroy {
         this.isCorrect = false
         this.acceptColors = false;
         this.allTracks = this.allTracks.slice(4, this.allTracks.length);
-        let lyrics: { text: string, order: number, trackId: number }[] = [];
+        const lyrics: { text: string, order: number, trackId: number }[] = [];
         for (let i = 0; i < this.allTracks[0].lyrics.length; i++) {
             lyrics.push({text: this.allTracks[0].lyrics[i], order: i, trackId: this.allTracks[0].id});
         }
@@ -408,8 +408,8 @@ export class TextAwareComponent implements OnDestroy {
     private acceptInputs(tf: boolean) {
         this.acceptInputsVar = tf;
         if (tf) {
-            let states = new Array(4).fill(false);
-            for (let player of this.memory.players) {
+            const states = new Array(4).fill(false);
+            for (const player of this.memory.players) {
                 states[player.controllerId] = true;
             }
             this.buzz.setLeds(states);
@@ -440,9 +440,9 @@ export class TextAwareComponent implements OnDestroy {
     }
 
     private revealAnswers() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,

@@ -32,19 +32,19 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
         ], shuffle: false
     };
     questions: Question[] = [this.currentQuestion];
-    spacePressed: boolean = false;
+    spacePressed = false;
     music: HTMLAudioElement = new Audio();
-    timerDone: boolean = false;
-    gotCorrect: boolean = false;
+    timerDone = false;
+    gotCorrect = false;
     amountOfQuestions = 5;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    maxTime: number = 30;
-    timerSound: boolean = true;
-    monospaceQuestion: boolean = true;
+    maxTime = 30;
+    timerSound = true;
+    monospaceQuestion = true;
     private latestInput: ButtonState | null = null;
     private excludeIds: number[] = [];
-    private acceptInputsVar: boolean = false;
-    private stoppBuzzFlash: boolean = false
+    private acceptInputsVar = false;
+    private stoppBuzzFlash = false
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -134,7 +134,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
             await this.waitForSpace();
             new Audio('music/wwds/frage.mp3').play();
             await new Promise(resolve => setTimeout(resolve, 250));
-            let question = this.currentQuestion.question;
+            const question = this.currentQuestion.question;
             this.currentQuestion.question = "";
             this.displayQuestion(true)
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
@@ -191,7 +191,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                     }
                 }), false])
 
-                let states = new Array(4).fill(false);
+                const states = new Array(4).fill(false);
                 while (!this.stoppBuzzFlash) {
                     states[buttonState.controller] = !states[buttonState.controller];
                     this.buzz.setLeds(states);
@@ -298,8 +298,8 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
     private acceptInputs(tf: boolean) {
         this.acceptInputsVar = tf;
         if (tf) {
-            let states = new Array(4).fill(false);
-            for (let player of this.memory.players) {
+            const states = new Array(4).fill(false);
+            for (const player of this.memory.players) {
                 states[player.controllerId] = true;
             }
             this.buzz.setLeds(states);
@@ -329,7 +329,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
     }
 
     private flipToPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
             scoreboardPlayers.push({
                 name: player.name,
@@ -347,7 +347,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
     }
 
     private async collectPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
             scoreboardPlayers.push({
                 name: player.name,
@@ -364,7 +364,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
         this.stoppBuzzFlash = true;
         this.gotCorrect = true;
 
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
             scoreboardPlayers.push({
                 name: player.name,
@@ -403,8 +403,8 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
         this.latestInput = null;
 
         this.timer.startTimer(this.music);
-        let states = new Array(4).fill(true);
-        for (let id of this.excludeIds) {
+        const states = new Array(4).fill(true);
+        for (const id of this.excludeIds) {
             states[id] = false;
         }
         this.buzz.setLeds(states);

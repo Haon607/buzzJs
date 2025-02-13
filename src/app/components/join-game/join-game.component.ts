@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, HostListener, input, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { ButtonState, BuzzDeviceService } from '../../services/buzz-device.service';
 import { Player } from '../../../models';
 import gsap from 'gsap';
@@ -41,7 +41,7 @@ export class JoinGameComponent implements OnDestroy {
     {playerInformation: new Player('', 3, 0), options: [], selectedOption: NaN, joined: false},
   ];
 
-  inCustomRoundsEditor: boolean = false;
+  inCustomRoundsEditor = false;
   states: boolean[] = new Array(4).fill(true);
 
   constructor(private buzz: BuzzDeviceService, private cdr: ChangeDetectorRef, private router: Router, private memory: MemoryService) {

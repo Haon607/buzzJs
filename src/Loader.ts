@@ -27,7 +27,7 @@ export interface Category {
 
 export class QuestionLoader {
     public static loadQuestion(category: Category): Question[] {
-        let questions: Question[] = [];
+        const questions: Question[] = [];
 
         switch (category.name) {
             case CategoryLoader.menschlicherKoerper.name:
@@ -454,7 +454,7 @@ export class CategoryLoader {
     }
 
     public static loadCategories(questionType: QuestionType) {
-        let categories: Category[] = [];
+        const categories: Category[] = [];
 
         categories.push(CategoryLoader.menschlicherKoerper);
         categories.push(CategoryLoader.videogames);

@@ -22,21 +22,21 @@ import { inputToColor } from "../../../models";
     styleUrl: './category.component.css'
 })
 export class CategoryComponent implements OnDestroy {
-    displayHeadline: string = "";
+    displayHeadline = "";
     round: RoundInterface;
     rounds: { name: string, index: number, color: string }[] = [];
-    activateRound: boolean = false;
+    activateRound = false;
     categories: Category[] = [];
     music: HTMLAudioElement = new Audio("/music/buzz/bqw-choose_category.mp3");
     bgc: string;
-    controllingPlayerIndex: number = NaN;
+    controllingPlayerIndex = NaN;
     selectedCategory: Category = {name: "", questionType: QuestionType.multipleChoice};
 
 
     @ViewChild("headline", {static: true}) headline!: ElementRef;
-    roundIconPath: string = "";
-    private stopBuzzCycle: boolean = false;
-    private stopLightCycle: boolean = false;
+    roundIconPath = "";
+    private stopBuzzCycle = false;
+    private stopLightCycle = false;
 
     constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService, private scoreboard: ScoreboardService) {
         this.bgc = '#' + route.snapshot.paramMap.get('bgc')!;
@@ -137,15 +137,15 @@ export class CategoryComponent implements OnDestroy {
 
     private switchControlTo(playerIndex: number) {
         styledLogger("Kontrolle wurde gewechselt zu: " + this.memory.players.find(player => player.controllerId === playerIndex)?.name, Style.information)
-        let states: boolean[] = new Array(4).fill(false);
+        const states: boolean[] = new Array(4).fill(false);
         states[playerIndex] = true;
         this.buzz.setLeds(states);
         this.controllingPlayerIndex = playerIndex;
         this.hue.setColor(HueLightService.secondary, '#FFFFFF')
         this.hue.turnOff(HueLightService.secondary, 2000)
 
-        let sbP: ScoreboardPlayer[] = [];
-        for (let player of this.memory.players) {
+        const sbP: ScoreboardPlayer[] = [];
+        for (const player of this.memory.players) {
             sbP.push(
                 {
                     name: player.name,
@@ -242,7 +242,7 @@ export class CategoryComponent implements OnDestroy {
     }
 
     private async startBuzzCycle() {
-        let states = new Array(4).fill(false);
+        const states = new Array(4).fill(false);
         for (let i = 0; i < 8; i++) {
             states[i % 4] = i - 4 >= 0;
             this.buzz.setLeds(states);
@@ -254,9 +254,9 @@ export class CategoryComponent implements OnDestroy {
     }
 
     private async startLightCycle() {
-        let lights: number[] = shuffleArray(HueLightService.primary.concat(HueLightService.secondary));
+        const lights: number[] = shuffleArray(HueLightService.primary.concat(HueLightService.secondary));
         for (let i = 0; i < lights.length * 2 && !this.stopLightCycle; i++) {
-            let color = (i - lights.length >= 0) ? this.round.primary : this.round.secondary;
+            const color = (i - lights.length >= 0) ? this.round.primary : this.round.secondary;
             this.hue.setColor([lights[i % lights.length]], color, 250)
             await new Promise((resolve) => setTimeout(resolve, 400 / lights.length));
             if (this.stopLightCycle) break;

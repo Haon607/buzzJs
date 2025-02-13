@@ -8,7 +8,7 @@ import { Player } from "../../models";
 })
 export class MemoryService {
     rounds: RoundInterface[] = [];
-    roundNumber: number = 0;
+    roundNumber = 0;
     players: Player[] = [];
     category: Category | null = null;
     scoreboardKill: EventEmitter<void> = new EventEmitter<void>();

@@ -13,7 +13,7 @@ import { inputToColor, Player } from "../../../../../models";
 import { HueLightService } from "../../../../services/hue-light.service";
 
 @Component({
-    selector: 'app-waitForIt.round',
+    selector: 'app-wait-for-it.round',
     imports: [
         ScoreboardComponent,
         NgStyle,
@@ -32,19 +32,19 @@ export class WaitForItRoundComponent implements OnDestroy {
         ], shuffle: false
     };
     questions: Question[] = [this.currentQuestion];
-    spacePressed: boolean = false;
+    spacePressed = false;
     music: HTMLAudioElement = new Audio();
-    timerDone: boolean = false;
+    timerDone = false;
     amountOfQuestions = 5;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    maxTime: number = 1;
-    timerSound: boolean = false;
-    showTime: boolean = false;
-    questionFullWidth: boolean = false;
+    maxTime = 1;
+    timerSound = false;
+    showTime = false;
+    questionFullWidth = false;
     private input?: ButtonState = undefined;
-    private acceptInputsVar: boolean = false;
+    private acceptInputsVar = false;
     private loans: { controller: number, amount: number }[] = [];
-    private questionNumber: number = 0;
+    private questionNumber = 0;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -94,7 +94,7 @@ export class WaitForItRoundComponent implements OnDestroy {
 
         gsap.set('#scoreboard', {x: 600})
 
-        let away = {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"}
+        const away = {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"}
         gsap.set('#blue', away)
         gsap.set('#orange', away)
         gsap.set('#green', away)
@@ -124,9 +124,9 @@ export class WaitForItRoundComponent implements OnDestroy {
     }
 
     private async displayAnswers(tf: boolean) {
-        let time = 100;
-        let see = {rotateY: 2, x: 30, ease: "back.inOut"}
-        let away = {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"}
+        const time = 100;
+        const see = {rotateY: 2, x: 30, ease: "back.inOut"}
+        const away = {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"}
         if (tf) {
             gsap.to('#blue', see)
             await new Promise(resolve => setTimeout(resolve, time));
@@ -286,7 +286,7 @@ export class WaitForItRoundComponent implements OnDestroy {
             if (!this.input) {
                 this.input = buttonState
                 new Audio('music/div/buzzer.mp3').play();
-                let states = new Array(4).fill(false);
+                const states = new Array(4).fill(false);
                 states[buttonState.controller] = false;
                 this.buzz.setLeds(states);
                 this.updatePoints(this.timer.remainingTime, 'buzzed')
@@ -341,8 +341,8 @@ export class WaitForItRoundComponent implements OnDestroy {
     private acceptInputs(tf: boolean) {
         this.acceptInputsVar = tf;
         if (tf) {
-            let states = new Array(4).fill(false);
-            for (let player of this.memory.players) {
+            const states = new Array(4).fill(false);
+            for (const player of this.memory.players) {
                 states[player.controllerId] = true;
             }
             this.buzz.setLeds(states);
@@ -435,7 +435,7 @@ export class WaitForItRoundComponent implements OnDestroy {
     private calculatePoints(player: Player, remainingTime: number): number {
         const playerList = this.memory.players.slice().sort((a, b) => a.gameScore - b.gameScore)
         const index = playerList.findIndex((pla: Player) => pla.controllerId === player.controllerId)
-        let reverseList = playerList.slice().reverse();
+        const reverseList = playerList.slice().reverse();
         return Math.floor(reverseList[index].gameScore * (((35 + (Math.pow(2, this.questionNumber))) - Math.floor(remainingTime)) / 100))
     }
 

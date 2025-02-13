@@ -32,17 +32,17 @@ export class PunktesammlerRoundComponent implements OnDestroy {
         ], shuffle: false
     };
     questions: Question[] = [this.currentQuestion];
-    spacePressed: boolean = false;
+    spacePressed = false;
     music: HTMLAudioElement = new Audio();
-    timerDone: boolean = false;
+    timerDone = false;
     amountOfQuestions = 7;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    maxTime: number = 15;
-    timerSound: boolean = true;
-    questionFullWidth: boolean = false;
+    maxTime = 15;
+    timerSound = true;
+    questionFullWidth = false;
     private inputs: ButtonState[] = [];
-    private acceptInputsVar: boolean = false;
-    showTime: boolean = false;
+    private acceptInputsVar = false;
+    showTime = false;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -88,7 +88,7 @@ export class PunktesammlerRoundComponent implements OnDestroy {
 
         gsap.set('#scoreboard', {x: 600})
 
-        let away = {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"}
+        const away = {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"}
         gsap.set('#blue', away)
         gsap.set('#orange', away)
         gsap.set('#green', away)
@@ -118,9 +118,9 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     }
 
     private async displayAnswers(tf: boolean) {
-        let time = 100;
-        let see = {rotateY: 2, x: 30, ease: "back.inOut"}
-        let away = {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"}
+        const time = 100;
+        const see = {rotateY: 2, x: 30, ease: "back.inOut"}
+        const away = {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"}
         if (tf) {
             gsap.to('#blue', see)
             await new Promise(resolve => setTimeout(resolve, time));
@@ -196,8 +196,8 @@ export class PunktesammlerRoundComponent implements OnDestroy {
             if (!this.inputs.some(input => input.controller === buttonState.controller)) {
                 this.inputs.push(buttonState);
                 new Audio('music/wwds/einloggen.mp3').play();
-                let states = new Array(4).fill(true);
-                for (let input of this.inputs) {
+                const states = new Array(4).fill(true);
+                for (const input of this.inputs) {
                     states[input.controller] = false;
                 }
                 this.buzz.setLeds(states);
@@ -254,8 +254,8 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     private acceptInputs(tf: boolean) {
         this.acceptInputsVar = tf;
         if (tf) {
-            let states = new Array(4).fill(false);
-            for (let player of this.memory.players) {
+            const states = new Array(4).fill(false);
+            for (const player of this.memory.players) {
                 states[player.controllerId] = true;
             }
             this.buzz.setLeds(states);
@@ -286,9 +286,9 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     }
 
     private revealAnswers() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -315,10 +315,10 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     }
 
     private flipToCorrect() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
+            const correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -334,10 +334,10 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     }
 
     private flipToPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
+            const correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -354,10 +354,10 @@ export class PunktesammlerRoundComponent implements OnDestroy {
     }
 
     private async collectPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
-        let correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
+        const correctInput = this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(ans => ans.correct)!);
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
