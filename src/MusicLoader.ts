@@ -26,6 +26,7 @@ export enum Genre {
     schlager = "Schlager",
     rap = "Rap",
     disco = "Disco",
+    rock = "Rock"
 }
 
 export enum Language {
@@ -51,9 +52,7 @@ export class Musicloader {
             from: NaN,
             to: NaN
         },
-        lyrics: [
-
-        ]
+        lyrics: []
     }
 
     public static loadMusic(category: Category): MusicQuestion[] {
@@ -262,7 +261,7 @@ export class Musicloader {
                 interpret: "Wencke Myhre",
                 releaseYear: 1970,
                 group: false,
-                genre: Genre.pop,
+                genre: Genre.schlager,
                 language: [Language.german]
             },
             highlightFrom: 53.5,
@@ -288,7 +287,7 @@ export class Musicloader {
                 genre: Genre.pop,
                 language: [Language.german]
             },
-            highlightFrom: 54 ,
+            highlightFrom: 54,
             memory: {
                 from: 60 + 22,
                 to: 60 + 26
@@ -315,16 +314,22 @@ export class Musicloader {
                 genre: Genre.hiphop,
                 language: [Language.english]
             },
-            highlightFrom: 60 + 47,
+            highlightFrom: 35,
             memory: {
-                from: 120 + 6,
-                to: 120 + 9
+                from: 54,
+                to: 60
             },
             lyrics: [
                 "Passin' every red light",
                 "I know I'm in over my head",
                 "A rebel and I don't hide",
                 "Remember all the words that you said",
+                "Even if the love was hurtin'",
+                "I'll be yours, I'll be yours again",
+                "I can feel that fire's burnin'",
+                "Give me more",
+                "So tell me, would you feel my love?",
+                "'Cause I can never get enough",
             ]
         });
         musicQuestions.push({
@@ -567,6 +572,171 @@ export class Musicloader {
                 "But I thought this can't be true 'cause",
                 "You moved to west L.A., or New York or Santa Fe",
                 "Or wherever, to get away from me",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Ace of Base - All That She Wants (Official Music Video).mp3",
+            information: {
+                title: "All That She Wants",
+                interpret: "Ace of Base",
+                releaseYear: 1992,
+                group: true,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 60 + 55,
+            memory: {
+                from: 120 + 5,
+                to: 120 + 6
+            },
+            lyrics: [
+                "She leads a lonely life",
+                "She leads a lonely life",
+                "When she woke up late in the morning light",
+                "And the day had just begun",
+                "She opened up her eyes and thought",
+                '"Oh, what a morning"',
+                "It's not a day for work",
+                "It's a day for catching tan",
+                "Just lying on the beach and having fun",
+                "She's going to get you",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "OneRepublic - Counting Stars.mp3",
+            information: {
+                title: "Counting Stars",
+                interpret: "OneRepublic",
+                releaseYear: 2013,
+                group: true,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 60 + 17,
+            memory: {
+                from: 30,
+                to: 37
+            },
+            lyrics: [
+                `Lately, I′ve been, I've been losing sleep`,
+                `Dreaming about the things that we could be`,
+                `But baby, I′ve been, I've been praying hard`,
+                `Said, "No more counting dollars, we'll be counting stars`,
+                `Yeah, we′ll be counting stars"`,
+                `I see this life like a swinging vine`,
+                `Swing my heart across the line`,
+                `And in my face is flashing signs`,
+                `Seek it out and ye shall find`,
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "You're The One That I Want (From “Grease”).mp3",
+            information: {
+                title: "You're The One That I Want",
+                interpret: "John Travolta und Olivia Newton-John",
+                releaseYear: 1978,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 46,
+            memory: {
+                from: 60 + 5,
+                to: 60 + 9
+            },
+            lyrics: [
+                "I got chills, they're multiplying",
+                "And I'm losing control",
+                "'Cause the power you're supplying",
+                "It's electrifying (electrifying)",
+                "You better shape up",
+                "'Cause I need a man",
+                "And my heart is set on you",
+                "You better shape up",
+                "You better understand",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "The Rolling Stones - Start Me Up - Official Promo.mp3",
+            information: {
+                title: "Start Me Up",
+                interpret: "The Rolling Stones",
+                releaseYear: 1981,
+                group: true,
+                genre: Genre.rock,
+                language: [Language.english]
+            },
+            highlightFrom: 60 + 39,
+            memory: {
+                from: 30,
+                to: 32
+            },
+            lyrics: [
+                "If you start me up",
+                "If you start me up I′ll never stop",
+                "If you start me up",
+                "If you start me up I'll never stop",
+                "I′ve been running hot",
+                "You got me ticking, now don't blow my top",
+                "If you start me up",
+                "If you start me up I'll never stop",
+                "Never stop, never stop, never stop",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Dire Straits - Walk Of Life (Official Music Video).mp3",
+            information: {
+                title: "Walk Of Life",
+                interpret: "Dire Straits",
+                releaseYear: 1985,
+                group: true,
+                genre: Genre.rock,
+                language: [Language.english]
+            },
+            highlightFrom: 60 +40,
+            memory: {
+                from: 120 + 20,
+                to: 120 + 25
+            },
+            lyrics: [
+                'Here comes Johnny singing oldies, goldies',
+                '"Be-Bop-A-Lula, " "Baby What I Say"',
+                'Here comes Johnny singing, "I Gotta Woman"',
+                'Down in the tunnels, trying to make it pay',
+                'He got the action, he got the motion',
+                'Oh yeah, the boy can play',
+                'Dedication, devotion',
+                'Turning all the night time into the day',
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Olivia Rodrigo - good 4 u (Official Video).mp3",
+            information: {
+                title: "good 4 u",
+                interpret: "Olivia Rodrigo",
+                releaseYear: 2021,
+                group: false,
+                genre: Genre.rock,
+                language: [Language.english]
+            },
+            highlightFrom: 60 +20,
+            memory: {
+                from: 5.5,
+                to: 6.5
+            },
+            lyrics: [
+                "Well, good for you, I guess you moved on really easily",
+                "You found a new girl, and it only took a couple weeks",
+                "Remember when you said that you wanted to give me the world? (World)",
+                "And good for you, I guess that you've been working on yourself",
+                "I guess that therapist I found for you, she really helped",
+                "Now you can be a better man for your brand-new girl",
             ]
         });
         /*

@@ -4,7 +4,7 @@
         <div class="points numbers" id="points"><span>{{possiblePoints}}</span></div>
     </div>
     <div class="lyrics-container" id="lyrics-container">
-        @for (lyric of displayObject.lyrics; track lyric) {
+        @for (lyric of displayObject.lyrics; track lyric.trackId +'-'+ lyric.order) {
             <div class="lyric" id="lyric-{{lyric.trackId}}-{{lyric.order}}"><span>{{ lyric.text }}</span></div>
         }
     </div>
