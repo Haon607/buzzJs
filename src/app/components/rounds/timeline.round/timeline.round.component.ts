@@ -59,7 +59,6 @@ export class TimelineRoundComponent implements OnDestroy {
         visible: boolean;
     }[] = [];
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    protected readonly isNaN = isNaN;
     private excludeIds: number[] = [];
     private acceptInputsVar = false;
     private timerShown = false;
@@ -191,12 +190,17 @@ export class TimelineRoundComponent implements OnDestroy {
         if (this.markers.some(marker => marker.controller === buttonState.controller && marker.visible)) {
             if (buttonState.button === 0) {
                 this.markers.find(marker => buttonState.controller === marker.controller)!.visible = false;
+                new Audio('music/div/nextplayer.mp3').play();
             }
             if (buttonState.button === 1) {
-                this.markers.find(marker => buttonState.controller === marker.controller)!.index--
+                if (this.markers.find(marker => buttonState.controller === marker.controller)!.index > -1)
+                    this.markers.find(marker => buttonState.controller === marker.controller)!.index--
+                new Audio('music/div/spin0.mp3').play();
             }
             if (buttonState.button === 2) {
-                this.markers.find(marker => buttonState.controller === marker.controller)!.index++
+                if (this.markers.find(marker => buttonState.controller === marker.controller)!.index < this.trackList.length-1)
+                    this.markers.find(marker => buttonState.controller === marker.controller)!.index++
+                new Audio('music/div/spin1.mp3').play();
             }
             this.updatePins()
         }
@@ -307,7 +311,7 @@ export class TimelineRoundComponent implements OnDestroy {
             // Apply animation and background color
             gsap.to(`#track-${track.track.id}`, {
                 y: yPosition,
-                // rotateY: 2,
+                rotateY: 2,
                 x: 15,
                 opacity: 1,
                 backgroundColor: backgroundColor, // Apply background color dynamically

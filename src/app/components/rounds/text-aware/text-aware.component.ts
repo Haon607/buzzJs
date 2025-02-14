@@ -169,7 +169,7 @@ export class TextAwareComponent implements OnDestroy {
             this.revealCorrect();
             await new Promise(resolve => setTimeout(resolve, 500));
             this.flipToCorrect()
-            let music = new Audio("musicround/" + this.allTracks[0].path)
+            const music = new Audio("musicround/" + this.allTracks[0].path)
             music.currentTime = this.allTracks[0].highlightFrom;
             music.play();
             await this.waitForSpace(true);
@@ -276,8 +276,7 @@ export class TextAwareComponent implements OnDestroy {
             }
             new MusicFader().fadeOut(timerMusic, 500)
             this.acceptInputs(false)
-            for (let o = 0; o < this.displayObject.lyrics.length; o++) {
-                const lyric = this.displayObject.lyrics[o];
+            for (const lyric of this.displayObject.lyrics) {
                 const elementId = `#lyric-${lyric.trackId}-${lyric.order}`;
                 gsap.to(elementId, {borderColor: '#000'});
             }
@@ -356,6 +355,9 @@ export class TextAwareComponent implements OnDestroy {
                 for (const input of this.inputs) {
                     states[input.controller] = false;
                 }
+                for (const id of this.excludedIds) {
+                    states[id] = false;
+                }
                 this.buzz.setLeds(states);
                 this.scoreboard.playerSubject.next([this.memory.players.map(player => {
                     return {
@@ -366,7 +368,7 @@ export class TextAwareComponent implements OnDestroy {
                             squareBackground: '#00000000',
                             squareBorder: '#FFF'
                         } : undefined,
-                        active: !this.inputs.some(input => input.controller === player.controllerId)
+                        active: !this.inputs.some(input => input.controller === player.controllerId) && !this.excludedIds.some(id => id === player.controllerId)
                     }
                 }), false])
             }
@@ -522,10 +524,10 @@ export class TextAwareComponent implements OnDestroy {
     }
 
     private flipToCorrect() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            let correctInput = this.displayObject.answers.indexOf(this.displayObject.answers.find(ans => ans.correct)!);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
+            const correctInput = this.displayObject.answers.indexOf(this.displayObject.answers.find(ans => ans.correct)!);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -544,10 +546,10 @@ export class TextAwareComponent implements OnDestroy {
     }
 
     private flipToPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
-            let correctInput = this.displayObject.answers.indexOf(this.displayObject.answers.find(ans => ans.correct)!);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
+            const correctInput = this.displayObject.answers.indexOf(this.displayObject.answers.find(ans => ans.correct)!);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -564,10 +566,10 @@ export class TextAwareComponent implements OnDestroy {
     }
 
     private async collectPoints() {
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
-        let correctInput = this.displayObject.answers.indexOf(this.displayObject.answers.find(ans => ans.correct)!);
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
+        const correctInput = this.displayObject.answers.indexOf(this.displayObject.answers.find(ans => ans.correct)!);
         this.memory.players.forEach((player) => {
-            let input = this.inputs.find(input => input.controller === player.controllerId);
+            const input = this.inputs.find(input => input.controller === player.controllerId);
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
@@ -598,8 +600,7 @@ export class TextAwareComponent implements OnDestroy {
     }
 
     private async removeLyrics() {
-        for (let i = 0; i < this.displayObject.lyrics.length; i++) {
-            const lyric = this.displayObject.lyrics[i];
+        for (const lyric of this.displayObject.lyrics) {
             const elementId = `#lyric-${lyric.trackId}-${lyric.order}`;
             gsap.to(elementId, {x: -1500, ease: "back.inOut"});
             await new Promise(resolve => setTimeout(resolve, 100));
