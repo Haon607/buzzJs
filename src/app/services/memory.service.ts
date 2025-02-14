@@ -16,9 +16,10 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
-            Round.textAware,
+            Round.timeline,
             // Round.washingMachine,
             // Round.drawing,
+            Round.textAware,
             Round.waitForIt,
             Round.whatIsTheQuestion,
             Round.spotlight,
@@ -26,9 +27,8 @@ export class MemoryService {
             Round.musicBox,
             Round.stopTheClock,
             Round.fastestFinger,
-            Round.punktesammler,
             // Round.wonderWall,
-            // Round.timeline,
+            Round.punktesammler,
             // Round.shortFuse,
             // Round.stealing,
             // Round.iLiterallyJustToldYou,
