@@ -1,6 +1,6 @@
 <div class="background" [ngStyle]="{'background': bgc}">
     <app-timer id="timer"
-               [size]="225"
+               [size]="250"
                [makeSound]="false"
                [duration]="60"
                (timerExpired)="onTimeExpired()"
@@ -10,12 +10,30 @@
         @for (track of trackList; track track.track.id + '-' + track.track.highlightFrom) {
             <div class="track" id="track-{{track.track.id}}">
                 <div><span class="track-title">{{ track.track.information.title }}</span> - <span class="track-interpret">{{ track.track.information.interpret }}</span></div>
-                <span class="track-year">{{ track.track.information.releaseYear }}</span>
+                <span class="track-year numbers">{{ track.track.information.releaseYear }}</span>
             </div>
         }
         @for (marker of markers; track marker.controller) {
             <svg class="marker" id="marker-{{marker.controller}}" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" [attr.fill]="marker.color">
                 <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/>
+            </svg>
+        }
+    </div>
+    <div id="player-container">
+        @for (player of players; track player.controller) {
+            <div class="player" id="player-{{player.controller}}">
+                <div class="player-name" id="player-name-{{player.controller}}"><span>{{ player.name }}</span></div>
+                <div class="player-change numbers" id="player-change-{{player.controller}}"><span>{{ player.change }}</span></div>
+            </div>
+        }
+    </div>
+    <div id="scorebar">
+        @for (point of this.pointList; track point.index) {
+            <div class="scorebar-value numbers" id="scorebar-value-{{point.index}}"><span>{{ point.pointValue }}</span></div>
+        }
+        @for (pMarker of this.playerMarkers; track pMarker.controller) {
+            <svg class="p-marker" id="p-marker-{{pMarker.controller}}" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" [attr.fill]="pMarker.color">
+                <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
             </svg>
         }
     </div>

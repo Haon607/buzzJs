@@ -95,6 +95,7 @@ export class ScoreboardComponent {
                 gsap.to('#player-information-' + player.name, {x: 0, scale: 1});
                 gsap.to('#player-score-' + player.name, {scale: 1, opacity: 1});
             }
+            if (player.playerColor) gsap.to('#player-information-' + player.name, {color: player.playerColor});
             if (player.active) gsap.to('#player-information-' + player.name, {borderColor: '#FFF'})
             else gsap.to('#player-information-' + player.name, {borderColor: '#000'})
             if (delay) await new Promise(resolve => setTimeout(resolve, 100));

@@ -50,7 +50,7 @@ export class TimelineRoundComponent implements OnDestroy {
     backgroundMusic: HTMLAudioElement = new Audio();
     music: HTMLAudioElement = new Audio();
     timerDone = false;
-    trackList: {track: MusicQuestion, yPos: number}[] = [];
+    trackList: { track: MusicQuestion, yPos: number }[] = [];
     markers: {
         color: string;
         controller: number;
@@ -58,6 +58,14 @@ export class TimelineRoundComponent implements OnDestroy {
         index: number;
         visible: boolean;
     }[] = [];
+    playerMarkers: {
+        color: string;
+        controller: number;
+        yPos: number;
+        index: number;
+    }[] = [];
+    pointList: { index: number, pointValue: number, yPos: number }[] = [];
+    players: { name: string, controller: number, change: string }[] = [];
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     private excludeIds: number[] = [];
     private acceptInputsVar = false;
@@ -82,6 +90,15 @@ export class TimelineRoundComponent implements OnDestroy {
 
         if (event.key === 'r') this.setupNextQuestion();
 
+        if (event.key === 'o') {
+            styledLogger("TIMER STARTED", Style.information);
+            this.timer.startTimer()
+        }
+        if (event.key === 'p') {
+            styledLogger("TIMER PAUSED, [o] to resume", Style.requiresInput);
+            this.timer.stopTimer()
+        }
+
         if (event.key === ' ') this.spacePressed = true;
     }
 
@@ -103,16 +120,31 @@ export class TimelineRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 active: false,
-                square: undefined
+                square: undefined,
+                playerColor: inputToColor(player.controllerId + 1)!,
             }
         }), false])
+
+        this.memory.players.forEach((player) => {
+            this.players.push({name: player.name, controller: player.controllerId, change: ""})
+        })
 
         gsap.set('#scoreboard', {x: 600})
 
         gsap.set('#timer', {y: -300, rotationX: -45, opacity: 1, ease: "back.inOut"})
 
         await new Promise(resolve => setTimeout(resolve, 750));
-        gsap.to('#scoreboard', {x: 0, ease: 'bounce'})
+
+        this.players.forEach((player) => {
+            gsap.set('#player-' + player.controller, {borderColor: inputToColor(player.controller + 1), background: inputToColor(player.controller + 1) + '44'})
+        })
+        gsap.set('#player-container', {y: 700, opacity: 1});
+
+        await new Promise(resolve => setTimeout(resolve, 250));
+
+        gsap.to('#player-container', {y: 0, ease: 'back.out'});
+
+        // gsap.to('#scoreboard', {x: 0, ease: 'bounce'})
     }
 
     private displayTimer(tf: boolean) {
@@ -128,27 +160,15 @@ export class TimelineRoundComponent implements OnDestroy {
         this.backgroundMusic.loop = true
         this.backgroundMusic.play()
         await this.waitForSpace();
-        this.musicTracks = this.musicTracks.slice(1, this.musicTracks.length)
-        new MusicFader().fadeOut(this.backgroundMusic, 500)
-        for (let i = 0; i < 3; i++) {
-            this.currentTrack = this.musicTracks[0]
-            this.musicTracks = this.musicTracks.slice(1, this.musicTracks.length);
-            this.printTrack(Style.speak);
-            await new Promise(resolve => setTimeout(resolve, 250));
-            this.music.src = "musicround/" + this.currentTrack.path;
-            this.music.currentTime = this.currentTrack.highlightFrom
-            this.music.play();
-            this.addTrackToList(this.currentTrack);
-            await this.waitForSpace(true);
-        }
-        new MusicFader().fadeOut(this.music, 500)
+        await this.firstThreeTracks();
         await new Promise(resolve => setTimeout(resolve, 250));
         this.backgroundMusic.play()
-        for (let i = 0; this.excludeIds.length < this.memory.players.length; i++) {
+        this.initPointsList();
+        for (let i = 0;/* this.excludeIds.length < this.memory.players.length && */this.trackList.length < 15; i++) {
             this.setupNextQuestion()
             await this.waitForSpace();
             new Audio('music/wwds/frage.mp3').play();
-            this.updatePins();
+            this.updatePins(true);
             await new Promise(resolve => setTimeout(resolve, 250));
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
             new MusicFader().fadeOut(this.backgroundMusic, 1000);
@@ -157,28 +177,28 @@ export class TimelineRoundComponent implements OnDestroy {
             await new Promise(resolve => setTimeout(resolve, 500));
             await this.startTimer();
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254)
-            this.music.currentTime = this.currentTrack.highlightFrom;
-            this.music.play()
             await new Promise(resolve => setTimeout(resolve, 1000))
+            await this.updatePins(true);
+            await this.waitForSpace()
             new Audio('music/wwds/richtig.mp3').play();
             this.displayTimer(true)
-            await new Promise(resolve => setTimeout(resolve, 500));
-            await this.waitForSpace(true);
-            if (this.excludeIds.length === this.memory.players.length) {
+            await this.addTrackToList(this.currentTrack);
+            await this.updatePins(true, true)
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            if (/*this.excludeIds.length === this.memory.players.length || */this.trackList.length === 15) {
                 new MusicFader().fadeOut(this.music, 1000);
                 await new Promise(resolve => setTimeout(resolve, 500));
                 this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
                 // this.memory.crossMusic.volume = 0.2;
                 this.memory.crossMusic.play()
             }
-            this.flipToPoints()
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            this.showChange()
+            await this.waitForSpace(true);
             new MusicFader().fadeOut(this.music, 1000);
             this.collectPoints()
             this.displayTimer(false)
+            this.updatePins(false)
             await new Promise(resolve => setTimeout(resolve, 1500));
-            this.scoreboard.sortSubject.next();
-            await new Promise(resolve => setTimeout(resolve, 1000));
         }
         await this.waitForSpace()
         gsap.to('#scoreboard', {x: 600})
@@ -186,35 +206,95 @@ export class TimelineRoundComponent implements OnDestroy {
         this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
     }
 
+    private async firstThreeTracks() {
+        this.musicTracks = this.musicTracks.slice(1, this.musicTracks.length)
+        new MusicFader().fadeOut(this.backgroundMusic, 500)
+        for (let i = 0; i < 3; i++) {
+            this.currentTrack = this.musicTracks[0];
+            this.musicTracks = this.musicTracks.slice(1, this.musicTracks.length);
+            this.printTrack(Style.speak);
+            this.music.src = "musicround/" + this.currentTrack.path;
+            this.music.currentTime = this.currentTrack.highlightFrom;
+            this.music.play();
+            this.addTrackToList(this.currentTrack);
+            await new Promise(resolve => setTimeout(resolve, 250));
+            await this.waitForSpace(true);
+        }
+        new MusicFader().fadeOut(this.music, 500);
+    }
+
     private async onPress(buttonState: ButtonState) {
-        if (this.markers.some(marker => marker.controller === buttonState.controller && marker.visible)) {
+        if (this.markers.some(marker => marker.controller === buttonState.controller && marker.visible) && this.acceptInputsVar) {
             if (buttonState.button === 0) {
                 this.markers.find(marker => buttonState.controller === marker.controller)!.visible = false;
                 new Audio('music/div/nextplayer.mp3').play();
+
+                this.players.find(player => player.controller === buttonState.controller)!.change = (this.players.filter(player => player.change !== "").length + 1) + "."
+                const states = new Array(4).fill(false);
+                for (const player of this.players) {
+                    states[player.controller] = player.change === "";
+                }
+                this.buzz.setLeds(states);
             }
             if (buttonState.button === 1) {
                 if (this.markers.find(marker => buttonState.controller === marker.controller)!.index > -1)
-                    this.markers.find(marker => buttonState.controller === marker.controller)!.index--
+                    this.markers.find(marker => buttonState.controller === marker.controller)!.index--;
                 new Audio('music/div/spin0.mp3').play();
             }
             if (buttonState.button === 2) {
-                if (this.markers.find(marker => buttonState.controller === marker.controller)!.index < this.trackList.length-1)
-                    this.markers.find(marker => buttonState.controller === marker.controller)!.index++
+                if (this.markers.find(marker => buttonState.controller === marker.controller)!.index < this.trackList.length - 1)
+                    this.markers.find(marker => buttonState.controller === marker.controller)!.index++;
                 new Audio('music/div/spin1.mp3').play();
             }
-            this.updatePins()
+            this.updatePins();
         }
     }
 
     private async waitForSpace(bounceLights = false) {
         styledLogger("Space zum weitermachen", Style.requiresInput)
         this.spacePressed = false
-        const lights = shuffleArray(HueLightService.primary.concat(HueLightService.secondary));
+
+        async function bounceTracks(trackId: Number, trackListLength: number, currentTrack: boolean, i: number) {
+            if (trackListLength <= 3 && !(i % 5 === 0)) return
+            gsap.to('#track-' + trackId, {borderColor: currentTrack ? '#FFF' : '#AAA'});
+            await new Promise(resolve => setTimeout(resolve, 500));
+            gsap.to('#track-' + trackId, {borderColor: '#000'});
+        }
+
+        async function bounceTimer(i: number) {
+            if (!(i % 5 === 0)) return
+            gsap.to('#timer', {borderColor: '#FFF'});
+            await new Promise(resolve => setTimeout(resolve, 500));
+            gsap.to('#timer', {borderColor: '#000'});
+        }
+
+        async function bouncePoints(i: number, length: number) {
+            if (!(i % 5 === 0)) return;
+
+            async function bouncePoint(index: number) {
+                gsap.to('#scorebar-value-' + index, {borderColor: '#FFF'});
+                await new Promise(resolve => setTimeout(resolve, 500));
+                gsap.to('#scorebar-value-' + index, {borderColor: '#000'});
+            }
+
+            for (let o = 0; o < length; o++) {
+                bouncePoint(o);
+                await new Promise(resolve => setTimeout(resolve, 500 / length));
+            }
+        }
+
         let i = 0;
+        const tracks = shuffleArray(this.trackList.slice());
+        const lights = shuffleArray(HueLightService.primary.concat(HueLightService.secondary));
         while (!this.spacePressed) {
-            if (bounceLights) this.hue.bounceLight([lights[i % lights.length]])
+            if (bounceLights) {
+                this.hue.bounceLight([lights[i % lights.length]])
+                bounceTracks(tracks[i % tracks.length].track.id, this.trackList.length, tracks[i % tracks.length].track.id === this.currentTrack.id, i);
+                bounceTimer(i)
+                if (this.trackList.length > 3) bouncePoints(i, this.pointList.length)
+                i++;
+            }
             await new Promise(resolve => setTimeout(resolve, 250));
-            i++;
         }
         this.spacePressed = false
     }
@@ -222,16 +302,18 @@ export class TimelineRoundComponent implements OnDestroy {
     private setupNextQuestion() {
         this.timer.resetTimer();
         this.markers = [];
-        this.memory.players.forEach(player =>
-        {
-            if (this.excludeIds.includes(player.controllerId)) return
+        this.memory.players.forEach(player => {
+            if (this.excludeIds.includes(player.controllerId)) return;
             this.markers.push({
-                color: inputToColor(player.controllerId+1) || '#FFF',
+                color: inputToColor(player.controllerId + 1) || '#FFF',
                 controller: player.controllerId,
                 yPos: NaN,
                 index: 0,
-                visible: true,
+                visible: false,
             })
+        })
+        this.players.forEach(player => {
+            player.change = "";
         })
         this.timerShown = false;
         this.musicTracks = this.musicTracks.slice(1, this.musicTracks.length);
@@ -250,28 +332,70 @@ export class TimelineRoundComponent implements OnDestroy {
         this.music.play();
         this.timerDone = false;
         this.acceptInputs(true);
-        while (!this.timerDone /*&& this.inputs.length < this.memory.players.length*/) {
+        while (!this.timerDone && this.markers.filter(marker => !marker.visible).length < this.memory.players.length/* && this.inputs.length < this.memory.players.length*/) {
             await new Promise(resolve => setTimeout(resolve, 100));
-            if (this.timer.remainingTime < 25 && !this.timerShown) {
+            if (this.timer.remainingTime < 15 && !this.timerShown) {
                 this.timerShown = true;
                 this.displayTimer(true)
             }
         }
         this.timer.stopTimer();
         this.acceptInputs(false);
-        this.music.pause()
     }
 
     private acceptInputs(tf: boolean) {
         this.acceptInputsVar = tf;
+        const states = new Array(4).fill(false);
+        for (const player of this.memory.players) {
+            states[player.controllerId] = tf
+        }
+        this.buzz.setLeds(states);
     }
 
-    private flipToPoints() {
+    private showChange() {
+        let correctPlayers: {placement: number, controller: number}[] = [];
+        for (let correctMarker of this.markers.filter(marker => marker.yPos === this.trackList.find(track => track.track.id === this.currentTrack.id)!.yPos)) {
+            const correspondingPlayer = this.players.find(player => player.controller === correctMarker.controller)!
+            let placement = Number(correspondingPlayer.change.slice(0, 1));
+            if (placement === 0) placement = NaN;
+            correctPlayers.push({placement: placement, controller: correspondingPlayer.controller})
+        }
+        correctPlayers.sort((a, b) => {
+            if (isNaN(a.placement) && isNaN(b.placement)) return 0; // Keep NaNs in place relative to each other
+            if (isNaN(a.placement)) return 1; // Move NaN to the end
+            if (isNaN(b.placement)) return -1; // Move NaN to the end
+            return a.placement - b.placement; // Normal numeric sort
+        });
+        const maxPoints = 4
+        let currentAddition = maxPoints
+        console.log(correctPlayers)
+        for (let correct of correctPlayers) {
+            const correspondingPlayer = this.players.find(player => player.controller === correct.controller)!
+            correspondingPlayer.change = "+" + currentAddition
+            this.playerMarkers.find(pMarker => pMarker.controller === correspondingPlayer.controller)!.index -= currentAddition
+            if (!isNaN(correct.placement)) {
+                currentAddition -= Math.floor(maxPoints/this.players.length)
+            }
+        }
 
+        for (let incorrect of this.markers.filter(marker => marker.yPos !== this.trackList.find(track => track.track.id === this.currentTrack.id)!.yPos)) {
+            const correspondingPlayer = this.players.find(player => player.controller === incorrect.controller)!
+            if (this.trackList.find(track => track.track.id === this.currentTrack.id)!.yPos > incorrect.yPos) {
+                correspondingPlayer.change = "-" + (1 + Math.floor((this.currentTrack.information.releaseYear - this.trackList[incorrect.index + 1].track.information.releaseYear) / 5))
+                this.playerMarkers.find(pMarker => pMarker.controller === correspondingPlayer.controller)!.index += (1 + Math.floor((this.currentTrack.information.releaseYear - this.trackList[incorrect.index + 1].track.information.releaseYear) / 5))
+            } else {
+                correspondingPlayer.change = "-" + (1 + Math.floor((this.trackList[incorrect.index].track.information.releaseYear - this.currentTrack.information.releaseYear) / 5))
+                this.playerMarkers.find(pMarker => pMarker.controller === correspondingPlayer.controller)!.index += (1 + Math.floor((this.trackList[incorrect.index].track.information.releaseYear - this.currentTrack.information.releaseYear) / 5))
+            }
+        }
     }
 
     private async collectPoints() {
-
+        for (const pMarker of this.playerMarkers) {
+            if (pMarker.index < 0) pMarker.index = 0;
+            if (pMarker.index >= this.pointList.length) pMarker.index = this.pointList.length-1;
+        }
+        this.updatePlayerPins(true)
     }
 
     private async addTrackToList(question: MusicQuestion) {
@@ -323,22 +447,117 @@ export class TimelineRoundComponent implements OnDestroy {
         }
     }
 
-    private async updatePins() {
+    private async updatePins(setVisible: boolean | null = null, revealPhase = false) {
         this.trackList.sort((a, b) => a.yPos - b.yPos);
 
         if (this.markers.some(marker => isNaN(marker.yPos))) {
             for (const marker of this.markers) {
-                gsap.set("#marker-" + marker.controller, {x: -1500, y: 500});
+                gsap.set("#marker-" + marker.controller, {x: 30, y: -500});
+                marker.index = Math.floor(this.trackList.length / 2) - 1;
             }
             await new Promise(resolve => setTimeout(resolve, 500))
-
         }
 
         for (const marker of this.markers) {
-            if (marker.index === -1) marker.yPos = 0;
-            else if (marker.index === this.trackList.length-1) marker.yPos = 1000;
-            else marker.yPos = this.trackList[marker.index].yPos + (this.trackList[marker.index+1].yPos - this.trackList[marker.index].yPos)/2;
-            gsap.to("#marker-" + marker.controller, {y: marker.yPos, opacity: marker.visible ? 1 : 0, x: 30 + (marker.controller * 10)});
+            marker.yPos = NaN
+            if (revealPhase) {
+                const track = this.trackList.find(t => t.track.id === this.currentTrack.id)!;
+                if (marker.index + 1 === this.trackList.indexOf(track)) {
+                    marker.yPos = track.yPos;
+                } else if (marker.index + 1 > this.trackList.indexOf(track)) {
+                    marker.index++;
+                } else if (this.trackList[marker.index + 1].track.information.releaseYear == this.currentTrack.information.releaseYear) {
+                    marker.yPos = track.yPos;
+                }
+            }
+
+            if (setVisible !== null) marker.visible = setVisible
+
+            if (marker.index === -1 && isNaN(marker.yPos)) marker.yPos = 0;
+            else if (marker.index === this.trackList.length - 1 && isNaN(marker.yPos)) marker.yPos = 1000;
+            else if (isNaN(marker.yPos)) marker.yPos = this.trackList[marker.index].yPos + (this.trackList[marker.index + 1].yPos - this.trackList[marker.index].yPos) / 2;
+            gsap.to("#marker-" + marker.controller, {y: marker.yPos, opacity: marker.visible ? 1 : 0, x: 30 + (marker.controller * 10), duration: 0.5});
+        }
+    }
+
+    private async initPointsList() {
+        for (let i = 0; i <= 20; i++) {
+            this.pointList.push({index: NaN, pointValue: this.generateSequenceValue(i), yPos: NaN})
+        }
+        this.pointList.sort((a, b) => a.pointValue - b.pointValue);
+        for (let i = 0; i <= 20; i++) {
+            this.pointList[i].index = i;
+        }
+        this.pointList.reverse();
+
+        const height = 1080;
+        const minusLast = 150;
+
+        const space = (height - minusLast) / (this.pointList.length - 1); // Calculate space to position tracks evenly
+        let index = 0;
+
+        // Calculate the range of release years
+        const minPoint = this.pointList[0].pointValue;
+        const maxPoint = this.pointList[this.pointList.length - 1].pointValue;
+        const pointRange = maxPoint - minPoint;
+
+        // Wait before starting the animation
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        // Loop through the track list and position them
+        for (const point of this.pointList) {
+            // Set initial position of the newly added track
+            gsap.set("#scorebar-value-" + point.index, {x: -1500, y: 500});
+            let yPosition = index === this.pointList.length - 1 ? height - minusLast : space * index; // Ensure the last track is at the bottom
+
+            // Normalize the release year to a hue (0-270 for the rainbow spectrum)
+            const normalizedPoint = (point.pointValue - minPoint) / pointRange; // Range from 0 to 1
+            const hue = normalizedPoint * 270; // Map normalized value to 0-270
+            const backgroundColor = `hsl(${hue}, 100%, 15%)`;
+
+            yPosition += 45;
+
+            // Apply animation and background color
+            gsap.to("#scorebar-value-" + point.index, {
+                y: yPosition,
+                rotateY: -2,
+                x: -15,
+                opacity: 1,
+                backgroundColor: backgroundColor, // Apply background color dynamically
+            });
+            point.yPos = yPosition;
+
+            index++;
+            await new Promise((resolve) => setTimeout(resolve, 50));
+        }
+        for (const player of this.memory.players) {
+            this.playerMarkers.push({
+                color: inputToColor(player.controllerId + 1)!,
+                controller: player.controllerId,
+                yPos: NaN,
+                index: 0
+            })
+        }
+        this.updatePlayerPins();
+    }
+
+    private generateSequenceValue(i: number, maxIndex = 20, maxValue = 250, variance = 0.1) {
+        const base = Math.pow(i / maxIndex, 1.5); // Normalized growth
+        const noiseFactor = 1 + (Math.random() * 2 - 1) * variance; // Random variation
+        return Math.floor(base * maxValue * noiseFactor);
+    }
+
+    private async updatePlayerPins(collectPoints = false) {
+        if (this.playerMarkers.some(playerMarker => isNaN(playerMarker.yPos))) {
+            for (const playerMarker of this.playerMarkers) {
+                playerMarker.index = this.pointList.length - 1;
+            }
+            await new Promise(resolve => setTimeout(resolve, 500))
+        }
+
+        for (const playerMarker of this.playerMarkers) {
+            playerMarker.yPos = this.pointList[playerMarker.index].yPos;
+            gsap.to("#p-marker-" + playerMarker.controller, {y: playerMarker.yPos, opacity: 1, x: 0 - (playerMarker.controller * 8), duration: collectPoints ? 3 : 0.5, ease: "back.inOut"});
         }
     }
 }

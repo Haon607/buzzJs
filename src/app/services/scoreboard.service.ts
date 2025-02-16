@@ -17,7 +17,7 @@ export class ScoreboardService {
                 score: player.gameScore,
                 pointAward: undefined,
                 square: undefined,
-                active: false
+                active: false,
             }
         }), false]);
         this.sortSubject.next()
@@ -30,7 +30,8 @@ export interface ScoreboardPlayer {
     score: number;
     pointAward: number | undefined;
     square: ScoreboardSquare | undefined;
-    active: boolean
+    active: boolean;
+    playerColor?: string;
 }
 
 export class ScoreboardSquare {
