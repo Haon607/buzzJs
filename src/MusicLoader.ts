@@ -983,6 +983,58 @@ export class Musicloader {
                 "You can make it feel so real",
             ]
         });
+        musicQuestions.push({
+            id: NaN,
+            path: "Falco - Rock Me Amadeus (Official Video).mp3",
+            information: {
+                title: "Rock Me Amadeus",
+                interpret: "Falco",
+                releaseYear: 1985,
+                group: false,
+                genre: Genre.schlager,
+                language: [Language.german, Language.english]
+            },
+            highlightFrom: 47,
+            memory: {
+                from: 16,
+                to: 19
+            },
+            lyrics: [
+                'Er war ein Punker und er lebte in der großen Stadt',
+                'Es war in Wien, war Vienna, wo er alles tat',
+                'Er hatte Schulden, denn er trank, doch ihn liebten alle Frauen',
+                'Und jede rief: "Yeah, Come on and rock me, Amadeus"',
+                'Er war Superstar, er war populär',
+                'Er war so exaltiert, because er hatte Flair',
+                "Er war ein Virtuose, war 'n Rockidol",
+                'Und alles rief: "Yeah, come and rock me, Amadeus"',
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Bill Medley, Jennifer Warnes - (I've Had) The Time Of My Life (Official HD Video).mp3",
+            information: {
+                title: "(I've Had) The Time Of My Life",
+                interpret: "Bill Medley, Jennifer Warnes",
+                releaseYear: 1987,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 60 + 28,
+            memory: {
+                from: 180 + 47,
+                to: 180 + 51,
+            },
+            lyrics: [
+                "Now I′ve had the time of my life",
+                "No, I've never felt like this before",
+                "Yes, I swear it′s the truth",
+                "And I owe it all to you",
+                "'Cause I've had the time of my life",
+                "And I owe it all to you",
+            ]
+        });
         /*
         musicQuestions.push({
             id: NaN,

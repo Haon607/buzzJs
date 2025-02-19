@@ -19,6 +19,8 @@ export class MemoryService {
             Round.timeline,
             // Round.washingMachine,
             // Round.drawing,
+            // Round.wonderWall,
+            Round.iLiterallyJustToldYou,
             Round.textAware,
             Round.waitForIt,
             Round.whatIsTheQuestion,
@@ -27,11 +29,9 @@ export class MemoryService {
             Round.musicBox,
             Round.stopTheClock,
             Round.fastestFinger,
-            // Round.wonderWall,
-            Round.punktesammler,
             // Round.shortFuse,
             // Round.stealing,
-            // Round.iLiterallyJustToldYou,
+            Round.punktesammler,
         ];
         this.roundNumber = 0;
         this.players = [
@@ -39,11 +39,11 @@ export class MemoryService {
                 name: "Name",
                 controllerId: 0,
                 gameScore: 11,
-            },/* {
+            }, {
                 name: "Benedikt",
                 controllerId: 1,
                 gameScore: 10,
-            },*/ {
+            }, {
                 name: "Waltraud",
                 controllerId: 2,
                 gameScore: 0,
@@ -88,7 +88,7 @@ export class Round {
         secondary: "#f3ade2",
         rules: ""
     };
-    static iLiterallyJustToldYou = {
+    static iLiterallyJustToldYou: RoundInterface = {
         name: "Gerade sagte ich...",
         category: false,
         questionType: QuestionType.multipleChoice,

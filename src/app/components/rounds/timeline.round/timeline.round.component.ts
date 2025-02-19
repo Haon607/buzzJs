@@ -259,11 +259,23 @@ export class TimelineRoundComponent implements OnDestroy {
         styledLogger("Space zum weitermachen", Style.requiresInput)
         this.spacePressed = false
 
-        async function bounceTracks(trackId: Number, trackListLength: number, currentTrack: boolean, i: number) {
-            if (trackListLength <= 3 && !(i % 5 === 0)) return
-            gsap.to('#track-' + trackId, {borderColor: currentTrack ? '#FFF' : '#888'});
-            await new Promise(resolve => setTimeout(resolve, 500));
-            gsap.to('#track-' + trackId, {borderColor: '#000'});
+        async function bounceTracks(trackId: number, trackList: { track: MusicQuestion, yPos: number }[], currentTrack: boolean, i: number) {
+            if (trackList.length <= 3)
+                if (!(i % 5 === 0)) return
+                else {
+                    for (let track of trackList) {
+                        gsap.to('#track-' + track.track.id, {borderColor: '#FFF'});
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    for (let track of trackList) {
+                        gsap.to('#track-' + track.track.id, {borderColor: '#000'});
+                    }
+                }
+            else {
+                gsap.to('#track-' + trackId, {borderColor: currentTrack ? '#FFF' : '#888'});
+                await new Promise(resolve => setTimeout(resolve, 500));
+                gsap.to('#track-' + trackId, {borderColor: '#000'});
+            }
         }
 
         async function bounceTimer(i: number) {
@@ -294,7 +306,7 @@ export class TimelineRoundComponent implements OnDestroy {
         while (!this.spacePressed) {
             if (bounceLights) {
                 this.hue.bounceLight([lights[i % lights.length]])
-                bounceTracks(tracks[i % tracks.length].track.id, this.trackList.length, tracks[i % tracks.length].track.id === this.currentTrack.id, i);
+                bounceTracks(tracks[i % tracks.length].track.id, this.trackList, tracks[i % tracks.length].track.id === this.currentTrack.id, i);
                 bounceTimer(i)
                 if (this.trackList.length > 3) bouncePoints(i, this.pointList.length)
                 i++;
@@ -357,8 +369,8 @@ export class TimelineRoundComponent implements OnDestroy {
     }
 
     private showChange() {
-        let correctPlayers: { placement: number, controller: number }[] = [];
-        for (let correctMarker of this.markers.filter(marker => marker.yPos === this.trackList.find(track => track.track.id === this.currentTrack.id)!.yPos)) {
+        const correctPlayers: { placement: number, controller: number }[] = [];
+        for (const correctMarker of this.markers.filter(marker => marker.yPos === this.trackList.find(track => track.track.id === this.currentTrack.id)!.yPos)) {
             const correspondingPlayer = this.players.find(player => player.controller === correctMarker.controller)!
             let placement = Number(correspondingPlayer.change.slice(0, 1));
             if (placement === 0) placement = NaN;
@@ -372,8 +384,7 @@ export class TimelineRoundComponent implements OnDestroy {
         });
         const maxPoints = 4
         let currentAddition = maxPoints
-        console.log(correctPlayers)
-        for (let correct of correctPlayers) {
+        for (const correct of correctPlayers) {
             const correspondingPlayer = this.players.find(player => player.controller === correct.controller)!
             correspondingPlayer.change = "+" + currentAddition
             this.playerMarkers.find(pMarker => pMarker.controller === correspondingPlayer.controller)!.index -= currentAddition
@@ -382,7 +393,7 @@ export class TimelineRoundComponent implements OnDestroy {
             }
         }
 
-        for (let incorrect of this.markers.filter(marker => marker.yPos !== this.trackList.find(track => track.track.id === this.currentTrack.id)!.yPos)) {
+        for (const incorrect of this.markers.filter(marker => marker.yPos !== this.trackList.find(track => track.track.id === this.currentTrack.id)!.yPos)) {
             const correspondingPlayer = this.players.find(player => player.controller === incorrect.controller)!
             if (this.trackList.find(track => track.track.id === this.currentTrack.id)!.yPos > incorrect.yPos) {
                 correspondingPlayer.change = "-" + (1 + Math.floor((this.currentTrack.information.releaseYear - this.trackList[incorrect.index + 1].track.information.releaseYear) / 5))
@@ -435,6 +446,10 @@ export class TimelineRoundComponent implements OnDestroy {
             const backgroundColor = `hsl(${hue}, 100%, 15%)`;
 
             yPosition += 35;
+
+            if (this.trackList.length === 1) {
+                yPosition = 500;
+            }
 
             // Apply animation and background color
             gsap.to(`#track-${track.track.id}`, {
@@ -612,7 +627,7 @@ export class TimelineRoundComponent implements OnDestroy {
                 const clonedPlayer = {...scoreboardPlayer};
                 clonedPlayer.pointAward = Number(clonedPlayer.square!.squareText);
                 clonedPlayer.square = undefined;
-                console.log(clonedPlayer);
+                clonedPlayer.playerColor = '#FFFFFF'
                 return clonedPlayer;
             }), true]
         )
