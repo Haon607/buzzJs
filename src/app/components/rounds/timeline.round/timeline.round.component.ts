@@ -6,7 +6,7 @@ import { TimerComponent } from "../../timer/timer.component";
 import { MemoryService, RoundInterface } from "../../../services/memory.service";
 import { Genre, Musicloader, MusicQuestion } from "../../../../MusicLoader";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
-import { ScoreboardService } from "../../../services/scoreboard.service";
+import { ScoreboardPlayer, ScoreboardService, ScoreboardSquare } from "../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../services/hue-light.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
@@ -67,9 +67,9 @@ export class TimelineRoundComponent implements OnDestroy {
     pointList: { index: number, pointValue: number, yPos: number }[] = [];
     players: { name: string, controller: number, change: string }[] = [];
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    private excludeIds: number[] = [];
     private acceptInputsVar = false;
     private timerShown = false;
+    private readonly maxTracks = 15;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -143,8 +143,6 @@ export class TimelineRoundComponent implements OnDestroy {
         await new Promise(resolve => setTimeout(resolve, 250));
 
         gsap.to('#player-container', {y: 0, ease: 'back.out'});
-
-        // gsap.to('#scoreboard', {x: 0, ease: 'bounce'})
     }
 
     private displayTimer(tf: boolean) {
@@ -164,7 +162,7 @@ export class TimelineRoundComponent implements OnDestroy {
         await new Promise(resolve => setTimeout(resolve, 250));
         this.backgroundMusic.play()
         this.initPointsList();
-        for (let i = 0;/* this.excludeIds.length < this.memory.players.length && */this.trackList.length < 15; i++) {
+        for (let i = 0; !this.playerMarkers.some(pMarker => pMarker.index === 0) && this.trackList.length < this.maxTracks; i++) {
             this.setupNextQuestion()
             await this.waitForSpace();
             new Audio('music/wwds/frage.mp3').play();
@@ -185,22 +183,29 @@ export class TimelineRoundComponent implements OnDestroy {
             await this.addTrackToList(this.currentTrack);
             await this.updatePins(true, true)
             await new Promise(resolve => setTimeout(resolve, 1500));
-            if (/*this.excludeIds.length === this.memory.players.length || */this.trackList.length === 15) {
+            this.showChange()
+            await this.waitForSpace(true);
+            new MusicFader().fadeOut(this.music, 1000);
+            if (this.playerMarkers.some(pMarker => pMarker.index <= 0) || this.trackList.length === this.maxTracks) {
                 new MusicFader().fadeOut(this.music, 1000);
                 await new Promise(resolve => setTimeout(resolve, 500));
                 this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
                 // this.memory.crossMusic.volume = 0.2;
                 this.memory.crossMusic.play()
             }
-            this.showChange()
-            await this.waitForSpace(true);
-            new MusicFader().fadeOut(this.music, 1000);
             this.collectPoints()
             this.displayTimer(false)
             this.updatePins(false)
             await new Promise(resolve => setTimeout(resolve, 1500));
         }
+        styledLogger("ENDE DER RUNDE", Style.speak)
         await this.waitForSpace()
+        await this.displayScoreboard()
+        await this.displayScoresOnScoreboard();
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        this.scoreboard.sortSubject.next();
+        await this.waitForSpace();
+        gsap.to('#scorebar', {x: -2000})
         gsap.to('#scoreboard', {x: 600})
         await new Promise(resolve => setTimeout(resolve, 1000));
         this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
@@ -256,7 +261,7 @@ export class TimelineRoundComponent implements OnDestroy {
 
         async function bounceTracks(trackId: Number, trackListLength: number, currentTrack: boolean, i: number) {
             if (trackListLength <= 3 && !(i % 5 === 0)) return
-            gsap.to('#track-' + trackId, {borderColor: currentTrack ? '#FFF' : '#AAA'});
+            gsap.to('#track-' + trackId, {borderColor: currentTrack ? '#FFF' : '#888'});
             await new Promise(resolve => setTimeout(resolve, 500));
             gsap.to('#track-' + trackId, {borderColor: '#000'});
         }
@@ -303,7 +308,6 @@ export class TimelineRoundComponent implements OnDestroy {
         this.timer.resetTimer();
         this.markers = [];
         this.memory.players.forEach(player => {
-            if (this.excludeIds.includes(player.controllerId)) return;
             this.markers.push({
                 color: inputToColor(player.controllerId + 1) || '#FFF',
                 controller: player.controllerId,
@@ -353,7 +357,7 @@ export class TimelineRoundComponent implements OnDestroy {
     }
 
     private showChange() {
-        let correctPlayers: {placement: number, controller: number}[] = [];
+        let correctPlayers: { placement: number, controller: number }[] = [];
         for (let correctMarker of this.markers.filter(marker => marker.yPos === this.trackList.find(track => track.track.id === this.currentTrack.id)!.yPos)) {
             const correspondingPlayer = this.players.find(player => player.controller === correctMarker.controller)!
             let placement = Number(correspondingPlayer.change.slice(0, 1));
@@ -374,7 +378,7 @@ export class TimelineRoundComponent implements OnDestroy {
             correspondingPlayer.change = "+" + currentAddition
             this.playerMarkers.find(pMarker => pMarker.controller === correspondingPlayer.controller)!.index -= currentAddition
             if (!isNaN(correct.placement)) {
-                currentAddition -= Math.floor(maxPoints/this.players.length)
+                currentAddition -= Math.floor(maxPoints / this.players.length)
             }
         }
 
@@ -393,7 +397,7 @@ export class TimelineRoundComponent implements OnDestroy {
     private async collectPoints() {
         for (const pMarker of this.playerMarkers) {
             if (pMarker.index < 0) pMarker.index = 0;
-            if (pMarker.index >= this.pointList.length) pMarker.index = this.pointList.length-1;
+            if (pMarker.index >= this.pointList.length) pMarker.index = this.pointList.length - 1;
         }
         this.updatePlayerPins(true)
     }
@@ -559,5 +563,87 @@ export class TimelineRoundComponent implements OnDestroy {
             playerMarker.yPos = this.pointList[playerMarker.index].yPos;
             gsap.to("#p-marker-" + playerMarker.controller, {y: playerMarker.yPos, opacity: 1, x: 0 - (playerMarker.controller * 8), duration: collectPoints ? 3 : 0.5, ease: "back.inOut"});
         }
+    }
+
+    private async displayScoreboard() {
+        gsap.to('#track-list', {x: -1500, ease: "back.in", duration: 1.2})
+        gsap.to('#player-container', {y: 250, ease: "back.in", opacity: 0});
+        await new Promise(resolve => setTimeout(resolve, 1500))
+        gsap.to('#scorebar', {x: -1200, ease: "back.out", duration: 2})
+        for (const point of this.pointList) {
+            gsap.to("#scorebar-value-" + point.index, {
+                rotateY: 2,
+                duration: 2,
+            });
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000))
+
+        gsap.to('#scoreboard', {x: -50, y: -120, scale: 1.2, ease: 'bounce'})
+        await new Promise(resolve => setTimeout(resolve, 1000))
+    }
+
+    private async displayScoresOnScoreboard() {
+        let steps: { playerIds: number[], value: number, index: number }[] = []
+        steps = this.pointList.map(point => {
+            return {playerIds: this.playerMarkers.filter(pm => (20 - pm.index) >= point.index).map(pm => pm.controller), value: point.pointValue, index: point.index}
+        });
+        steps = steps.filter(step => step.playerIds.length > 0).reverse();
+
+        for (const step of steps) {
+            if (step.index !== 0) {
+                if (steps[step.index - 1].playerIds.length !== step.playerIds.length) {
+                    new Audio('music/div/nextplayer.mp3').play()
+                    await new Promise(resolve => setTimeout(resolve, 500))
+                } else gsap.to('#scorebar-value-' + (step.index - 1), {borderColor: '#888'});
+                this.updateScoreboard(steps, step);
+            }
+            gsap.to('#scorebar-value-' + step.index, {borderColor: '#FFF', duration: 0.5});
+            new Audio('music/div/spin' + (step.index % 4) + '.mp3').play()
+            await new Promise(resolve => setTimeout(resolve, 200))
+        }
+        new Audio('music/div/spinresult.mp3').play()
+        let scoreboardReturn: [ScoreboardPlayer[], boolean] = [[], false];
+        const sub = this.scoreboard.playerSubject.subscribe(returned => scoreboardReturn = returned);
+        await new Promise(resolve => setTimeout(resolve, 500))
+        this.updateScoreboard(steps)
+        await this.waitForSpace();
+        sub.unsubscribe()
+        this.scoreboard.playerSubject.next([scoreboardReturn[0].slice().map(scoreboardPlayer => {
+                const clonedPlayer = {...scoreboardPlayer};
+                clonedPlayer.pointAward = Number(clonedPlayer.square!.squareText);
+                clonedPlayer.square = undefined;
+                console.log(clonedPlayer);
+                return clonedPlayer;
+            }), true]
+        )
+    }
+
+    private updateScoreboard(steps: { playerIds: number[], value: number, index: number }[], step: { playerIds: number[], value: number, index: number } | null = null) {
+        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+            let square: ScoreboardSquare | undefined = undefined;
+            const playerSteps = steps.filter(s => s.playerIds.includes(player.controllerId));
+            const shouldUpdate = step === null || !steps.some(s => s.index >= step.index && s.playerIds.includes(player.controllerId));
+
+            if (shouldUpdate) {
+                square = {squareBackground: '', squareText: '', squareBorder: ''};
+
+                const playerColor = inputToColor(player.controllerId + 1);
+                if (playerColor) {
+                    square.squareBackground = `${playerColor}88`;
+                    square.squareBorder = playerColor;
+                }
+
+                const maxStep = playerSteps.reduce((max, s) => s.value > max.value ? s : max, {value: 0});
+                square.squareText = maxStep.value.toString();
+            }
+            return {
+                name: player.name,
+                score: player.gameScore,
+                pointAward: undefined,
+                square: square,
+                active: step ? ((steps[step.index + 1] ? !steps[step.index + 1].playerIds.includes(player.controllerId) : true) && step?.playerIds.includes(player.controllerId))! : false,
+                playerColor: inputToColor(player.controllerId + 1)
+            }
+        }), false])
     }
 }

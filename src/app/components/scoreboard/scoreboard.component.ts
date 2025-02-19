@@ -61,6 +61,9 @@ export class ScoreboardComponent {
     }
 
     private async onPlayerUpdate(newPlayers: ScoreboardPlayer[], oldPlayers: ScoreboardPlayer[], delay: boolean) {
+        console.log(oldPlayers);
+        console.log(newPlayers);
+        console.log("-------");
         await new Promise(resolve => setTimeout(resolve, 100));
         newPlayers = [...newPlayers.sort((a, b) => b.score - a.score)];
 

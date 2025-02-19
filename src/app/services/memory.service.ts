@@ -19,8 +19,8 @@ export class MemoryService {
             Round.timeline,
             // Round.washingMachine,
             // Round.drawing,
-            Round.waitForIt,
             Round.textAware,
+            Round.waitForIt,
             Round.whatIsTheQuestion,
             Round.spotlight,
             Round.skipping,
@@ -39,11 +39,11 @@ export class MemoryService {
                 name: "Name",
                 controllerId: 0,
                 gameScore: 11,
-            }, {
+            },/* {
                 name: "Benedikt",
                 controllerId: 1,
                 gameScore: 10,
-            }, {
+            },*/ {
                 name: "Waltraud",
                 controllerId: 2,
                 gameScore: 0,
@@ -57,11 +57,11 @@ export class MemoryService {
     }
 
     print() {
-        styledLogger("Printing Memory", Style.information)
-        styledLogger("Rounds: " + this.rounds.map(round => round.name), Style.information)
+        styledLogger("Printing Memory", Style.highlightInformation)
+        styledLogger("Rounds:" + this.rounds.map(round => " " + round.name), Style.information)
         styledLogger("Round number: " + this.roundNumber, Style.information)
-        styledLogger("Category: " + this.category, Style.information)
-        styledLogger("Players: " + this.players, Style.information)
+        styledLogger("Category: " + this.category?.name, Style.information)
+        styledLogger("Players:" + this.players.map(player => " " + player.controllerId + " " + player.name + " " + player.gameScore), Style.information)
     }
 }
 

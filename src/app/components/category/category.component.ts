@@ -174,7 +174,7 @@ export class CategoryComponent implements OnDestroy {
                 square: undefined
             }
         }), false])
-        this.hue.turnOff(HueLightService.secondary);
+        this.hue.turnOff(HueLightService.secondary, 1000);
         this.buzz.setLeds(new Array(4).fill(false));
         gsap.set('#scoreboard', {x: 600, y: -100, scale: 0.7})
     }

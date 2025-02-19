@@ -24,6 +24,7 @@ export enum Genre {
     pop = "Pop",
     hiphop = "Hip Hop",
     schlager = "Schlager",
+    folk = "Folk",
     rap = "Rap",
     disco = "Disco",
     rock = "Rock"
@@ -698,7 +699,7 @@ export class Musicloader {
                 genre: Genre.rock,
                 language: [Language.english]
             },
-            highlightFrom: 60 +40,
+            highlightFrom: 60 + 40,
             memory: {
                 from: 120 + 20,
                 to: 120 + 25
@@ -725,7 +726,7 @@ export class Musicloader {
                 genre: Genre.rock,
                 language: [Language.english]
             },
-            highlightFrom: 60 +20,
+            highlightFrom: 60 + 20,
             memory: {
                 from: 5.5,
                 to: 6.5
@@ -737,6 +738,249 @@ export class Musicloader {
                 "And good for you, I guess that you've been working on yourself",
                 "I guess that therapist I found for you, she really helped",
                 "Now you can be a better man for your brand-new girl",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Skero feat. Joyce Muniz - Kabinenparty.mp3",
+            information: {
+                title: "Kabinenparty",
+                interpret: "Skero",
+                releaseYear: 2009,
+                group: false,
+                genre: Genre.hiphop,
+                language: [Language.german]
+            },
+            highlightFrom: 60 + 8,
+            memory: {
+                from: 120 + 15,
+                to: 120 + 20
+            },
+            lyrics: [
+                "Die oanen foahn noch Ibiza",
+                "Die ondren noch Udine",
+                "Wir bleiben im Parkbad, mochn Party in Kabine",
+                "Hallo, geile Biene",
+                "Gemma no a bissal schwimmen?",
+                "I brauch nur mei Hondtuch no",
+                "Des is in da Kabine drinnen",
+                "Wos du sogst, konn ned stimmen",
+                "I mein das voll erst mit dir",
+                "Schau in mei Sonnenbrille",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Cascada - Everytime We Touch (Official Video).mp3",
+            information: {
+                title: "Everytime We Touch",
+                interpret: "Cascada",
+                releaseYear: 2006,
+                group: true,
+                genre: Genre.disco,
+                language: [Language.english]
+            },
+            highlightFrom: 27.5,
+            memory: {
+                from: 60 + 22,
+                to: 60 + 23.5
+            },
+            lyrics: [
+                "I still hear your voice when you sleep next to me",
+                "I still feel your touch in my dreams",
+                "Forgive me my weakness, but I don't know why",
+                "Without you, it's hard to survive",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Lady Gaga - Poker Face (Official Music Video).mp3",
+            information: {
+                title: "Poker Face",
+                interpret: "Lady Gaga",
+                releaseYear: 2008,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 56.5,
+            memory: {
+                from: 120 + 22,
+                to: 120 + 24
+            },
+            lyrics: [
+                "Mum-mum-mum-mah",
+                "Mum-mum-mum-mah",
+                "Mum-mum-mum-mah",
+                "Mum-mum-mum-mah",
+                "Mum-mum-mum-mah",
+                "I wanna hold 'em like they do in Texas, please",
+                "Fold 'em, let 'em hit me, raise it, baby, stay with me (I love it)",
+                "Love game intuition, play the cards with spades to start",
+                "And after he's been hooked, I'll play the one that's on his heart",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Natalie Imbruglia - Torn (Official Video).mp3",
+            information: {
+                title: "Torn",
+                interpret: "Natalie Imbruglia",
+                releaseYear: 1996,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 47,
+            memory: {
+                from: 180 + 30,
+                to: 180 + 35
+            },
+            lyrics: [
+                "I thought I saw a man brought to life",
+                "He was warm, he came around like he was dignified",
+                "He showed me what it was to cry",
+                "Well you couldn′t be that man that I adored",
+                "You don't seem to know, or seem to care what your heart is for",
+                "I don′t know him anymore",
+                "There's nothin' where he used to lie",
+                "Our conversation has run dry",
+                "That′s what′s goin' on",
+                "Nothing′s fine, I'm torn",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Sugababes - Push The Button (Official Video).mp3",
+            information: {
+                title: "Push The Button",
+                interpret: "Sugababes",
+                releaseYear: 2005,
+                group: true,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 60 + 46,
+            memory: {
+                from: 120 + 27,
+                to: 120 + 29
+            },
+            lyrics: [
+                "Busy throwing hints that he keeps missing",
+                "Don't have to think about it",
+                "I wanna kiss and",
+                "Everything around it",
+                "But he's too distant",
+                "I wanna feel his body",
+                "I can't resist it",
+                "I know my hidden looks can be deceiving",
+                "But how obvious should a girl be?",
+                "I was taken by the early conversation piece",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Bon Jovi - It's My Life (Official Music Video).mp3",
+            information: {
+                title: "It's My Life",
+                interpret: "Bon Jovi",
+                releaseYear: 2000,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 60 + 37.5,
+            memory: {
+                from: 32,
+                to: 32.9
+            },
+            lyrics: [
+                "This ain't a song for the broken-hearted",
+                "No silent prayer for the faith-departed",
+                "I ain't gonna be just a face in the crowd",
+                "You're gonna hear my voice",
+                "When I shout it out loud",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Dead Or Alive - You Spin Me Round (Like a Record) (Official Video).mp3",
+            information: {
+                title: "You Spin Me Round (Like a Record)",
+                interpret: "Dead Or Alive",
+                releaseYear: 1985,
+                group: true,
+                genre: Genre.rock,
+                language: [Language.english]
+            },
+            highlightFrom: 60,
+            memory: {
+                from: 60 + 15,
+                to: 60 + 22
+            },
+            lyrics: [
+                "Yeah I, I got to know your name",
+                "Well and I, could trace your private number baby",
+                "All I know is that to me",
+                "You look like you′re lots of fun",
+                "Open up your lovin' arms",
+                "I want some, want some",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "The Real Ritchie Valens - La Bamba.mp3",
+            information: {
+                title: "La Bamba",
+                interpret: "The Real Ritchie Valens",
+                releaseYear: 1939,
+                group: false,
+                genre: Genre.folk,
+                language: [Language.other]
+            },
+            highlightFrom: 38,
+            memory: {
+                from: 60 + 20,
+                to: 60 + 25
+            },
+            lyrics: [
+                "Para bailar la bamba",
+                "Para bailar la bamba se necesita una poca de gracia",
+                "Una poca de gracia pa′ mí, pa' ti, arriba y arriba",
+                "Y arriba, y arriba, por ti seré",
+                "Por ti seré, por ti seré",
+                "Yo no soy marinero",
+                "Yo no soy marinero, soy capitán",
+                "Soy capitán, soy capitán",
+            ]
+        });
+        musicQuestions.push({
+            id: NaN,
+            path: "Edward Maya & Vika Jigulina - Stereo Love (Official Music Video).mp3",
+            information: {
+                title: "Stereo Love",
+                interpret: "Edward Maya & Vika Jigulina",
+                releaseYear: 2009,
+                group: false,
+                genre: Genre.pop,
+                language: [Language.english]
+            },
+            highlightFrom: 180 + 3.5,
+            memory: {
+                from: 60 + 33,
+                to: 60 + 36.8
+            },
+            lyrics: [
+                "When you gonna stop breaking my heart?",
+                "I don't wanna be another one",
+                "Paying for the things I never done",
+                "Don't let go, don't let go, don't, my love",
+                "Can I get to your soul?",
+                "Can you get to my flow?",
+                "Can we promise we won't let go?",
+                "All the things that I need",
+                "All the things that you need",
+                "You can make it feel so real",
             ]
         });
         /*
