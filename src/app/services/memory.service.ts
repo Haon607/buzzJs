@@ -16,11 +16,12 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
+            Round.streak,
             Round.timeline,
             // Round.washingMachine,
             // Round.drawing,
             // Round.wonderWall,
-            Round.iLiterallyJustToldYou,
+            // Round.iLiterallyJustToldYou,
             Round.textAware,
             Round.waitForIt,
             Round.whatIsTheQuestion,
@@ -53,7 +54,7 @@ export class MemoryService {
                 gameScore: -10,
             },
         ]
-        this.category = CategoryLoader.allMusic;
+        this.category = CategoryLoader.inDiesemJahr;
     }
 
     print() {
@@ -176,6 +177,17 @@ export class Round {
         secondary: "#33009a",
         rules: ""
     } // Wait for it, Hintere Plätze maybe mehr punkte?
+    static streak = {
+        name: "Streaking it",
+        category: true,
+        questionType: QuestionType.openEnded,
+        path: "/streak",
+        iconPath: "m296-105-56-56 240-240 240 240-56 56-184-183-184 183Zm0-240-56-56 240-240 240 240-56 56-184-183-184 183Zm0-240-56-56 240-240 240 240-56 56-184-183-184 183Z",
+        background: "#0F0F0F",
+        primary: "#80FF80",
+        secondary: "#FFFF80",
+        rules: ""
+    }
     static optIn = {
         name: "Einsteigen bitte",
         category: true,
@@ -278,7 +290,6 @@ export class Round {
     // Audience Knowledge?
     // Autism Knowledge explaining
     // Irgend eine art von Teamspiel
-    // Streak?
     // Pikmin 3 formidable oak
 
     //SKILL GAMES (Mii News (Breaking News) - Tomodachi Life Music Extended [OST])

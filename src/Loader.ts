@@ -253,7 +253,7 @@ export class QuestionLoader {
                 break;
             case CategoryLoader.werBinIch.name:
                 questions.push({
-                    question: '',
+                    question: 'Ich habe mich für eine Pille entschieden, die Morpheus mir angeboten hat.',
                     answers: [{answer: "Neo (Matrix)", correct: true}],
                     shuffle: false,
                 });
@@ -268,7 +268,7 @@ export class QuestionLoader {
                     shuffle: false,
                 });
                 questions.push({
-                    question: '',
+                    question: 'Ich war reichster Mensch der Welt, 1964 geboren und bin Gründer von Amazon.',
                     answers: [{answer: "Jeff Bezos", correct: true}],
                     shuffle: false,
                 });
@@ -292,6 +292,18 @@ export class QuestionLoader {
                 questions.push({
                     question: 'Mit 330 Metern höhe steht welches Bauwerk im 7. Arrondissement der viertgrößten Stadt Europas?',
                     answers: [{answer: "Eiffelturm", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Wie nennt man das größte je gebaute Amphitheater der Welt heute?',
+                    answers: [{answer: "Kolosseum", correct: true}],
+                    shuffle: false,
+                });
+                break;
+            case CategoryLoader.abbreviations.name:
+                questions.push({
+                    question: 'FÜr was steht die Abkürzung "GAU" in "Super-GAU"`?',
+                    answers: [{answer: "größter anzunehmender Unfall", correct: true}],
                     shuffle: false,
                 });
                 break;
@@ -420,6 +432,10 @@ export class CategoryLoader {
         name: "In diesem Jahr...",
         questionType: QuestionType.openEnded
     }
+    static abbreviations: Category = {
+        name: "Abkürzungen",
+        questionType: QuestionType.openEnded
+    }
     static allMusic: Category = {
         name: randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Bunt durchmischt" : "Alle" : randomNumber(0, 1) === 0 ? "Keine Grenzen" : '"Ich höre alle Genres"' : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Generationenübergreifend" : "Zufall" : randomNumber(0, 1) === 0 ? "Alle machen mit" : "Keine Ausgrenzung" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? '"I listen to everything"' : "Gruppen oder Einzelpersonen" : randomNumber(0, 1) === 0 ? "Alle Sprachen" : "Lass den Zufall entscheiden" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Komme was wolle" : "Mehr geht nicht" : randomNumber(0, 1) === 0 ? "Wilder Mix" : "Alles dabei!",
         questionType: QuestionType.music,
@@ -468,6 +484,7 @@ export class CategoryLoader {
         categories.push(CategoryLoader.werBinIch);
         categories.push(CategoryLoader.inDiesemJahr);
         categories.push(CategoryLoader.sehenswuerdigkeiten);
+        categories.push(CategoryLoader.abbreviations);
         categories.push(CategoryLoader.allMusic);
         categories.push(CategoryLoader.schlagerMusic);
         categories.push(CategoryLoader.popMusic);

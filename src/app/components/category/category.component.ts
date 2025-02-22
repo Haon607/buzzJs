@@ -24,7 +24,7 @@ import { inputToColor } from "../../../models";
 export class CategoryComponent implements OnDestroy {
     displayHeadline = "";
     round: RoundInterface;
-    rounds: { name: string, index: number, color: string }[] = [];
+    rounds: { name: string, index: number, color: string, primary: string, secondary: string }[] = [];
     activateRound = false;
     categories: Category[] = [];
     music: HTMLAudioElement = new Audio("/music/buzz/bqw-choose_category.mp3");
@@ -48,7 +48,9 @@ export class CategoryComponent implements OnDestroy {
             this.rounds.push({
                 name: memory.rounds[i].name,
                 index: i,
-                color: memory.rounds[i].background
+                color: memory.rounds[i].background,
+                primary: memory.rounds[i].primary,
+                secondary: memory.rounds[i].secondary,
             })
         }
         buzz.onPress(buttonState => this.onPress(buttonState));

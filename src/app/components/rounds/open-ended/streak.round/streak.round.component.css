@@ -1,0 +1,125 @@
+.background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    color: white;
+    perspective: 1000px;
+}
+
+#timer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: 10px solid black;
+    border-radius: 50%;
+    opacity: 0;
+}
+
+#question {
+    border: 10px solid black;
+    border-radius: 50px;
+    background: linear-gradient(90deg, rgb(17, 35, 108) 0%, rgba(18,58,122,1) 100%);
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 45vh;
+    width: 65vw;
+    top: 20px;
+    left: 20px;
+    font-size: 50px;
+    padding-left: 25px;
+    padding-right: 25px;
+    white-space: pre-wrap;
+    opacity: 0;
+}
+
+.answer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    left: 20px;
+    bottom: 37vh;
+    height: 12vh;
+    width: 67vw;
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+    perspective: 1000px;
+}
+
+.answer {
+    border-style: solid;
+    border-width: 5px;
+    padding-left: 25px;
+    padding-right: 25px;
+    width: 95%;
+    height: 10vh;
+    border-radius: 50px;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    opacity: 0;
+    border-color: #000000;
+    background:   #00000088;
+}
+
+#streak-container {
+    /*border: 10px solid black;*/
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    height: 32vh;
+    width: 67vw;
+    perspective: 1000px;
+}
+
+.streak {
+    width: 95%;
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform-style: preserve-3d;
+}
+
+.streak-step {
+    border-top: 5px solid black;
+    border-bottom: 5px solid black;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 100%;
+    flex-grow: 1;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+}
+
+.step-indicator {
+    position: absolute;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 100%;
+    /*border-radius: 50px;*/
+}
+
+.progress-fill {
+    /*border-radius: 50px;*/
+    height: 100%;
+}

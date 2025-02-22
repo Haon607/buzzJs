@@ -38,7 +38,6 @@
     height: 45%;
     word-break: break-word;
     font-size: 75px;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -117,6 +116,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    -webkit-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 1));
+    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 1));
 }
 
 .round-number-text {

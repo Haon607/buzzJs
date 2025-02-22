@@ -15,6 +15,7 @@ import { StealingRoundComponent } from "./components/rounds/open-ended/stealing.
 import { DrawingRoundComponent } from "./components/rounds/drawing.round/drawing.round.component";
 import { WashingMachineRoundComponent } from "./components/rounds/multiple-choice/washing-machine.round/washing-machine.round.component";
 import { TextAwareComponent } from "./components/rounds/text-aware/text-aware.component";
+import { StreakRoundComponent } from "./components/rounds/open-ended/streak.round/streak.round.component";
 
 export const routes: Routes = [
     {path: "", component: JoinGameComponent},
@@ -26,6 +27,7 @@ export const routes: Routes = [
     {path: "round" + Round.spotlight.path, component: SpotlightRoundComponent},
     {path: "round" + Round.fastestFinger.path, component: FastestRoundComponent},
     {path: "round" + Round.stealing.path, component: StealingRoundComponent},
+    {path: "round" + Round.streak.path, component: StreakRoundComponent},
     {path: "round" + Round.musicBox.path, component: MusicboxRoundComponent},
     {path: "round" + Round.skipping.path, component: SkippingRoundComponent},
     {path: "round" + Round.textAware.path, component: TextAwareComponent},

@@ -1,0 +1,30 @@
+<div class="background" [ngStyle]="{'background': bgc}">
+    <div id="question">{{ currentQuestion.question }}</div>
+    <app-timer id="timer"
+               [size]="225"
+               [makeSound]="true"
+               [duration]="120"
+               (timerExpired)="onTimeExpired()"
+    ></app-timer>
+    <!--    @if (currentQuestion.answers[1]) {
+            <span id="in-timer-text" class="numbers">{{ currentQuestion.answers[1].answer }}</span>
+        }-->
+    <div class="answer-container" id="answer-container">
+        <div class="answer" id="answer"><span>{{ currentQuestion.answers[0].answer }}</span></div>
+    </div>
+    <div class="streak-container" id="streak-container">
+        @for (streak of streaks; track streak.controller) {
+            <div class="streak" id="streak-{{streak.controller}}">
+                @for (step of [1, 2, 3, 4]; track step) {
+                    <div class="streak-step" id="streak-step-{{streak.controller}}-{{step}}" [ngStyle]="{'background': streak.step > step ? streak.activeBackgroundColor : streak.inactiveBackgroundColor}">
+                        <div class="step-indicator numbers">+{{ stepToScore(step) }}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" [ngStyle]="{'background': streak.activeBackgroundColor, 'width': (streak.step === step ? ((streak.timer / 300) * 100) + '%' : '0%')}"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <app-scoreboard id="scoreboard" class="scoreboard"></app-scoreboard>
+</div>

@@ -17,7 +17,7 @@
     </div>
     <div id="round-numbers-container">
         @for (rou of rounds; track rou) {
-            <div class="round-number" id="round-number-{{rou.name}}" [ngStyle]="{'background': rou.color}">
+            <div class="round-number" id="round-number-{{rou.name}}" [ngStyle]="{'background': (rou.name === round.name && activateRound) ? rou.color :'radial-gradient(circle, ' + rou.secondary + ' 40%, ' + rou.primary + ' 60%'}">
                 <span class="round-number-text" [ngStyle]="{'color': (rou.name === round.name && activateRound) ? '#FFF' : '#500'}">{{rou.index+1}}</span>
             </div>
         }

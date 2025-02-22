@@ -12,7 +12,7 @@ export class HueLightService {
     private readonly BASE_URL = `http://${this.BRIDGE_IP}/api/${this.API_KEY}`;
 
     static primary = [1, 6, 7];
-    static secondary = [2, 5, 8, 9, 10];
+    static secondary = [2, 5, 8, 9/*, 10*/];
 
     constructor(private http: HttpClient) {}
 
