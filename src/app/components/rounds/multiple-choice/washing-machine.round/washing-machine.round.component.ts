@@ -1,5 +1,5 @@
 import { Component, HostListener, ViewChild, OnDestroy } from '@angular/core';
-import { MemoryService, RoundInterface } from "../../../../services/memory.service";
+import { MemoryService } from "../../../../services/memory.service";
 import { Question, QuestionLoader } from "../../../../../Loader";
 import { TimerComponent } from "../../../timer/timer.component";
 import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";
@@ -11,6 +11,7 @@ import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../ut
 import { inputToColor } from "../../../../../models";
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
+import { RoundInterface } from "../../../../services/round";
 
 @Component({
   selector: 'app-washing-machine.round',

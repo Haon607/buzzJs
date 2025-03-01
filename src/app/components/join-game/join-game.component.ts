@@ -4,8 +4,9 @@ import { Player } from '../../../models';
 import gsap from 'gsap';
 import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
-import { MemoryService, Round } from '../../services/memory.service';
+import { MemoryService } from '../../services/memory.service';
 import { Style, styledLogger } from '../../../utils';
+import { Round } from "../../services/round";
 
 export interface PlayerData {
   playerInformation: Player;
@@ -68,7 +69,7 @@ export class JoinGameComponent implements OnDestroy {
       if (event.key === 'q') {
         this.inCustomRoundsEditor = false;
         styledLogger("Quitting Round editor", Style.information);
-      } else styledLogger("Selected Rounds: " + this.memory.rounds, Style.information);
+      } else styledLogger("Selected Rounds: " + this.memory.rounds.map(round => " " + round.name), Style.information);
       return;
     }
 
@@ -78,7 +79,7 @@ export class JoinGameComponent implements OnDestroy {
 
     if (event.key === 'c') {
       this.inCustomRoundsEditor = true;
-      styledLogger("Entering round editor\nCurrently loaded rounds: " + this.memory.rounds, Style.information)
+      styledLogger("Entering round editor\nCurrently loaded rounds: " + this.memory.rounds.map(round => " " + round.name), Style.information)
       styledLogger("[BACKSPACE]: remove last round\n" +
         "[p]: add Punktesammler\n" +
         "[q]: save and quit editor"
@@ -86,6 +87,8 @@ export class JoinGameComponent implements OnDestroy {
     }
 
     if (event.key === 'a' || event.key === '') this.populateRounds(event.key);
+
+    // if (event.key === 'p') this.setPointsPerRound();
 
     if (event.key === ' ') {
       if (this.memory.rounds.length === 0) {
@@ -96,19 +99,46 @@ export class JoinGameComponent implements OnDestroy {
       } else if (this.players.some(player => player.joined && player.options[0] !== "STARTBEREIT")) {
         styledLogger("Nicht alle Spieler sind bereit", Style.information);
       } else {
-        styledLogger("SPIELSTART", Style.speak);
-        styledLogger("Spielernamen:", Style.information);
-        styledLogger(this.players.filter(player => player.joined).map(player => player.playerInformation.name).join(", "), Style.speak);
-
-        gsap.to(this.headline.nativeElement, {y: -350, opacity: 0, ease: "power1.in"})
-        gsap.to(this.controls.nativeElement, {y: 250, opacity: 0, ease: "power1.in"})
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        gsap.to(this.playerContainer.nativeElement, {x: 250, opacity: 0, ease: "power1.in"})
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        if (this.onThisPage) this.router.navigateByUrl('/category/000000');
+        await this.startGame();
       }
     }
+  }
+
+ /* private setPointsPerRound() {
+    styledLogger("Opening Points per Round dialog...", Style.requiresInput)
+    var input = prompt("Set initial Points per Round, currently: " + this.memory.pointsPerRound);
+    let number = Number(input);
+    if (isNaN(number)) {
+      styledLogger("Input is not a number, aborting", Style.highlightInformation);
+      return;
+    }
+    this.memory.pointsPerRound = number;
+    styledLogger("Points per Round set to " + number, Style.information);
+
+    styledLogger("Opening Points per Round increment dialog...", Style.requiresInput)
+    input = prompt("Set initial Points per Round increment, currently: " + this.memory.pointsPerRoundIncrement);
+    number = Number(input);
+    if (isNaN(number)) {
+      styledLogger("Input is not a number, aborting", Style.highlightInformation);
+      return;
+    }
+    this.memory.pointsPerRoundIncrement = number;
+    styledLogger("Points per Round increment set to " + number, Style.information);
+    return;
+  }*/
+
+  private async startGame() {
+    styledLogger("SPIELSTART", Style.speak);
+    styledLogger("Spielernamen:", Style.information);
+    styledLogger(this.players.filter(player => player.joined).map(player => player.playerInformation.name).join(", "), Style.speak);
+
+    gsap.to(this.headline.nativeElement, {y: -350, opacity: 0, ease: "power1.in"})
+    gsap.to(this.controls.nativeElement, {y: 250, opacity: 0, ease: "power1.in"})
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    gsap.to(this.playerContainer.nativeElement, {x: 250, opacity: 0, ease: "power1.in"})
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    if (this.onThisPage) this.router.navigateByUrl('/category/000000');
   }
 
   updateSelectedOption(player: PlayerData, direction: number) {
@@ -217,7 +247,7 @@ export class JoinGameComponent implements OnDestroy {
   private populateRounds(key: string) {
     switch (key) {
       case 'a':
-        this.memory.rounds = [Round.punktesammler];
+        this.memory.rounds = [Round.punktesammler/*TODO*/];
         break;
     }
   }

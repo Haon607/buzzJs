@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { JoinGameComponent } from './components/join-game/join-game.component';
 import { CategoryComponent } from "./components/category/category.component";
 import { PunktesammlerRoundComponent } from "./components/rounds/multiple-choice/punktesammler.round/punktesammler.round.component";
-import { Round } from "./services/memory.service";
 import { StopTheClockRoundComponent } from "./components/rounds/multiple-choice/stop-the-clock.round/stop-the-clock.round.component";
 import { WhatisthequestionRoundComponent } from "./components/rounds/open-ended/whatisthequestion.round/whatisthequestion.round.component";
 import { SpotlightRoundComponent } from "./components/rounds/open-ended/spotlight.round/spotlight.round.component";
@@ -16,6 +15,7 @@ import { DrawingRoundComponent } from "./components/rounds/drawing.round/drawing
 import { WashingMachineRoundComponent } from "./components/rounds/multiple-choice/washing-machine.round/washing-machine.round.component";
 import { TextAwareComponent } from "./components/rounds/text-aware/text-aware.component";
 import { StreakRoundComponent } from "./components/rounds/open-ended/streak.round/streak.round.component";
+import { Round } from "./services/round";
 
 export const routes: Routes = [
     {path: "", component: JoinGameComponent},

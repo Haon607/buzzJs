@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
 import { TimerComponent } from "../../timer/timer.component";
-import { MemoryService, RoundInterface } from "../../../services/memory.service";
+import { MemoryService } from "../../../services/memory.service";
 import { Question, QuestionLoader } from "../../../../Loader";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
@@ -11,6 +11,7 @@ import gsap from "gsap";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { inputToColor } from "../../../../models";
 import { NgStyle } from "@angular/common";
+import { RoundInterface } from "../../../services/round";
 
 @Component({
   selector: 'app-drawing.round',

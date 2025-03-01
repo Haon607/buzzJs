@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
 import { TimerComponent } from "../../../timer/timer.component";
-import { MemoryService, RoundInterface } from "../../../../services/memory.service";
+import { MemoryService } from "../../../../services/memory.service";
 import { Question } from "../../../../../Loader";
 import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";
 import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreboard.service";
@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../../services/hue-light.service";
 import { MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../../utils";
 import { Genre, Musicloader, MusicQuestion } from "../../../../../MusicLoader";
+import { RoundInterface } from "../../../../services/round";
 
 @Component({
   selector: 'app-skipping.round',

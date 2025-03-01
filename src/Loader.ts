@@ -222,7 +222,13 @@ export class QuestionLoader {
                     shuffle: false,
                 });
                 break;
-
+            case CategoryLoader.majorlyMissspelled.name:
+                questions.push({
+                    question: 'Wer schrieb die Romane "Farm der Tiere" und "1984"?',
+                    answers: [{answer: "Jorjor Wel"/*George Orwell*/, correct: true}, {answer: "Yll'se Eikingr"/*Illse Eichinger*/, correct: false}, {answer: "Maysink Laire"/*May Sinclair*/, correct: false}, {answer: "Tchonos Born"/*John Osborne*/, correct: false}],
+                    shuffle: true,
+                });
+                break;
 
             case CategoryLoader.phobien.name:
                 questions.push({
@@ -416,6 +422,10 @@ export class CategoryLoader {
         name: "Dinge und Geräte",
         questionType: QuestionType.multipleChoice
     }
+    static majorlyMissspelled: Category = {
+        name: "Typos und Lautsprache",
+        questionType: QuestionType.multipleChoice
+    }
     static phobien: Category = {
         name: "Phobien",
         questionType: QuestionType.openEnded
@@ -480,6 +490,7 @@ export class CategoryLoader {
         categories.push(CategoryLoader.filmeUndSerien);
         categories.push(CategoryLoader.literatur);
         categories.push(CategoryLoader.gadgetsAndGizmos);
+        categories.push(CategoryLoader.majorlyMissspelled);
         categories.push(CategoryLoader.phobien);
         categories.push(CategoryLoader.werBinIch);
         categories.push(CategoryLoader.inDiesemJahr);

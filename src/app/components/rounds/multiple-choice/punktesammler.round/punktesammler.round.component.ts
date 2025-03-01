@@ -1,6 +1,6 @@
 import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
-import { MemoryService, RoundInterface } from "../../../../services/memory.service";
+import { MemoryService } from "../../../../services/memory.service";
 import { NgStyle } from "@angular/common";
 import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreboard.service";
 import gsap from 'gsap';
@@ -11,6 +11,7 @@ import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
 import { inputToColor } from "../../../../../models";
 import { HueLightService } from "../../../../services/hue-light.service";
+import { RoundInterface } from "../../../../services/round";
 
 @Component({
     selector: 'app-punktesammler.round',

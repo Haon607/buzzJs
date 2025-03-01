@@ -1,5 +1,5 @@
 import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { MemoryService, RoundInterface } from "../../../../services/memory.service";
+import { MemoryService } from "../../../../services/memory.service";
 import { Question, QuestionLoader } from "../../../../../Loader";
 import { TimerComponent } from "../../../timer/timer.component";
 import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";
@@ -9,16 +9,16 @@ import { HueLightService } from "../../../../services/hue-light.service";
 import gsap from "gsap";
 import { ColorFader, countWithDelay, MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
-import { NgClass, NgStyle } from "@angular/common";
+import { NgStyle } from "@angular/common";
 import { inputToColor } from "../../../../../models";
+import { RoundInterface } from "../../../../services/round";
 
 @Component({
     selector: 'app-streak.round',
     imports: [
         ScoreboardComponent,
         NgStyle,
-        TimerComponent,
-        NgClass
+        TimerComponent
     ],
     templateUrl: './streak.round.component.html',
     standalone: true,
@@ -424,9 +424,9 @@ export class StreakRoundComponent implements OnDestroy {
 
     private async switchAudioStages(stage: number) {
         const index = this.musics.indexOf(this.musics.find(music => music.volume > 0.1)!);
-        this.hue.setColor(HueLightService.primary, ColorFader.adjustBrightness(stage > 0 ? this.round.primary : '#888888', -50 + (20 *  stage)), 500)
-        this.hue.setColor(HueLightService.secondary, ColorFader.adjustBrightness(stage > 0 ? this.round.secondary : '#888888', -50 + (20 *  stage)), 500)
-            new ColorFader().fadeColor(this.bgc, stage === 0 ? this.round.background : ColorFader.adjustBrightness(this.round.primary, -100 + (15 *  stage)), 500, value => this.bgc = value);
+        this.hue.setColor(HueLightService.primary, ColorFader.adjustBrightness(stage > 0 ? this.round.primary : '#888888', -50 + (20 * stage)), 500)
+        this.hue.setColor(HueLightService.secondary, ColorFader.adjustBrightness(stage > 0 ? this.round.secondary : '#888888', -50 + (20 * stage)), 500)
+        new ColorFader().fadeColor(this.bgc, stage === 0 ? this.round.background : ColorFader.adjustBrightness(this.round.primary, -100 + (15 * stage)), 500, value => this.bgc = value);
         if (index !== stage) {
             for (let i = 1; i <= 10; i++) {
                 this.musics[stage].volume = i / 10;

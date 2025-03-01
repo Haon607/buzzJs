@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy } from '@angular/core';
 import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
-import { MemoryService, RoundInterface } from "../../../services/memory.service";
+import { MemoryService } from "../../../services/memory.service";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -10,6 +10,7 @@ import gsap from "gsap";
 import { ColorFader, countWithDelay, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { inputToColor } from "../../../../models";
 import { Language, Musicloader, MusicQuestion } from "../../../../MusicLoader";
+import { RoundInterface } from "../../../services/round";
 
 @Component({
     selector: 'app-text-aware',

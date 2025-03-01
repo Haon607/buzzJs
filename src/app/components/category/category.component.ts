@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { MemoryService, RoundInterface } from "../../services/memory.service";
+import { MemoryService } from "../../services/memory.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Category, CategoryLoader, QuestionType } from "../../../Loader";
 import { ButtonState, BuzzDeviceService } from "../../services/buzz-device.service";
@@ -10,6 +10,7 @@ import gsap from 'gsap';
 import { ScoreboardPlayer, ScoreboardService } from "../../services/scoreboard.service";
 import { ScoreboardComponent } from "../scoreboard/scoreboard.component";
 import { inputToColor } from "../../../models";
+import { RoundInterface } from "../../services/round";
 
 @Component({
     selector: 'app-category',
