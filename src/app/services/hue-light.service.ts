@@ -11,8 +11,8 @@ export class HueLightService {
     private readonly API_KEY = 'accDyGkcUk0ZQhW5KU-ENr1Q83dgRqVJGoInANIO'; // Replace with your API key
     private readonly BASE_URL = `http://${this.BRIDGE_IP}/api/${this.API_KEY}`;
 
-    static primary = [1, 6, 7];
-    static secondary = [2, 5, 8, 9, /*10*/];
+    static primary = [1, 5, 7];
+    static secondary = [2, 6, 8, 9, /*10*/];
 
     constructor(private http: HttpClient) {}
 

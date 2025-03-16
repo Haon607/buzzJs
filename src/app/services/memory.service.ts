@@ -19,6 +19,7 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
+            // Round.itLiterallyJustHappened,
             Round.textAware,
             Round.punktesammler,
             // Round.washingMachine,
