@@ -30,7 +30,7 @@ export class QuestionLoader {
         const questions: Question[] = [];
 
         switch (category.name) {
-            case CategoryLoader.menschlicherKoerper.name:
+            case CategoryLoader.Organismen.name:
                 questions.push({
                     question: "Welcher dieser menschlichen Knochen hat keine dreieckige Form?",
                     answers: [{answer: "Steißbein", correct: false}, {answer: "Kreuzbein", correct: false}, {answer: "Kniescheibe", correct: false}, {answer: "Elle", correct: true}],
@@ -49,6 +49,11 @@ export class QuestionLoader {
                 questions.push({
                     question: "Im Ohr ist ein kleines Organ welches für welchen Sinn verantwortlich ist?",
                     answers: [{answer: "In den Fingern", correct: true}, {answer: "In den Ohren", correct: false}, {answer: "In der Nase", correct: false}, {answer: "In den Oberschenkeln", correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: "Welches Tier hat den besten Riecher?",
+                    answers: [{answer: "Bären", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
                     shuffle: true,
                 });
                 break;
@@ -162,6 +167,11 @@ export class QuestionLoader {
                     answers: [{answer: 'Ping', correct: true}, {answer: 'Fa Zhou', correct: false}, {answer: 'Ling', correct: false}, {answer: 'Shang', correct: false}],
                     shuffle: true,
                 });
+                questions.push({
+                    question: '"E.T. – Der Außerirdische" war bis zur Veröffentlichung von welchem Film der erfolgreichste Film aller Zeiten?',
+                    answers: [{answer: 'Jurassic Park', correct: true}, {answer: 'Gremlins', correct: false}, {answer: 'E.T. 2', correct: false}, {answer: 'Zurück in die Zukunft', correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.literatur.name:
                 questions.push({
@@ -177,6 +187,16 @@ export class QuestionLoader {
                 questions.push({
                     question: 'Das Wort "LASER" ist ein...',
                     answers: [{answer: "Akronym", correct: true}, {answer: "Antonym", correct: false}, {answer: "Palindrom", correct: false}, {answer: "Tautonym", correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'In welchem Bereich würde mir das Wort "Dénouement" begegnen?',
+                    answers: [{answer: "Theaterwissenschaft", correct: true}, {answer: "Backtechnik", correct: false}, {answer: "Sportanalyse", correct: false}, {answer: "Automobilindustrie", correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Bei Büchern von welchem Autor wird man Käfer drinnen finden?',
+                    answers: [{answer: "Kafka", correct: true}, {answer: "Satre", correct: false}, {answer: "Camus", correct: false}, {answer: "Tolstoy", correct: false}],
                     shuffle: true,
                 });
                 break;
@@ -312,6 +332,16 @@ export class QuestionLoader {
                     answers: [{answer: "größter anzunehmender Unfall", correct: true}],
                     shuffle: false,
                 });
+                questions.push({
+                    question: 'Was bedeutet die Abkürzung "FBI"?',
+                    answers: [{answer: "Federal Bureau of Investigation", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Was bedeutet die Abkürzung "WC"?',
+                    answers: [{answer: "water closet / Wasserklosett", correct: true}],
+                    shuffle: false,
+                });
                 break;
             case CategoryLoader.inDiesemJahr.name:
                 questions.push({
@@ -375,6 +405,18 @@ export class QuestionLoader {
                     shuffle: false,
                 });
                 break;
+            case CategoryLoader.sport.name:
+                questions.push({
+                    question: 'Was ist die Höchstpunktzahl, die man in einer klassischen Runde Bowling erzielen kann?',
+                    answers: [{answer: "300", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Wie viele Darts müssen mindestens geworfen werden, um am schnellsten ein 301 Spiel in Darts zu beenden?',
+                    answers: [{answer: "Sechs", correct: true}],
+                    shuffle: false,
+                });
+                break;
         }
         // questions = questions.map(quest => {
         //     return {
@@ -390,8 +432,8 @@ export class QuestionLoader {
 }
 
 export class CategoryLoader {
-    static menschlicherKoerper: Category = {
-        name: "Der Menschliche Körper",
+    static Organismen: Category = {
+        name: "Organismen",
         questionType: QuestionType.multipleChoice
     }
     static videogames: Category = {
@@ -446,6 +488,10 @@ export class CategoryLoader {
         name: "Abkürzungen",
         questionType: QuestionType.openEnded
     }
+    static sport: Category = {
+        name: "Sport",
+        questionType: QuestionType.openEnded
+    }
     static allMusic: Category = {
         name: randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Bunt durchmischt" : "Alle" : randomNumber(0, 1) === 0 ? "Keine Grenzen" : '"Ich höre alle Genres"' : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Generationenübergreifend" : "Zufall" : randomNumber(0, 1) === 0 ? "Alle machen mit" : "Keine Ausgrenzung" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? '"I listen to everything"' : "Gruppen oder Einzelpersonen" : randomNumber(0, 1) === 0 ? "Alle Sprachen" : "Lass den Zufall entscheiden" : randomNumber(0, 1) === 0 ? randomNumber(0, 1) === 0 ? "Komme was wolle" : "Mehr geht nicht" : randomNumber(0, 1) === 0 ? "Wilder Mix" : "Alles dabei!",
         questionType: QuestionType.music,
@@ -482,7 +528,7 @@ export class CategoryLoader {
     public static loadCategories(questionType: QuestionType) {
         const categories: Category[] = [];
 
-        categories.push(CategoryLoader.menschlicherKoerper);
+        categories.push(CategoryLoader.Organismen);
         categories.push(CategoryLoader.videogames);
         categories.push(CategoryLoader.fussball);
         categories.push(CategoryLoader.essen);
@@ -496,6 +542,7 @@ export class CategoryLoader {
         categories.push(CategoryLoader.inDiesemJahr);
         categories.push(CategoryLoader.sehenswuerdigkeiten);
         categories.push(CategoryLoader.abbreviations);
+        categories.push(CategoryLoader.sport);
         categories.push(CategoryLoader.allMusic);
         categories.push(CategoryLoader.schlagerMusic);
         categories.push(CategoryLoader.popMusic);
