@@ -20,13 +20,13 @@ export class MemoryService {
     constructor() {
         this.rounds = [
             // Round.itLiterallyJustHappened,
+            Round.streak,
             Round.textAware,
-            Round.punktesammler,
             // Round.washingMachine,
             // Round.drawing,
             // Round.wonderWall,
             // Round.iLiterallyJustToldYou,
-            Round.streak,
+            Round.punktesammler,
             Round.timeline,
             Round.waitForIt,
             Round.whatIsTheQuestion,
@@ -46,18 +46,22 @@ export class MemoryService {
                 name: "Name",
                 controllerId: 0,
                 gameScore: 11,
+                perks: null
             }, {
                 name: "Benedikt",
                 controllerId: 1,
                 gameScore: 10,
+                perks: null
             }, {
                 name: "Waltraud",
                 controllerId: 2,
                 gameScore: 0,
+                perks: null
             }, {
                 name: "Moritz",
                 controllerId: 3,
                 gameScore: -10,
+                perks: null
             },
         ]
         this.category = CategoryLoader.inDiesemJahr;

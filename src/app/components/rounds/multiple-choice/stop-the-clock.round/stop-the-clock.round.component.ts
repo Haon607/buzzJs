@@ -84,6 +84,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 active: false,
+                perks: player.perks,
                 square: undefined
             }
         }), false])
@@ -287,6 +288,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
                     squareBackground: inputToColor(input.button) + '80',
                     squareBorder: inputToColor(input.button)
                 } : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -317,6 +319,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
                     squareBackground: inputToColor(input.button),
                     squareBorder: input.button - 1 === correctInput ? '#00FF00' : '#FF0000',
                 } : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -342,6 +345,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
                     squareBorder: '#FF0000',
                     squareText: "-3s"
                 } : undefined),
+                perks: player.perks,
                 active: false
             })
         })
@@ -360,6 +364,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: input?.button === correctInput + 1 ? (Math.floor(clock!.timeLeft) + 10) : 0,
                 square: undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -385,6 +390,7 @@ export class StopTheClockRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 square: timeLeft > 0 ? square : undefined,
+                perks: player.perks,
                 active: this.acceptInputsVar && timeLeft > 0 && !playerInput
             })
         })

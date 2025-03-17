@@ -86,6 +86,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 active: false,
+                perks: player.perks,
                 square: undefined
             }
         }), false])
@@ -178,6 +179,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                                 squareBackground: '#FFFFFF88',
                                 squareText: `Kredit +${adjustmentAmount}`,
                             },
+                            perks: player.perks,
                             active: false
                         };
                     }), false]);
@@ -191,6 +193,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                             score: player.gameScore,
                             pointAward: adjustmentAmount,
                             square: undefined,
+                            perks: player.perks,
                             active: false
                         };
                     }), false]);
@@ -258,6 +261,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                         squareBackground: '#00000088',
                         squareText: "Kredit: " + (this.loans.filter(loan => loan.controller === player.controllerId).map(loan => loan.amount).reduce((a, b) => a + b) * -1),
                     } : undefined,
+                    perks: player.perks,
                     active: false
                 }
             }), false])
@@ -268,6 +272,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: this.loans.some(loan => loan.controller === player.controllerId) ? this.loans.filter(loan => loan.controller === player.controllerId).map(loan => loan.amount).reduce((a, b) => a + b) * -1 : undefined,
                     square: undefined,
+                    perks: player.perks,
                     active: false
                 }
             }), false])
@@ -353,6 +358,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: undefined,
                     square: undefined,
+                    perks: player.perks,
                     active: true
                 }
             }), false])
@@ -374,6 +380,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                         squareBackground: inputToColor(this.input!.button) + '88',
                         squareText: "±" + this.calculatePoints(player, this.timer.remainingTime)
                     } : undefined,
+                    perks: player.perks,
                     active: false
                 }
             }), true])
@@ -384,6 +391,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: undefined,
                     square: undefined,
+                    perks: player.perks,
                     active: false
                 }
             }), true])
@@ -413,6 +421,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                         squareBackground: inputToColor(this.input!.button) + '88',
                         squareText: (this.input!.button === this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(answer => answer.correct)!) + 1 ? '+' : '-') + this.calculatePoints(player, this.timer.remainingTime)
                     } : undefined,
+                    perks: player.perks,
                     active: false
                 }
             }), false])
@@ -427,6 +436,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: (this.input!.button === this.currentQuestion.answers.indexOf(this.currentQuestion.answers.find(answer => answer.correct)!) + 1 ? this.calculatePoints(player, this.timer.remainingTime) : this.calculatePoints(player, this.timer.remainingTime) * -1),
                     square: undefined,
+                    perks: player.perks,
                     active: false
                 }
             }), false])
@@ -451,6 +461,7 @@ export class WaitForItRoundComponent implements OnDestroy {
                     squareBackground: this.round.secondary + '88',
                     squareText: "±" + this.calculatePoints(player, remainingTime)
                 },
+                perks: player.perks,
                 active: reason === 'timer'
             }
         }), false])

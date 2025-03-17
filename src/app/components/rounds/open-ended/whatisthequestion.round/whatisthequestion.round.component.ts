@@ -88,6 +88,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 active: false,
+                perks: player.perks,
                 square: undefined
             }
         }), false])
@@ -188,6 +189,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                             squareBackground: '#FF000088',
                             squareBorder: '#FFF'
                         } : undefined,
+                        perks: player.perks,
                         active: this.latestInput?.controller === player.controllerId
                     }
                 }), false])
@@ -310,6 +312,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: undefined,
                     square: undefined,
+                    perks: player.perks,
                     active: true
                 }
             }), false])
@@ -322,6 +325,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                         score: player.gameScore,
                         pointAward: undefined,
                         square: undefined,
+                        perks: player.perks,
                         active: false
                     }
                 }), false])
@@ -341,6 +345,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                     squareBorder: '#00FF00',
                     squareText: "+" + (Math.floor(this.timer.remainingTime) + 21)
                 } : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -355,6 +360,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: this.latestInput?.controller === player.controllerId ? Math.floor(this.timer.remainingTime) + 21 : undefined,
                 square: undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -375,6 +381,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
                 } : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -395,6 +402,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                     squareBackground: '#00000080',
                     squareBorder: '#FF0000',
                 } : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -417,6 +425,7 @@ export class WhatisthequestionRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 square: undefined,
+                perks: player.perks,
                 active: !this.excludeIds.includes(player.controllerId)
             })
         })

@@ -102,6 +102,7 @@ export class StreakRoundComponent implements OnDestroy {
                 pointAward: undefined,
                 active: false,
                 square: undefined,
+                perks: player.perks,
                 playerColor: inputToColor(player.controllerId + 1)
             }
         }), false])
@@ -229,6 +230,7 @@ export class StreakRoundComponent implements OnDestroy {
                             squareBackground: '#FF000088',
                             squareBorder: '#FFF'
                         } : undefined,
+                        perks: player.perks,
                         active: this.latestInput?.controller === player.controllerId
                     }
                 }), false])
@@ -299,6 +301,7 @@ export class StreakRoundComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: undefined,
                     square: undefined,
+                    perks: player.perks,
                     active: true
                 }
             }), false])
@@ -311,6 +314,7 @@ export class StreakRoundComponent implements OnDestroy {
                         score: player.gameScore,
                         pointAward: undefined,
                         square: undefined,
+                        perks: player.perks,
                         active: false
                     }
                 }), false])
@@ -330,6 +334,7 @@ export class StreakRoundComponent implements OnDestroy {
                     squareBorder: '#00FF00',
                     squareText: "+" + this.stepToScore(this.streaks.find(streak => streak.controller === player.controllerId)!.step)
                 } : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -344,6 +349,7 @@ export class StreakRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: this.latestInput?.controller === player.controllerId ? this.stepToScore(this.streaks.find(streak => streak.controller === player.controllerId)!.step) : undefined,
                 square: undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -373,6 +379,7 @@ export class StreakRoundComponent implements OnDestroy {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
                 } : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -395,6 +402,7 @@ export class StreakRoundComponent implements OnDestroy {
                     squareBackground: '#00000080',
                     squareBorder: '#FF0000',
                 } : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -416,6 +424,7 @@ export class StreakRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 square: undefined,
+                perks: player.perks,
                 active: !this.excludeIds.includes(player.controllerId)
             })
         })

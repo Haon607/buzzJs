@@ -123,6 +123,7 @@ export class TimelineRoundComponent implements OnDestroy {
                 active: false,
                 square: undefined,
                 playerColor: inputToColor(player.controllerId + 1)!,
+                perks: player.perks,
             }
         }), false])
 
@@ -658,7 +659,8 @@ export class TimelineRoundComponent implements OnDestroy {
                 pointAward: undefined,
                 square: square,
                 active: step ? ((steps[step.index + 1] ? !steps[step.index + 1].playerIds.includes(player.controllerId) : true) && step?.playerIds.includes(player.controllerId))! : false,
-                playerColor: inputToColor(player.controllerId + 1)
+                playerColor: inputToColor(player.controllerId + 1),
+                perks: player.perks,
             }
         }), false])
     }

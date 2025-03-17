@@ -18,6 +18,7 @@ export class ScoreboardService {
                 pointAward: undefined,
                 square: undefined,
                 active: false,
+                perks: player.perks,
             }
         }), false]);
         this.sortSubject.next()
@@ -32,6 +33,7 @@ export interface ScoreboardPlayer {
     square: ScoreboardSquare | undefined;
     active: boolean;
     playerColor?: string;
+    perks: boolean | null; //null for has none, false for has but did not use yet, true for has activated
 }
 
 export class ScoreboardSquare {

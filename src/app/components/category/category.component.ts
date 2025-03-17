@@ -155,6 +155,7 @@ export class CategoryComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: undefined,
                     square: undefined,
+                    perks: player.perks,
                     active: player.controllerId === playerIndex,
                 }
             )
@@ -174,6 +175,7 @@ export class CategoryComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 active: false,
+                perks: player.perks,
                 square: undefined
             }
         }), false])
