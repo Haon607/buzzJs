@@ -199,7 +199,7 @@ export class StreakRoundComponent implements OnDestroy {
             }
             await new Promise(resolve => setTimeout(resolve, 500));
             this.flipToPoints()
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            await this.waitForSpace();
             await this.collectPoints()
             this.displayQuestion(false)
             this.displayAnswer(false)

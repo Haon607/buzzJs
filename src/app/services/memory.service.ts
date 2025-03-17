@@ -20,13 +20,13 @@ export class MemoryService {
     constructor() {
         this.rounds = [
             // Round.itLiterallyJustHappened,
+            Round.streak,
             Round.textAware,
-            Round.punktesammler,
             // Round.washingMachine,
             // Round.drawing,
             // Round.wonderWall,
             // Round.iLiterallyJustToldYou,
-            Round.streak,
+            Round.punktesammler,
             Round.timeline,
             Round.waitForIt,
             Round.whatIsTheQuestion,
