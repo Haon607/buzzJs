@@ -250,7 +250,7 @@ export class QuestionLoader {
                 });
                 break;
 
-            case CategoryLoader.phobien.name:
+            case CategoryLoader.phobiasAndSicknesses.name:
                 questions.push({
                     question: "Vor welchen Brummern hat eine Person mit Apiphobie angst?",
                     answers: [{answer: "bienenartige Insekten", correct: true}],
@@ -274,6 +274,11 @@ export class QuestionLoader {
                 questions.push({
                     question: 'Wie nennt man umgangssprachlich die Akrophobie, die beim Betreten von Hochhäusern, Brücken oder Aussichtstürmen auftreten kann?',
                     answers: [{answer: "Höhenangst", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Wie heißt die Impulskontrollstörung, unter der eine Person leidet, die zwanghaft Dinge stiehlt?',
+                    answers: [{answer: "Kleptomanie", correct: true}],
                     shuffle: false,
                 });
                 break;
@@ -468,8 +473,8 @@ export class CategoryLoader {
         name: "Typos und Lautsprache",
         questionType: QuestionType.multipleChoice
     }
-    static phobien: Category = {
-        name: "Phobien",
+    static phobiasAndSicknesses: Category = {
+        name: "Phobien und Krankheiten",
         questionType: QuestionType.openEnded
     }
     static werBinIch: Category = {
@@ -537,7 +542,7 @@ export class CategoryLoader {
         categories.push(CategoryLoader.literatur);
         categories.push(CategoryLoader.gadgetsAndGizmos);
         categories.push(CategoryLoader.majorlyMissspelled);
-        categories.push(CategoryLoader.phobien);
+        categories.push(CategoryLoader.phobiasAndSicknesses);
         categories.push(CategoryLoader.werBinIch);
         categories.push(CategoryLoader.inDiesemJahr);
         categories.push(CategoryLoader.sehenswuerdigkeiten);
