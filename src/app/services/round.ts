@@ -267,7 +267,7 @@ export class Round {
     // Total round value
 
     // PERCS + MINIGAMES
-    // SKILL GAMES? (Mii News (Breaking News) - Tomodachi Life Music Extended [OST])
+    // SKILL GAMES? if there are a multiple of 5 rounds left, last round all vs current leader (Mii News (Breaking News) - Tomodachi Life Music Extended [OST])
 
     /*
     background: "#FFFFFF",

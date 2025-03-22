@@ -43,6 +43,10 @@ export class CategoryComponent implements OnDestroy {
         this.bgc = '#' + route.snapshot.paramMap.get('bgc')!;
         new MusicFader().fadeOut(memory.crossMusic, 1000)
         if (this.bgc !== '#000000') this.memory.roundNumber++;
+        if ((this.rounds.length - this.memory.roundNumber) % 5 === 0 && this.memory.roundNumber > 0) {
+            // Abort select Category, play Perks ONCE
+
+        }
         this.round = memory.rounds[memory.roundNumber];
         this.roundIconPath = this.round.iconPath;
         for (let i = 0; i < memory.rounds.length; i++) {
