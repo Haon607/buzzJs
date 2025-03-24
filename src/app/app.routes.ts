@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { JoinGameComponent } from './components/join-game/join-game.component';
-import { CategoryComponent } from "./components/category/category.component";
+import { CategoryComponent } from "./components/categorys/category/category.component";
 import { PunktesammlerRoundComponent } from "./components/rounds/multiple-choice/punktesammler.round/punktesammler.round.component";
 import { StopTheClockRoundComponent } from "./components/rounds/multiple-choice/stop-the-clock.round/stop-the-clock.round.component";
 import { WhatisthequestionRoundComponent } from "./components/rounds/open-ended/whatisthequestion.round/whatisthequestion.round.component";
@@ -16,10 +16,12 @@ import { WashingMachineRoundComponent } from "./components/rounds/multiple-choic
 import { TextAwareComponent } from "./components/rounds/text-aware/text-aware.component";
 import { StreakRoundComponent } from "./components/rounds/streak.round/streak.round.component";
 import { Round } from "./services/round";
+import { FinalCategoryComponent } from "./components/categorys/final-category/final-category.component";
 
 export const routes: Routes = [
     {path: "", component: JoinGameComponent},
     {path: "category/:bgc", component: CategoryComponent},
+    {path: "final/:bgc", component: FinalCategoryComponent},
     {path: "round" + Round.punktesammler.path, component: PunktesammlerRoundComponent},
     {path: "round" + Round.waitForIt.path, component: WaitForItRoundComponent},
     {path: "round" + Round.stopTheClock.path, component: StopTheClockRoundComponent},

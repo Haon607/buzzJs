@@ -456,7 +456,7 @@ export class SpotlightRoundComponent implements OnDestroy {
     private async selectCategory() {
         this.displayAnswer(true);
         this.categorySelect = true
-        const categories = shuffleArray(CategoryLoader.loadCategories(this.round.questionType)).slice(0,4);
+        const categories = shuffleArray(CategoryLoader.loadCategories(this.round.questionType!)).slice(0,4);
         let i = 0
         for (; this.categorySelect; i++) {
             this.hue.setColor([HueLightService.secondary[i%HueLightService.secondary.length]], this.round.secondary, 0, 254)
