@@ -45,7 +45,7 @@ export class Round {
         secondary: "#bf7238",
         rules: ""
     }
-    static wonderWall = {
+    static wonderWall: RoundInterface = {
         name: "Wunderwand",
         category: true,
         questionType: QuestionType.multipleChoice,
@@ -56,7 +56,7 @@ export class Round {
         secondary: "#84acff",
         rules: ""
     }
-    static whatIsTheQuestion = {
+    static whatIsTheQuestion: RoundInterface = {
         name: "Lückentext",
         category: true,
         questionType: QuestionType.openEnded,
@@ -67,7 +67,7 @@ export class Round {
         secondary: "#d3ff5d",
         rules: ""
     }
-    static spotlight = {
+    static spotlight: RoundInterface = {
         name: "Rampensau",
         category: false,
         questionType: QuestionType.openEnded,
@@ -78,7 +78,7 @@ export class Round {
         secondary: "#ffe900",
         rules: ""
     }
-    static shortFuse = {
+    static shortFuse: RoundInterface = {
         name: "Tick Tack Bumm",
         category: true,
         questionType: QuestionType.openEnded,
@@ -89,7 +89,7 @@ export class Round {
         secondary: "#ffff00",
         rules: ""
     }
-    static fastestFinger = {
+    static fastestFinger: RoundInterface = {
         name: "Schnell am Drücker!",
         category: true,
         questionType: QuestionType.openEnded,
@@ -100,7 +100,7 @@ export class Round {
         secondary: "#FF5A5F",
         rules: ""
     }
-    static stealing = {
+    static stealing: RoundInterface = {
         name: "Diebstahl",
         category: true,
         questionType: QuestionType.openEnded,
@@ -111,7 +111,7 @@ export class Round {
         secondary: "#ff96ff",
         rules: ""
     } // Buzzern? Prozentuales Stehlen von Punkten GLOBALER TIMER
-    static waitForIt = {
+    static waitForIt: RoundInterface = {
         name: "Abwarten...",
         category: true,
         questionType: QuestionType.multipleChoice,
@@ -120,9 +120,9 @@ export class Round {
         background: "#231c30",
         primary: "#8F0000",
         secondary: "#33009a",
-        rules: ""
-    } // Wait for it, Hintere Plätze maybe mehr punkte?
-    static streak = {
+        rules: "// Wait for it, Hintere Plätze maybe mehr punkte?"
+    }
+    static streak: RoundInterface = {
         name: "Glückssträhne",
         category: true,
         questionType: QuestionType.openEnded,
@@ -133,7 +133,7 @@ export class Round {
         secondary: "#FFFF80",
         rules: ""
     }
-    static optIn = {
+    static optIn: RoundInterface = {
         name: "Einsteigen bitte",
         category: true,
         questionType: QuestionType.multipleChoice,
@@ -144,7 +144,7 @@ export class Round {
         secondary: "",
         rules: ""
     } //Maybe prozentuale punkte
-    static massAnswers = {
+    static massAnswers: RoundInterface = {
         name: "Massenhafte Antworten",
         category: true,
         questionType: QuestionType.openEnded,
@@ -155,7 +155,7 @@ export class Round {
         secondary: "",
         rules: ""
     } //drawful (2) music, buzz to answer
-    static musicBox = {
+    static musicBox: RoundInterface = {
         name: "Ab der ersten Sekunde",
         category: true,
         questionType: QuestionType.music,
@@ -166,7 +166,7 @@ export class Round {
         secondary: "#00FFC3",
         rules: "Ein Lied beginnt zu spielen, wer glaubt es zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder der Liedtitel exakt richtig ist, oder der Interpret richtig ist und der Titel so ein bissl stimmt. Je schneller, desto mehr Punkte."
     } //Von anfang an, buzzern, titel und interpret
-    static musicalMemory = {
+    static musicalMemory: RoundInterface = {
         name: "Musikalisches Gedächtnis",
         category: true,
         questionType: QuestionType.music,
@@ -177,7 +177,7 @@ export class Round {
         secondary: "",
         rules: ""
     } // Nur memory segment, auch mehrmals, multiple choice
-    static textAware = {
+    static textAware: RoundInterface = {
         name: "Textsicher",
         category: true,
         questionType: QuestionType.music,
@@ -188,7 +188,7 @@ export class Round {
         secondary: "#e1fffd",
         rules: ""
     } // nur text, multiple choice, antwort nach geschwindigkeit
-    static skipping = {
+    static skipping: RoundInterface = {
         name: "Mixtape",
         category: true,
         questionType: QuestionType.music,
@@ -199,7 +199,7 @@ export class Round {
         secondary: "#ff003c",
         rules: "Teile zwei Lieder werden in zufälliger reihenfolge gespielt, wer glaubt beide zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder die Liedtitel exakt richtig ist, oder die Interpreten richtig sind und die Titel so ein bissl stimmten. Je schneller, desto mehr Punkte."
     } //shuffeln von segmenten, buzzern, titel und interpret
-    static timeline = {
+    static timeline: RoundInterface = {
         name: "Hitster",
         category: false,
         questionType: QuestionType.music,
@@ -210,7 +210,7 @@ export class Round {
         secondary: "#64dfdf",
         rules: ""
     } //lieder richtig in timeline einräumen
-    static washingMachine = {
+    static washingMachine: RoundInterface = {
         name: "Waschmaschine",
         category: true,
         questionType: QuestionType.music,
@@ -221,7 +221,7 @@ export class Round {
         secondary: "#c8ccff",
         rules: ""
     } //drei lieder gleichzeitig spielen mit so abwechselnder lautstärke, danach "welches lied war nicht zu hören" ahh frage ODER WAS IST MIT STEREO?? ODER DIMENSIONAL??
-    static drawing = {
+    static drawing: RoundInterface = {
         name: "Mal'mal",
         category: false,
         questionType: QuestionType.drawing,
@@ -232,6 +232,16 @@ export class Round {
         secondary: "#FF8888",
         rules: ""
     }
+    static final20: RoundInterface = {
+        name: "Die letzten 20!",
+        category: false,
+        path: "/final20",
+        iconPath: "M292-365h152v-39h-93l-1-2q20-20 33.5-33t21.5-21q18-18 27.5-36t9.5-37q0-27-20.5-47T365-600q-39 0-55.5 21T290-547l39 16q1-2 8-15t27-13q23 0 27.5 12.5T396-531q0 8-3 16.5T375-489q-9 10-33.5 34.5L292-405v40Zm282 5q45 0 70.5-34.5T670-480q0-51-26-85.5T574-600q-45 0-70.5 34.5T478-480q0 51 25.5 85.5T574-360Zm0-41q-26 0-39-23.5T522-480q0-24 11-51.5t41-27.5q30 0 41 27.5t11 51.5q0 32-13 55.5T574-401ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z",
+        background: "#880000",
+        primary: "#FF0000",
+        secondary: "#884400",
+        rules: ""
+    } // Finale 20 Fragen 10Buzz / 10Multi 5% pro frage
     // Audience Knowledge?
     // Autism Knowledge explaining
 
@@ -240,7 +250,6 @@ export class Round {
     // Pikmin 3 formidable oak
 
     // Memory also halt das spiel
-    // Finale 20 Fragen 10Buzz / 10Multi 10% pro frage
 
     // 8 Players maybe phone hybrid?
     // Total round value
@@ -258,7 +267,7 @@ export class Round {
 
 export interface RoundInterface {
     name: string;
-    questionType: QuestionType;
+    questionType?: QuestionType;
     category: boolean;
     path: string;
     iconPath: string;

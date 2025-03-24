@@ -1,16 +1,16 @@
 import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { MemoryService } from "../../services/memory.service";
+import { MemoryService } from "../../../services/memory.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Category, CategoryLoader, QuestionType } from "../../../Loader";
-import { ButtonState, BuzzDeviceService } from "../../services/buzz-device.service";
+import { Category, CategoryLoader, QuestionType } from "../../../../Loader";
+import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { NgStyle } from "@angular/common";
-import { HueLightService } from "../../services/hue-light.service";
-import { ColorFader, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../utils";
+import { HueLightService } from "../../../services/hue-light.service";
+import { ColorFader, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
 import gsap from 'gsap';
-import { ScoreboardPlayer, ScoreboardService } from "../../services/scoreboard.service";
-import { ScoreboardComponent } from "../scoreboard/scoreboard.component";
-import { inputToColor } from "../../../models";
-import { RoundInterface } from "../../services/round";
+import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
+import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
+import { inputToColor } from "../../../../models";
+import { RoundInterface } from "../../../services/round";
 
 @Component({
     selector: 'app-category',
@@ -59,7 +59,7 @@ export class CategoryComponent implements OnDestroy {
         this.memory.category = null;
 
         if (this.round.category) {
-            this.categories = CategoryLoader.loadCategories(this.round.questionType);
+            this.categories = CategoryLoader.loadCategories(this.round.questionType!);
             this.displayHeadline = "Kategoriewahl";
             styledLogger(this.displayHeadline, Style.speak)
             styledLogger("Zur Auswahl:\n" + this.categories.map(cat => cat.name).slice(0, 4).join('\n'), Style.speak)
@@ -165,7 +165,8 @@ export class CategoryComponent implements OnDestroy {
     private async setUpWithDelay() {
         await new Promise(resolve => setTimeout(resolve, 100));
         if (!this.round.category) {
-            this.introduceRound();
+            if (this.memory.rounds.length-1 === this.memory.roundNumber) this.router.navigateByUrl("/final/" + this.bgc.slice(1))
+                else this.introduceRound();
             return
         }
         this.scoreboard.playerSubject.next([this.memory.players.map(player => {
