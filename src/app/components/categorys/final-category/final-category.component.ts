@@ -56,8 +56,6 @@ export class FinalCategoryComponent {
     @HostListener('document:keydown', ['$event'])
     async handleKeyboardEvent(event: KeyboardEvent) {
         if (event.key === 'i') this.memory.print();
-
-        if (event.key === " ") this.introduceRound()
     }
 
     ngOnDestroy(): void {
@@ -68,7 +66,7 @@ export class FinalCategoryComponent {
 
     private async setUpWithDelay() {
         await new Promise(resolve => setTimeout(resolve, 100));
-        // this.introduceRound();
+        this.introduceRound();
 
         this.scoreboard.playerSubject.next([this.memory.players.map(player => {
             return {
@@ -79,18 +77,17 @@ export class FinalCategoryComponent {
                 square: undefined
             }
         }), false])
-        this.hue.turnOff(HueLightService.secondary, 1000);
         this.buzz.setLeds(new Array(4).fill(false));
     }
 
 
     private async introduceRound() {
-        gsap.to(this.headline.nativeElement, {y: -250, opacity: 0})
+        gsap.to(this.headline.nativeElement, {y: -250, autoAlpha: 0})
 
         // gsap.to('.round-container', {y: -250, rotation: 180})
         // gsap.to('#round-text', {x: -2000})
 
-        styledLogger(this.currentRound.name + " | " + this.selectedCategory.name, Style.speak)
+        styledLogger(this.currentRound.name, Style.speak)
 
         this.music.src = "/music/esc/finalescoreboard.mp3";
         this.music.play();
@@ -98,26 +95,26 @@ export class FinalCategoryComponent {
         this.beginn();
 //start
         let o = 0;
-        gsap.set('#round-container-' + o, {x: randomNumber(-600,600), y: randomNumber(-300,300), rotation: 270, scale: 1, opacity: 0})
+        gsap.set('#round-container-' + o, {x: randomNumber(-600,600), y: randomNumber(-300,300), rotation: 270, scale: 1, autoAlpha: 0})
         for (let i = 0; i < 16200; i += (16200 / (this.rounds.length-2))) {
-            gsap.to('#round-container-' + o, {rotation: 0, scale: 0.6, opacity: 1})
+            gsap.to('#round-container-' + o, {rotation: 0, scale: 0.6, autoAlpha: 1})
             new ColorFader().fadeColor(this.bgc, this.rounds[o].background, 500, color => this.bgc = color);
             this.hue.setColor(HueLightService.secondary, this.rounds[o].secondary, 500)
             this.hue.setColor(HueLightService.primary, this.rounds[o].primary, 500)
             o++;
             await new Promise(resolve => setTimeout(resolve, 16200 / (this.rounds.length-2)));
             if (o < this.rounds.length-2) {
-                gsap.to('#round-container-' + (o-1), {scale: 0.5, opacity: 0.8})
-                gsap.set('#round-container-' + o, {x: randomNumber(-600,600), y: randomNumber(-300,300), rotation: 270, scale: 1, opacity: 0})
+                gsap.to('#round-container-' + (o-1), {scale: 0.5, autoAlpha: 0.8, filter: 'blur(100px)'})
+                gsap.set('#round-container-' + o, {x: randomNumber(-600,600), y: randomNumber(-300,300), rotation: 270, scale: 1, autoAlpha: 0})
                 if (o >= 3) {
-                    gsap.to('#round-container-' + (o-3), {scale: 0.1, opacity: 0})
+                    // gsap.to('#round-container-' + (o-3), {scale: 0.1, autoAlpha: 0})
                 }
             }
         }
         // await new Promise(resolve => setTimeout(resolve, 16274));
         //out
         for (let i = 0; i < this.rounds.length-1; i++) {
-            gsap.to('#round-container-' + i, {x: 0, y: 0, duration: 2, opacity: 0, scale: 0.2})
+            gsap.to('#round-container-' + i, {x: 0, y: 0, duration: 2, autoAlpha: 0, scale: 0.2})
         }
         new ColorFader().fadeColor(this.bgc, '#000000', 2000, color => this.bgc = color);
         this.hue.turnOff(HueLightService.primary.concat(HueLightService.secondary), 2000)
@@ -127,29 +124,31 @@ export class FinalCategoryComponent {
 
     private async beginn() {
         await new Promise(resolve => setTimeout(resolve, 19298))
-        gsap.set('#round-container-' + (this.rounds.length-1), {scale: 0.2, opacity: 0, borderRadius: 1})
+        gsap.set('#round-container-' + (this.rounds.length-1), {scale: 0.2, autoAlpha: 0, borderRadius: 1})
         console.log("go")
         //1
 
-        gsap.to('#round-container-' + (this.rounds.length-1), {scale: 1, opacity: 1, borderRadius: 0.1})
+        gsap.to('#round-container-' + (this.rounds.length-1), {scale: 1, autoAlpha: 1, borderRadius: 0.1})
         await new Promise(resolve => setTimeout(resolve, 1118));
-        gsap.to('#round-container-' + (this.rounds.length-1), {opacity: 0, duration: 3})
+        gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 0, duration: 3})
 //2
         await new Promise(resolve => setTimeout(resolve, 3128));
-        gsap.set('#round-container-' + (this.rounds.length-1), {opacity: 0, scale: 0.1})
+        gsap.set('#round-container-' + (this.rounds.length-1), {autoAlpha: 0, scale: 0.1})
 //3
-        gsap.to('#round-container-' + (this.rounds.length-1), {opacity: 1, scale: 1, ease: "bounce.inOut"})
+        gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 1, scale: 1, ease: "bounce.inOut"})
         await new Promise(resolve => setTimeout(resolve, 985));
 //4
-        gsap.to('#round-container-' + (this.rounds.length-1), {opacity: 0.8, scale: 1, duration: 2})
+        gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 0.8, scale: 1, duration: 2})
         await new Promise(resolve => setTimeout(resolve, 2028));
-        gsap.to('#round-container-' + (this.rounds.length-1), {opacity: 1, scale: 1.2, duration: 0.2})
+        gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 1, scale: 1.2, duration: 0.2})
 //5
         await new Promise(resolve => setTimeout(resolve, 1300));
-        gsap.to('#round-container-' + (this.rounds.length-1), {rotation: 3600, duration: 3})
+        gsap.to('#round-container-' + (this.rounds.length-1), {rotation: 3600, duration: 3, ease: 'power1.in'})
+        this.hue.setColor(HueLightService.primary, this.rounds[this.rounds.length-1].primary,1500, 254)
+        this.hue.setColor(HueLightService.secondary, this.rounds[this.rounds.length-1].secondary,1500, 254)
 
         await new Promise(resolve => setTimeout(resolve, 576));
-        gsap.to('#round-container-' + (this.rounds.length-1), {opacity: 0, scale: 0.1, duration: 2})
+        gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 0, scale: 0.1, duration: 2})
 //end
 
         //TODO ROUTE AWAY

@@ -39,7 +39,7 @@ export class MemoryService {
             Round.fastestFinger,
             Round.final20
         ];
-        this.roundNumber = 11;
+        // this.roundNumber = 11;
         // this.pointsPerRound = 100;
         // this.pointsPerRoundIncrement = 25;
         this.players = [
