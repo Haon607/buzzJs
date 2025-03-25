@@ -19,6 +19,8 @@ export class ScoreboardComponent {
     preSpace: number;
     kill = false;
 
+    /*TODO shift scoreboard to left (firefox)*/
+
     constructor(private scoreboardService: ScoreboardService, private memory: MemoryService) {
         memory.scoreboardKill.subscribe(() => this.kill = true)
         switch (this.memory.players.length) {

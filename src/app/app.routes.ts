@@ -14,7 +14,7 @@ import { StealingRoundComponent } from "./components/rounds/open-ended/stealing.
 import { DrawingRoundComponent } from "./components/rounds/drawing.round/drawing.round.component";
 import { WashingMachineRoundComponent } from "./components/rounds/multiple-choice/washing-machine.round/washing-machine.round.component";
 import { TextAwareComponent } from "./components/rounds/text-aware/text-aware.component";
-import { StreakRoundComponent } from "./components/rounds/open-ended/streak.round/streak.round.component";
+import { StreakRoundComponent } from "./components/rounds/streak.round/streak.round.component";
 import { Round } from "./services/round";
 
 export const routes: Routes = [
