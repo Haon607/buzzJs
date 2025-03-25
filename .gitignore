@@ -43,3 +43,4 @@ testem.log
 Thumbs.db
 
 /public/musicround
+/public/musicround/*
