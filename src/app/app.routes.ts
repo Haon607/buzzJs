@@ -17,6 +17,7 @@ import { TextAwareComponent } from "./components/rounds/text-aware/text-aware.co
 import { StreakRoundComponent } from "./components/rounds/streak.round/streak.round.component";
 import { Round } from "./services/round";
 import { FinalCategoryComponent } from "./components/categorys/final-category/final-category.component";
+import { LastQuestionsRoundComponent } from "./components/rounds/finals/last-questions.round/last-questions.round.component";
 
 export const routes: Routes = [
     {path: "", component: JoinGameComponent},
@@ -36,5 +37,6 @@ export const routes: Routes = [
     {path: "round" + Round.timeline.path, component: TimelineRoundComponent},
     {path: "round" + Round.drawing.path, component: DrawingRoundComponent},
     {path: "round" + Round.washingMachine.path, component: WashingMachineRoundComponent},
+    {path: "round" + Round.final10.path, component: LastQuestionsRoundComponent},
     /*TODO Scoreboard*/
 ];

@@ -19,16 +19,16 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
-            // Round.itLiterallyJustHappened,
+          // Round.itLiterallyJustHappened,
             Round.timeline,
-            Round.streak,
+            /*Round.waitForIt,
             // Round.washingMachine,
             // Round.drawing,
             // Round.wonderWall,
             // Round.iLiterallyJustToldYou,
+            Round.streak,
             Round.textAware,
             Round.punktesammler,
-            Round.waitForIt,
             Round.whatIsTheQuestion,
             Round.spotlight,
             Round.skipping,
@@ -36,11 +36,11 @@ export class MemoryService {
             Round.stopTheClock,
             // Round.shortFuse,
             // Round.stealing,
-            // Round.fastestFinger,
+            // Round.fastestFinger,*/
             Round.final10,
             // Round.savePoints
         ];
-        this.roundNumber = 9;
+        this.roundNumber = 1;
         // this.pointsPerRound = 100;
         // this.pointsPerRoundIncrement = 25;
         this.players = [
@@ -62,7 +62,7 @@ export class MemoryService {
                 gameScore: -10,
             },
         ]
-        this.category = CategoryLoader.inDiesemJahr;
+        this.category = CategoryLoader.videogames;
     }
 
     print() {

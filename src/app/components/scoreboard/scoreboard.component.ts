@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgStyle } from "@angular/common";
 import { ScoreboardPlayer, ScoreboardService } from "../../services/scoreboard.service";
 import gsap from 'gsap';
@@ -14,6 +14,7 @@ import { MemoryService } from "../../services/memory.service";
     styleUrl: './scoreboard.component.css'
 })
 export class ScoreboardComponent {
+    @Input() final: boolean = false;
     players: ScoreboardPlayer[] = [];
     space = 200;
     preSpace: number;
