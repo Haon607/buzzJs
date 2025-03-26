@@ -1,5 +1,5 @@
 <div class="background" [ngStyle]="{'background': bgc}">
-    <span class="headline" #headline>{{ displayHeadline }}</span>
+    <span id="headline">FINALE</span>
     @for (round of rounds; track round.index) {
         <div id="round-container-{{round.index}}" class="round-container" [ngStyle]="{'background': 'radial-gradient(circle, ' + round.secondary + ' 40%, ' + round.primary + ' 60%'}">
             <svg id="round-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">

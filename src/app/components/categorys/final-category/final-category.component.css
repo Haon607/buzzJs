@@ -7,11 +7,10 @@
     color: white;
 }
 
-.headline {
-    font-size: 100px;
+#headline {
+    font-size: 500px;
     font-weight: bold;
     position: absolute;
-    top: 150px;
     opacity: 0;
 
 }

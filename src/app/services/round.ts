@@ -232,26 +232,26 @@ export class Round {
         secondary: "#FF8888",
         rules: ""
     }
-    static final20: RoundInterface = {
-        name: "Die letzten 20!",
+    static final10: RoundInterface = {
+        name: "Die letzten 10!",
         category: false,
-        path: "/final20",
-        iconPath: "M292-365h152v-39h-93l-1-2q20-20 33.5-33t21.5-21q18-18 27.5-36t9.5-37q0-27-20.5-47T365-600q-39 0-55.5 21T290-547l39 16q1-2 8-15t27-13q23 0 27.5 12.5T396-531q0 8-3 16.5T375-489q-9 10-33.5 34.5L292-405v40Zm282 5q45 0 70.5-34.5T670-480q0-51-26-85.5T574-600q-45 0-70.5 34.5T478-480q0 51 25.5 85.5T574-360Zm0-41q-26 0-39-23.5T522-480q0-24 11-51.5t41-27.5q30 0 41 27.5t11 51.5q0 32-13 55.5T574-401ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z",
+        path: "/final10",
+        iconPath: "M560-320h120v-320H560v320Zm0 120q-50 0-85-35t-35-85v-320q0-50 35-85t85-35h120q50 0 85 35t35 85v320q0 50-35 85t-85 35H560Zm-320 0v-440h-80v-120h200v560H240Z",
         background: "#880000",
         primary: "#FF0000",
         secondary: "#884400",
         rules: ""
-    } // Finale 20 Fragen 10Buzz / 10Multi 5% pro frage
+    } // Finale 10 Fragen 5Buzz / 5Multi 10% pro frage
     static savePoints: RoundInterface = {
         name: "Rette die Punkte!",
         category: false,
         path: "/savepoints",
         iconPath: "M440-501Zm0 381L313-234q-72-65-123.5-116t-85-96q-33.5-45-49-87T40-621q0-94 63-156.5T260-840q52 0 99 22t81 62q34-40 81-62t99-22q84 0 153 59t69 160q0 14-2 29.5t-6 31.5h-85q5-18 8-34t3-30q0-75-50-105.5T620-760q-51 0-88 27.5T463-660h-46q-31-45-70.5-72.5T260-760q-57 0-98.5 39.5T120-621q0 33 14 67t50 78.5q36 44.5 98 104T440-228q26-23 61-53t56-50l9 9 19.5 19.5L605-283l9 9q-22 20-56 49.5T498-172l-58 52Zm160-280v-80h320v80H600Z",
-        background: "#000010",
+        background: "#000040",
         primary: "#730000",
         secondary: "#d5d5d5",
         rules: ""
-    } // Finale 20 Fragen 10Buzz / 10Multi 5% pro frage
+    } // million dollar money drop
     // Audience Knowledge?
     // Autism Knowledge explaining
 

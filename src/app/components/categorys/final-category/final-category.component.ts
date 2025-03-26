@@ -22,15 +22,12 @@ import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
     styleUrl: './final-category.component.css'
 })
 export class FinalCategoryComponent {
-    displayHeadline = "";
     currentRound: RoundInterface;
     rounds: { name: string, index: number, primary: string, secondary: string, background: string, iconPath: string }[] = [];
     music: HTMLAudioElement = new Audio();
     bgc: string;
     selectedCategory: Category = {name: "", questionType: QuestionType.multipleChoice};
 
-
-    @ViewChild("headline", {static: true}) headline!: ElementRef;
     roundIconPath = "";
     private stopBuzzCycle = false;
     private stopLightCycle = false;
@@ -82,8 +79,6 @@ export class FinalCategoryComponent {
 
 
     private async introduceRound() {
-        gsap.to(this.headline.nativeElement, {y: -250, autoAlpha: 0})
-
         // gsap.to('.round-container', {y: -250, rotation: 180})
         // gsap.to('#round-text', {x: -2000})
 
@@ -114,22 +109,24 @@ export class FinalCategoryComponent {
         // await new Promise(resolve => setTimeout(resolve, 16274));
         //out
         for (let i = 0; i < this.rounds.length-1; i++) {
-            gsap.to('#round-container-' + i, {x: 0, y: 0, duration: 2, autoAlpha: 0, scale: 0.5, filter: 'blur(100px)'})
+            gsap.to('#round-container-' + i, {/*x: 0, y: 0, */duration: 2, autoAlpha: 0, scale: 2, filter: 'blur(10000px)'})
         }
         new ColorFader().fadeColor(this.bgc, '#000000', 2000, color => this.bgc = color);
         this.hue.turnOff(HueLightService.primary.concat(HueLightService.secondary), 2000)
-        await new Promise(resolve => setTimeout(resolve, 3024));
+        // gsap.set('#headline', {scale: 0.1})
+        await new Promise(resolve => setTimeout(resolve, 750));
+        gsap.to('#headline', {duration: 1, autoAlpha: 0.5, scale: 1, ease: "power2.in"})
 
     }
 
     private async beginn() {
         await new Promise(resolve => setTimeout(resolve, 19298))
         gsap.set('#round-container-' + (this.rounds.length-1), {scale: 0.2, autoAlpha: 0, borderRadius: '0px', borderColor: '#FFF', borderStyle: 'solid', borderWidth: '10px'})
-        console.log("go")
         //1
 
         gsap.to('#round-container-' + (this.rounds.length-1), {scale: 1, autoAlpha: 1, borderRadius: 0.1})
         await new Promise(resolve => setTimeout(resolve, 1118));
+        gsap.to('#headline', {autoAlpha: 0, duration: 3, filter: 'blur(100px)'})
         gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 0, duration: 3, filter: 'blur(100px)'})
 //2
         await new Promise(resolve => setTimeout(resolve, 3128));
@@ -138,7 +135,7 @@ export class FinalCategoryComponent {
         gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 1, scale: 1, ease: "bounce.out"})
         await new Promise(resolve => setTimeout(resolve, 985));
 //4
-        gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 0.8, scale: 1, duration: 2, filter: 'blur(10px)'})
+        gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 0.8, scale: 0.6, duration: 2, filter: 'blur(10px)'})
         await new Promise(resolve => setTimeout(resolve, 2028));
         gsap.to('#round-container-' + (this.rounds.length-1), {autoAlpha: 1, scale: 1.2, duration: 0.2, filter: 'blur(0px)'})
 //5

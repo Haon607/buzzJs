@@ -45,15 +45,30 @@ export class CategoryComponent implements OnDestroy {
         if (this.bgc !== '#000000') this.memory.roundNumber++;
         this.round = memory.rounds[memory.roundNumber];
         this.roundIconPath = this.round.iconPath;
-        for (let i = 0; i < memory.rounds.length; i++) {
-            this.rounds.push({
-                name: memory.rounds[i].name,
-                index: i,
-                color: memory.rounds[i].background,
-                primary: memory.rounds[i].primary,
-                secondary: memory.rounds[i].secondary,
-            })
+
+        let offset = 0;
+        const totalRounds = memory.rounds.length;
+
+        if (totalRounds > 10) {
+            offset = memory.roundNumber - 3;
+            // TODO show that there are more rounds which are not shown
+            if (offset < 0) {
+                offset = 0;
+            } else if (offset + 10 > totalRounds) {
+                offset = totalRounds - 10;
+            }
         }
+
+        for (let i = 0; i < Math.min(10, totalRounds); i++) {
+            this.rounds.push({
+                name: memory.rounds[i + offset].name,
+                index: i + offset,
+                color: memory.rounds[i + offset].background,
+                primary: memory.rounds[i + offset].primary,
+                secondary: memory.rounds[i + offset].secondary,
+            });
+        }
+
         buzz.onPress(buttonState => this.onPress(buttonState));
         this.setUpWithDelay();
         this.memory.category = null;
@@ -165,8 +180,8 @@ export class CategoryComponent implements OnDestroy {
     private async setUpWithDelay() {
         await new Promise(resolve => setTimeout(resolve, 100));
         if (!this.round.category) {
-            if (this.memory.rounds.length-1 === this.memory.roundNumber) this.router.navigateByUrl("/final/" + this.bgc.slice(1))
-                else this.introduceRound();
+            if (this.memory.rounds.length - 1 === this.memory.roundNumber) this.router.navigateByUrl("/final/" + this.bgc.slice(1))
+            else this.introduceRound();
             return
         }
         this.scoreboard.playerSubject.next([this.memory.players.map(player => {
@@ -233,7 +248,7 @@ export class CategoryComponent implements OnDestroy {
 //5
         await new Promise(resolve => setTimeout(resolve, 324));
         gsap.to('#selected-category-container', {x: 2000, opacity: 0, rotation: -180})
-        if (!this.round.category) gsap.to('#round-numbers-container', {y: 500, ease: 'back.out'});
+        // if (!this.round.category) gsap.to('#round-numbers-container', {y: 500, ease: 'back.out'});
 
 //6
         await new Promise(resolve => setTimeout(resolve, 337));
