@@ -19,28 +19,28 @@ export class MemoryService {
 
     constructor() {
         this.rounds = [
-            Round.itLiterallyJustHappened,
-            Round.streak,
-            Round.textAware,
-            Round.washingMachine,
-            Round.drawing,
-            Round.wonderWall,
-            Round.iLiterallyJustToldYou,
-            Round.punktesammler,
+            // Round.itLiterallyJustHappened,
             Round.timeline,
+            Round.streak,
+            // Round.washingMachine,
+            // Round.drawing,
+            // Round.wonderWall,
+            // Round.iLiterallyJustToldYou,
+            Round.textAware,
+            Round.punktesammler,
             Round.waitForIt,
             Round.whatIsTheQuestion,
             Round.spotlight,
             Round.skipping,
             Round.musicBox,
             Round.stopTheClock,
-            Round.shortFuse,
-            Round.stealing,
-            Round.fastestFinger,
-            Round.final20,
-            Round.savePoints
+            // Round.shortFuse,
+            // Round.stealing,
+            // Round.fastestFinger,
+            Round.final10,
+            // Round.savePoints
         ];
-        // this.roundNumber = 11;
+        this.roundNumber = 9;
         // this.pointsPerRound = 100;
         // this.pointsPerRoundIncrement = 25;
         this.players = [
