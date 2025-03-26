@@ -31,6 +31,7 @@ export interface ScoreboardPlayer {
     pointAward: number | undefined;
     square: ScoreboardSquare | undefined;
     active: boolean;
+    playerPercent?: number;
     playerColor?: string;
 }
 
