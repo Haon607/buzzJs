@@ -58,8 +58,8 @@ export class Musicloader {
 
     public static loadMusic(category: Category): MusicQuestion[] {
         const musicQuestions: MusicQuestion[] = [];
-
-        musicQuestions.push({
+/*
+        musicQuestions.push({ /!*TODO*!/
             id: NaN,
             path: "a-ha - Take On Me (Official Video) [Remastered in 4K].mp3",
             information: {
@@ -84,7 +84,7 @@ export class Musicloader {
                 "Oh, I'll be comin' for your love, okay"
             ]
         });
-        musicQuestions.push({
+        musicQuestions.push({ /!*TODO*!/
             id: NaN,
             path: "$oho Bani, Herbert Grönemeyer - ZEIT, DASS SICH WAS DREHT (prod. by Ericson & Drunken Masters).mp3",
             information: {
@@ -107,7 +107,7 @@ export class Musicloader {
                 "Dicka, meine Welt brennt, wo ist die Leidenschaft?",
             ]
         });
-        musicQuestions.push({
+        musicQuestions.push({ /!*TODO*!/
             id: NaN,
             path: "Du hast mich tausendmal belogen.mp3",
             information: {
@@ -130,7 +130,7 @@ export class Musicloader {
                 "Manchmal frag ich mich warum du",
             ]
         });
-        musicQuestions.push({
+        musicQuestions.push({ /!*TODO*!/
             id: NaN,
             path: "American Authors - Best Day Of My Life.mp3",
             information: {
@@ -157,7 +157,7 @@ export class Musicloader {
                 "Woah, oh, oh, oh, oh, oh-oh, oh",
             ]
         });
-        musicQuestions.push({
+        musicQuestions.push({ /!*TODO*!/
             id: NaN,
             path: "Leider geil (Leider geil).mp3",
             information: {
@@ -182,7 +182,7 @@ export class Musicloader {
                 "Doch es entpannt mich (leider geil)",
             ]
         });
-        musicQuestions.push({
+        musicQuestions.push({ /!*TODO*!/
             id: NaN,
             path: "Cher - Believe (Official Music Video) [4K Remaster].mp3",
             information: {
@@ -204,7 +204,7 @@ export class Musicloader {
                 "And I can't break through",
                 "There's no talking to you",
             ]
-        });
+        });*/
         musicQuestions.push({
             id: NaN,
             path: "ABBA - Dancing Queen (Official Music Video).mp3",

@@ -139,8 +139,8 @@ export class QuestionLoader {
                 });
                 questions.push({
                     question: 'Welche Geschwindigkeit muss Doc Browns DeLorean im Film „Zurück in die Zukunft“ erreichen, um durch die Zeit zu reisen?',
-                    answers: [{answer: '140 km/h (88 mph)', correct: true}, {answer: '124 km/h (77 mph)', correct: false}, {answer: '160 km/h (100 mph)', correct: false}, {answer: '110 km/h (70 mph)', correct: false}],
-                    shuffle: true,
+                    answers: [{answer: '110 km/h (70 mph)', correct: false}, {answer: '124 km/h (77 mph)', correct: false}, {answer: '140 km/h (88 mph)', correct: true}, {answer: '160 km/h (100 mph)', correct: false}],
+                    shuffle: false,
                 });
                 questions.push({
                     question: 'Welche Fortsetzung eines Films hatte im Vergleich zum Originalfilm bessere Kassenergebnisse?',
