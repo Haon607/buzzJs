@@ -10,7 +10,7 @@ import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreb
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../../services/hue-light.service";
 import gsap from "gsap";
-import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
+import { MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../../utils";
 import { inputToColor } from "../../../../../models";
 
 @Component({
@@ -78,7 +78,8 @@ export class LastQuestionsRoundComponent {
         score: player.gameScore,
         pointAward: undefined,
         active: false,
-        square: undefined
+        square: undefined,
+        playerPercent: randomNumber(0, 100)
       }
     }), false])
 

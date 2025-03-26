@@ -1,14 +1,15 @@
 <div id="scoreboard-body">
     @for (player of players; track player.name) {
         <div id="player-container-{{player.name}}" class="player-container">
-            <div id="player-square-{{player.name}}" class="player-square"><span id="player-square-text-{{player.name}}">{{player.square?.squareText ?? ""}}</span></div>
+            <div id="player-square-{{player.name}}" class="player-square"><span id="player-square-text-{{player.name}}">{{ player.square?.squareText ?? "" }}</span></div>
             <div id="player-information-{{player.name}}" class="player-information" [ngStyle]="{'background': final ? 'linear-gradient(0deg, rgb(71, 42, 18) 0%, rgb(93, 16, 16) 100%)' : 'linear-gradient(0deg, rgba(18,70,71,1) 0%, rgba(16,46,93,1) 100%)'}">
-                <span class="player-name">{{player.name}}</span>
-                @if (final) {
-                    <div class="player-percent-bar" [ngStyle]="{'background': 'linear-gradient(90deg, rgba(255, 255, 255, 1) '+ 14.9 +'%, rgba(0, 0, 0, 0.5) '+ 15.1 +'%)'}">
+                <span class="player-name">{{ player.name }}</span>
+                @if (final && player.playerPercent) {
+                    <div class="player-percent-bar" [ngStyle]="{'background': 'linear-gradient(90deg, rgba(255, 255, 255, 0.9) '+ (player.playerPercent-0.1) +'%, rgba(0, 0, 0, 0.5) '+ (player.playerPercent+0.1) +'%)'}">
+                        <span id="player-score-{{player.name}}" class="player-score numbers">{{ player.playerPercent }}%</span>
                     </div>
                 } @else {
-                    <span id="player-score-{{player.name}}" class="player-score numbers">{{player.score}}</span>
+                    <span id="player-score-{{player.name}}" class="player-score numbers">{{ player.score }}</span>
                 }
             </div>
         </div>
