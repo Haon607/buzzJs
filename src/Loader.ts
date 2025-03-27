@@ -56,6 +56,11 @@ export class QuestionLoader {
                     answers: [{answer: "Bären", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false}],
                     shuffle: true,
                 });
+                questions.push({
+                    question: "Welcher Vogel hat die größten Eier?",
+                    answers: [{answer: "Strauß", correct: true}, {answer: "Gans", correct: false}, {answer: "Pfau", correct: false}, {answer: "Truthahn", correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.videogames.name:
                 questions.push({
@@ -170,6 +175,13 @@ export class QuestionLoader {
                 questions.push({
                     question: '"E.T. – Der Außerirdische" war bis zur Veröffentlichung von welchem Film der erfolgreichste Film aller Zeiten?',
                     answers: [{answer: 'Jurassic Park', correct: true}, {answer: 'Gremlins', correct: false}, {answer: 'E.T. 2', correct: false}, {answer: 'Zurück in die Zukunft', correct: false}],
+                    shuffle: true,
+                });
+                break;
+            case CategoryLoader.essen.name:
+                questions.push({
+                    question: 'Welcher Snack kann Schisch oder Döner sein?',
+                    answers: [{answer: "Kebab", correct: true}, {answer: "Hot Dog", correct: false}, {answer: "Burger", correct: false}, {answer: "Falafel", correct: false}],
                     shuffle: true,
                 });
                 break;
@@ -419,6 +431,11 @@ export class QuestionLoader {
                 questions.push({
                     question: 'Wie viele Darts müssen mindestens geworfen werden, um am schnellsten ein 301 Spiel in Darts zu beenden?',
                     answers: [{answer: "Sechs", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Welches Land hat die meisten olympischen Sommer- und Winterspiele gehosted?',
+                    answers: [{answer: "", correct: true}],
                     shuffle: false,
                 });
                 break;

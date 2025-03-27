@@ -48,18 +48,22 @@ export class MemoryService {
                 name: "Name",
                 controllerId: 0,
                 gameScore: 11,
+                finalPercentage: 0,
             }, {
                 name: "Benedikt",
                 controllerId: 1,
                 gameScore: 10,
+                finalPercentage: 0,
             }, {
                 name: "Waltraud",
                 controllerId: 2,
                 gameScore: 0,
+                finalPercentage: 0,
             }, {
                 name: "Moritz",
                 controllerId: 3,
                 gameScore: -10,
+                finalPercentage: 0,
             },
         ]
         this.category = CategoryLoader.videogames;
@@ -73,7 +77,7 @@ export class MemoryService {
         // styledLogger("Points per Round increment: " + this.pointsPerRoundIncrement, Style.information)
         // styledLogger("Points at stake this Round: " + this.calculatePointsPerOpportunity(1), Style.information)
         styledLogger("Category: " + this.category?.name, Style.information)
-        styledLogger("Players:" + this.players.map(player => " " + player.controllerId + " " + player.name + " " + player.gameScore), Style.information)
+        styledLogger("Players:" + this.players.map(player => " " + player.controllerId + " " + player.name + " " + player.gameScore + " " + player.finalPercentage + "%").join("; "), Style.information)
     }
 
     // calculatePointsPerOpportunity(opportunities: number) {

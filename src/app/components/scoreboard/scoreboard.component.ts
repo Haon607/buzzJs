@@ -90,11 +90,18 @@ export class ScoreboardComponent {
                 gsap.to('#player-information-' + player.name, {x: 50, scale: 1.2});
                 await new Promise(resolve => setTimeout(resolve, 100));
                 if (player.pointAward) {
-                    if (player.pointAward > 0) new Audio('music/gen/bounceinpoints.mp3').play()
-                    if (player.pointAward < 0) new Audio('music/gen/bounceinnegative.mp3').play()
+                    if (player.pointAward > 0) new Audio('music/gen/bounceinpoints.mp3').play();
+                    if (player.pointAward < 0) new Audio('music/gen/bounceinnegative.mp3').play();
                     this.players.find(pla => pla.name === player.name)!.score += player.pointAward
                     player.score += player.pointAward
                     this.memory.players.find(pla => pla.name === player.name)!.gameScore += player.pointAward
+                    gsap.to('#player-score-' + player.name, {scale: 1.2, opacity: 0});
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                } else if (player.playerPercent) {
+                    if (player.playerPercent > 0) new Audio('music/gen/bounceinpoints.mp3').play();
+                    if (player.playerPercent < 0) new Audio('music/gen/bounceinnegative.mp3').play();
+                    this.players.find(pla => pla.name === player.name)!.playerPercent = player.playerPercent
+                    this.memory.players.find(pla => pla.name === player.name)!.finalPercentage = player.playerPercent
                     gsap.to('#player-score-' + player.name, {scale: 1.2, opacity: 0});
                     await new Promise(resolve => setTimeout(resolve, 100));
                 } else new Audio('music/gen/bouncein.mp3').play()

@@ -10,7 +10,7 @@ import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreb
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../../services/hue-light.service";
 import gsap from "gsap";
-import { MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../../utils";
+import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
 import { inputToColor } from "../../../../../models";
 
 @Component({
@@ -32,13 +32,10 @@ export class LastQuestionsRoundComponent {
   spacePressed = false;
   music: HTMLAudioElement = new Audio();
   timerDone = false;
-  amountOfQuestions = 7;
+  amountOfQuestions = 10;
   @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-  maxTime = 15;
-  timerSound = true;
   private inputs: ButtonState[] = [];
   private acceptInputsVar = false;
-  showTime = false;
 
   constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
     this.round = memory.rounds[memory.roundNumber];
@@ -79,7 +76,7 @@ export class LastQuestionsRoundComponent {
         pointAward: undefined,
         active: false,
         square: undefined,
-        playerPercent: randomNumber(0, 100)
+        playerPercent: 0
       }
     }), false])
 
@@ -138,9 +135,9 @@ export class LastQuestionsRoundComponent {
   }
 
   private async startRound() {
-    this.music.src = "/music/buzz/BTV-BL_PB.mp3";
+    this.music.src = "/music/wwds/masterfragebgm.mp3";
     this.music.loop = true
-    this.music.play()
+    // await this.waitForSpace();
     for (let i = 0; i < this.amountOfQuestions; i++) {
       this.setupNextQuestion()
       await this.waitForSpace();
@@ -149,6 +146,7 @@ export class LastQuestionsRoundComponent {
       this.displayQuestion(true)
       this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
       await new Promise(resolve => setTimeout(resolve, 500));
+      this.music.play()
       await this.waitForSpace()
       this.displayAnswers(true)
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -202,6 +200,7 @@ export class LastQuestionsRoundComponent {
           return {
             name: player.name,
             score: player.gameScore,
+            playerPercent: player.finalPercentage,
             pointAward: undefined,
             square: this.inputs.some(input => input.controller === player.controllerId) ? {
               squareBackground: '#00000000',
@@ -262,7 +261,8 @@ export class LastQuestionsRoundComponent {
           score: player.gameScore,
           pointAward: undefined,
           square: undefined,
-          active: true
+          active: true,
+          playerPercent: player.finalPercentage
         }
       }), false])
     } else {
@@ -272,6 +272,7 @@ export class LastQuestionsRoundComponent {
           name: player.name,
           score: player.gameScore,
           pointAward: undefined,
+          playerPercent: player.finalPercentage,
           square: this.inputs.some(input => input.controller === player.controllerId) ? {
             squareBackground: '#00000000',
             squareBorder: '#FFF'
@@ -289,6 +290,7 @@ export class LastQuestionsRoundComponent {
       scoreboardPlayers.push({
         name: player.name,
         score: player.gameScore,
+        playerPercent: player.finalPercentage,
         pointAward: undefined,
         square: input ? {
           squareBackground: inputToColor(input.button) + '80',
@@ -319,7 +321,8 @@ export class LastQuestionsRoundComponent {
       scoreboardPlayers.push({
         name: player.name,
         score: player.gameScore,
-        pointAward: 25,
+        playerPercent: player.finalPercentage,
+        pointAward: undefined,
         square: input ? {
           squareBackground: inputToColor(input.button),
           squareBorder: input.button - 1 === correctInput ? '#00FF00' : '#FF0000',
@@ -338,11 +341,12 @@ export class LastQuestionsRoundComponent {
       scoreboardPlayers.push({
         name: player.name,
         score: player.gameScore,
+        playerPercent: player.finalPercentage,
         pointAward: undefined,
         square: input?.button === correctInput + 1 ? {
           squareBackground: '#00000080',
           squareBorder: '#00FF00',
-          squareText: "+25"
+          squareText: "+10%"
         } : undefined,
         active: false
       })
@@ -358,9 +362,10 @@ export class LastQuestionsRoundComponent {
       scoreboardPlayers.push({
         name: player.name,
         score: player.gameScore,
-        pointAward: input?.button === correctInput + 1 ? 25 : 0,
+        pointAward: 0,
         square: undefined,
-        active: false
+        active: false,
+        playerPercent: player.finalPercentage + (input?.button === correctInput + 1 ? 10 : 0)
       })
     })
     this.scoreboard.playerSubject.next([scoreboardPlayers, true])
