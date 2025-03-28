@@ -21,7 +21,7 @@ export class MemoryService {
         this.rounds = [
           // Round.itLiterallyJustHappened,
             Round.timeline,
-            /*Round.waitForIt,
+            Round.waitForIt,
             // Round.washingMachine,
             // Round.drawing,
             // Round.wonderWall,
@@ -36,11 +36,11 @@ export class MemoryService {
             Round.stopTheClock,
             // Round.shortFuse,
             // Round.stealing,
-            // Round.fastestFinger,*/
+            // Round.fastestFinger,
             Round.final10,
             // Round.savePoints
         ];
-        this.roundNumber = 1;
+        this.roundNumber = 10;
         // this.pointsPerRound = 100;
         // this.pointsPerRoundIncrement = 25;
         this.players = [

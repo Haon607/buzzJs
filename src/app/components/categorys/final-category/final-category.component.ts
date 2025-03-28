@@ -131,7 +131,7 @@ export class FinalCategoryComponent {
         gsap.to('#round-container-' + (this.rounds.length - 1), {autoAlpha: 1, scale: 1, ease: "bounce.out"})
         await new Promise(resolve => setTimeout(resolve, 985));
 //4
-        gsap.to('#round-container-' + (this.rounds.length - 1), {autoAlpha: 0.8, scale: 0.6, duration: 2, filter: 'blur(10px)'})
+        gsap.to('#round-container-' + (this.rounds.length - 1), {autoAlpha: 0.5, /*scale: 0.1,*/ duration: 2, filter: 'blur(50px)'})
         await new Promise(resolve => setTimeout(resolve, 2028));
         gsap.to('#round-container-' + (this.rounds.length - 1), {autoAlpha: 1, scale: 1.2, duration: 0.2, filter: 'blur(0px)'})
 //5

@@ -237,9 +237,9 @@ export class Round {
         category: false,
         path: "/finalten",
         iconPath: "M560-320h120v-320H560v320Zm0 120q-50 0-85-35t-35-85v-320q0-50 35-85t85-35h120q50 0 85 35t35 85v320q0 50-35 85t-85 35H560Zm-320 0v-440h-80v-120h200v560H240Z",
-        background: "#440000",
-        primary: "#FF0000",
-        secondary: "#884400",
+        background: "#363741",
+        primary: "#0004ff",
+        secondary: "#fffb00",
         rules: ""
     } // Finale 10 Fragen 5Buzz / 5Multi 10% pro frage
     static savePoints: RoundInterface = {
