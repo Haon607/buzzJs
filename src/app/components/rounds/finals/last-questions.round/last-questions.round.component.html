@@ -1,5 +1,5 @@
 <div class="background" [ngStyle]="{'background': bgc}">
-    <div id="question">{{currentQuestion.question}}</div>
+    <div id="question" [ngClass]="buzzerQuestion ? 'question-buzzer' : 'question-multiple'">{{currentQuestion.question}}</div>
     <app-timer id="timer"
                [size]="225"
                [duration]="20"

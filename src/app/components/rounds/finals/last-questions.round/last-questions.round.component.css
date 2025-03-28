@@ -18,22 +18,31 @@
 }
 
 #question {
+    background: linear-gradient(90deg, rgb(108, 17, 17) 0%, rgb(122, 18, 18) 100%);
     border: 10px solid black;
     border-radius: 50px;
-    background: linear-gradient(90deg, rgb(108, 17, 17) 0%, rgb(122, 18, 18) 100%);
     text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    height: 20vh;
-    width: 80vw;
     top: 20px;
     left: 20px;
     font-size: 50px;
     padding-left: 25px;
     padding-right: 25px;
     opacity: 0;
+}
+
+.question-multiple {
+    height: 20vh;
+    width: 80vw;
+}
+
+.question-buzzer {
+    height: 45vh;
+    width: 65vw;
+    white-space: pre-wrap;
 }
 
 .options-container {
