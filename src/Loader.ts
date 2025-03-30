@@ -103,6 +103,11 @@ export class QuestionLoader {
                     answers: [{answer: "Civilization", correct: true}, {answer: "Rollercoaster Tycoon", correct: false}, {answer: "Monster Hunter", correct: false}, {answer: "X-COM", correct: false}],
                     shuffle: true,
                 });
+                questions.push({
+                    question: 'Wie heißt KEIN Geist aus Pac Man?',
+                    answers: [{answer: "Pac Man", correct: true}, {answer: "Rollercoaster Tycoon", correct: false}, {answer: "Monster Hunter", correct: false}, {answer: "X-COM", correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.traditionen.name:
                 questions.push({
@@ -175,6 +180,11 @@ export class QuestionLoader {
                 questions.push({
                     question: '"E.T. – Der Außerirdische" war bis zur Veröffentlichung von welchem Film der erfolgreichste Film aller Zeiten?',
                     answers: [{answer: 'Jurassic Park', correct: true}, {answer: 'Gremlins', correct: false}, {answer: 'E.T. 2', correct: false}, {answer: 'Zurück in die Zukunft', correct: false}],
+                    shuffle: true,
+                });
+                questions.push({
+                    question: 'Welcher James Bond Film kam nach der Jahrtausendwende als erstes in die Kinos?',
+                    answers: [{answer: 'Stirb an einem anderen Tag', correct: true}, {answer: 'Feuerball', correct: false}, {answer: 'GoldenEye', correct: false}, {answer: 'Die Welt ist nicht genug', correct: false}],
                     shuffle: true,
                 });
                 break;
@@ -323,6 +333,11 @@ export class QuestionLoader {
                 questions.push({
                     question: '',
                     answers: [{answer: "Boris Johnson", correct: true}],
+                    shuffle: false,
+                });
+                questions.push({
+                    question: 'Ich sagte: "Ich bin ein Berliner"',
+                    answers: [{answer: "John F. Kennedy", correct: true}],
                     shuffle: false,
                 });
                 break;
