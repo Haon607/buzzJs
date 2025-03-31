@@ -102,9 +102,9 @@ export class FinalCategoryComponent {
                 gsap.to('#round-container-' + (o), {scale: 0.5, autoAlpha: 0.8, filter: 'blur(100px)'});
                 gsap.set('#round-container-' + (o + 1), {x: randomNumber(-600, 600), y: randomNumber(-300, 300), rotation: 270, scale: 1, autoAlpha: 0});
 
-                if (o >= 2) {
-                    // gsap.to('#round-container-' + (o - 2), { scale: 0.1, autoAlpha: 0 });
-                }
+                // if (o >= 2) {
+                //     gsap.to('#round-container-' + (o - 2), { scale: 0.1, autoAlpha: 0 });
+                // }
             }
         }
         // await new Promise(resolve => setTimeout(resolve, 16274));
@@ -165,7 +165,7 @@ export class FinalCategoryComponent {
         }
 //Click
         this.hue.setColor(HueLightService.primary.concat(HueLightService.secondary), '#FFFFFF', 100, 254);
-        gsap.set('#headline', {x: 0, y: 0, autoAlpha: 1, scale: 3})
+        gsap.set('#headline', {x: 0, y: 0, rotation: 0, autoAlpha: 1, scale: 3})
         await new Promise(resolve => setTimeout(resolve, 1508));
         gsap.to('#headline', {autoAlpha: 1, scale: 1, ease: "power1.out", duration: 0.1})
         this.hue.setColor(HueLightService.primary, this.rounds[this.rounds.length - 1].primary, 100, 254);
@@ -173,6 +173,7 @@ export class FinalCategoryComponent {
         new ColorFader().fadeColor(this.bgc, this.rounds[this.rounds.length - 1].background, 100, color => this.bgc = color);
 //Bumm
 
+        await new Promise(resolve => setTimeout(resolve, 500));
         gsap.to('#headline', {autoAlpha: 0, duration: 3, filter: 'blur(100px)'})
         await new Promise(resolve => setTimeout(resolve, 3000));
 
@@ -237,6 +238,6 @@ export class FinalCategoryComponent {
             this.hlc = '#FFFFFF';
             return;
         }
-        gsap.set('#headline', {x: randomNumber(-600, 600), y: randomNumber(-300, 300), autoAlpha: 1, scale: 0.3 + (i * 0.05), filter: 'blur(' + (15-i) + 'px)'});
+        gsap.set('#headline', {x: randomNumber(-500, 500), y: randomNumber(-250, 250), rotation: randomNumber(-15, 15), autoAlpha: 1, scale: 0.3 + (i * 0.05), filter: 'blur(' + (15-i) + 'px)'});
     }
 }

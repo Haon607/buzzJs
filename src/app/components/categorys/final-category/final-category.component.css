@@ -12,7 +12,6 @@
     font-weight: bold;
     position: absolute;
     opacity: 0;
-
 }
 
 .round-container {
@@ -55,22 +54,6 @@
     align-items: center;
     bottom: 10px;
     opacity: 0;
-}
-
-.round-number {
-    border-radius: 50%;
-    width: 175px;
-    height: 175px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    -webkit-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 1));
-    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 1));
-}
-
-.round-number-text {
-    font-size: 125px;
-    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
 }
 
 .scoreboard-override {
