@@ -39,6 +39,8 @@ export class LastQuestionsRoundComponent {
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     private inputs: ButtonState[] = [];
     private acceptInputsVar = false;
+    banner: { questionNumber: number, isBuzzer: boolean, categoryName: string } =
+        { questionNumber: NaN, categoryName: "", isBuzzer: false };
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -47,7 +49,6 @@ export class LastQuestionsRoundComponent {
         this.setupWithDelay();
         this.openCategories = CategoryLoader.loadCategories(QuestionType.openEnded)
         this.multipleCategories = CategoryLoader.loadCategories(QuestionType.multipleChoice)
-        this.questions = this.questions.concat(QuestionLoader.loadQuestion(CategoryLoader.videogames));
         this.startRound();
     }
 
@@ -95,6 +96,7 @@ export class LastQuestionsRoundComponent {
         gsap.set('#question', {y: -600, rotationX: -45, opacity: 1, ease: "back.inOut"})
         gsap.set('#timer', {y: -300, rotationX: -45, opacity: 1, ease: "back.inOut"})
 
+        this.hideBanner();
         await new Promise(resolve => setTimeout(resolve, 750));
         gsap.to('#scoreboard', {x: 0, ease: 'bounce'})
 
@@ -143,16 +145,14 @@ export class LastQuestionsRoundComponent {
         this.music.src = "/music/wwds/masterfragebgm.mp3";
         this.music.loop = true
         // await this.waitForSpace();
+        await this.waitForSpace();
         for (let i = 0; i < this.amountOfQuestions; i++) {
-            this.buzzerQuestion = i % 2 === 0;
-            this.setupNextQuestion()
-            await this.waitForSpace();
+            await this.introduceQuestion(i);
             new Audio('music/wwds/frage.mp3').play();
             await new Promise(resolve => setTimeout(resolve, 250));
             this.displayQuestion(true)
             this.hue.setColor(HueLightService.secondary, this.buzzerQuestion ? this.round.primary : this.round.secondary, 1000, 50)
             this.hue.setColor(HueLightService.primary, this.buzzerQuestion ? this.round.secondary : this.round.primary, 100, 255)
-            new ColorFader().fadeColor(this.bgc, this.buzzerQuestion ? '#414136' : this.round.background, 500, value => this.bgc = value)
             await new Promise(resolve => setTimeout(resolve, 500));
             this.music.play()
             if (!this.buzzerQuestion) {
@@ -235,6 +235,13 @@ export class LastQuestionsRoundComponent {
         this.inputs = [];
         this.questions = this.questions.slice(1, this.questions.length);
         this.currentQuestion = this.questions[0];
+        if (this.buzzerQuestion) {
+            this.currentQuestion.answers[2] = this.currentQuestion.answers[0];
+            this.currentQuestion.answers[2].correct = true;
+            this.currentQuestion.answers[0] = {answer: "", correct: false};
+            this.currentQuestion.answers[1] = {answer: "", correct: false};
+            this.currentQuestion.answers[3] = {answer: "", correct: false};
+        }
         if (this.currentQuestion.shuffle) this.currentQuestion.answers = shuffleArray(this.currentQuestion.answers);
         this.printQuestion()
     }
@@ -381,5 +388,44 @@ export class LastQuestionsRoundComponent {
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
+    }
+
+    private async introduceQuestion(questionNumber: number) {
+        this.buzzerQuestion = questionNumber % 2 === 0;
+        const category = this.buzzerQuestion ? this.openCategories[questionNumber] : this.multipleCategories[questionNumber]
+        this.questions = [this.currentQuestion]
+        this.questions = this.questions.concat(QuestionLoader.loadQuestion(category));
+        this.banner = {questionNumber: questionNumber+1, isBuzzer: this.buzzerQuestion, categoryName: category.name}
+        await this.animateBanner();
+        this.setupNextQuestion();
+        await this.waitForSpace();
+        this.hideBanner();
+    }
+
+    private async animateBanner() {
+        new Audio('/music/div/last10banner.mp3').play()
+        await new Promise(resolve => setTimeout(resolve, 0));
+//go
+        this.hue.setColor(HueLightService.secondary, this.buzzerQuestion ? this.round.primary : this.round.secondary, 1000, 255)
+        this.hue.setColor(HueLightService.primary, this.buzzerQuestion ? this.round.secondary : this.round.primary, 1000, 255)
+        new ColorFader().fadeColor(this.bgc, this.buzzerQuestion ? '#414136' : this.round.background, 1000, value => this.bgc = value)
+
+        gsap.to('#banner', {duration: 0.3, scale: 1, autoAlpha: 1, x: 0})
+        gsap.to('#banner-question-number', {rotation: 0, scale: 1})
+        await new Promise(resolve => setTimeout(resolve, 381));
+//break
+        gsap.to('#banner-category-name', {autoAlpha: 1, x: 0, duration: 0.2, ease: 'back.out'})
+        await new Promise(resolve => setTimeout(resolve, 445));
+//slice
+    }
+
+    private async hideBanner() {
+        gsap.to('#banner', {duration: 0.5, scale: 0.5, autoAlpha: 0, x: -2000})
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        //reset
+        gsap.set('#banner', {scale: 0.5, autoAlpha: 0, x: 2000})
+        gsap.set('#banner-category-name', {autoAlpha: 0, x: 2000})
+        gsap.set('#banner-question-number', {rotation: 270, scale: 2, opacity: 1})
+
     }
 }

@@ -235,7 +235,7 @@ export class Round {
     static final10: RoundInterface = {
         name: "Die letzten 10!",
         category: false,
-        path: "/finalten",
+        path: "/final/finalten",
         iconPath: "M560-320h120v-320H560v320Zm0 120q-50 0-85-35t-35-85v-320q0-50 35-85t85-35h120q50 0 85 35t35 85v320q0 50-35 85t-85 35H560Zm-320 0v-440h-80v-120h200v560H240Z",
         background: "#363741",
         primary: "#0004ff",
@@ -245,13 +245,33 @@ export class Round {
     static savePoints: RoundInterface = {
         name: "Rette die Punkte!",
         category: false,
-        path: "/savepoints",
+        path: "/final/savepoints",
         iconPath: "M440-501Zm0 381L313-234q-72-65-123.5-116t-85-96q-33.5-45-49-87T40-621q0-94 63-156.5T260-840q52 0 99 22t81 62q34-40 81-62t99-22q84 0 153 59t69 160q0 14-2 29.5t-6 31.5h-85q5-18 8-34t3-30q0-75-50-105.5T620-760q-51 0-88 27.5T463-660h-46q-31-45-70.5-72.5T260-760q-57 0-98.5 39.5T120-621q0 33 14 67t50 78.5q36 44.5 98 104T440-228q26-23 61-53t56-50l9 9 19.5 19.5L605-283l9 9q-22 20-56 49.5T498-172l-58 52Zm160-280v-80h320v80H600Z",
         background: "#000040",
         primary: "#730000",
         secondary: "#d5d5d5",
         rules: ""
     } // million dollar money drop
+    static inControl: RoundInterface = {
+        name: "In der Hand",
+        category: false,
+        path: "/final/incontrol",
+        iconPath: "",
+        background: "",
+        primary: "",
+        secondary: "",
+        rules: ""
+    } // speedfire controlle behalten
+    static oneVsOnehundred: RoundInterface = {
+        name: "100%",
+        category: false,
+        path: "/final/onevsonehundred",
+        iconPath: "",
+        background: "",
+        primary: "",
+        secondary: "",
+        rules: ""
+    } // speedfire controlle behalten
     // Audience Knowledge?
     // Autism Knowledge explaining
 

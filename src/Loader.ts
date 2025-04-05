@@ -360,7 +360,7 @@ export class QuestionLoader {
                 break;
             case CategoryLoader.abbreviations.name:
                 questions.push({
-                    question: 'FÜr was steht die Abkürzung "GAU" in "Super-GAU"`?',
+                    question: 'Für was steht die Abkürzung "GAU" in "Super-GAU"?',
                     answers: [{answer: "größter anzunehmender Unfall", correct: true}],
                     shuffle: false,
                 });

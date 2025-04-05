@@ -7,6 +7,10 @@
                [showTime]="false"
                (timerExpired)="onTimeExpired()"
     ></app-timer>
+    <div id="banner" [ngStyle]="{'background': 'linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, '+ (this.banner.isBuzzer ? this.round.secondary : this.round.primary) +' 50%, rgba(0, 0, 0, 0) 100%)'}">
+        <div id="banner-question-number"><span>{{ banner.questionNumber }}</span></div>
+        <div id="banner-category-name"><span>{{ banner.categoryName }}</span></div>
+    </div>
     <div class="options-container" id="options-container">
         <div class="option" id="blue"><span>{{ currentQuestion.answers[0].answer }}</span></div>
         <div class="option" id="orange"><span>{{ currentQuestion.answers[1].answer }}</span></div>
