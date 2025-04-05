@@ -69,8 +69,12 @@ export class SpotlightRoundComponent implements OnDestroy {
         styledLogger("Reihenfolge:\n" + this.playerOrder.map(id => this.memory.players.find(player => player.controllerId === id)?.name).join(', '), Style.information)
         for (let i = 0; i < this.playerOrder.length; i++) {
             this.setupNextRound()
+            this.hue.turnOff(HueLightService.secondary, 1000)
             await this.waitForSpace();
             await this.selectPlayer(i);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            this.hue.turnOff(HueLightService.secondary, 0)
+            await new Promise(resolve => setTimeout(resolve, 500));
             await this.selectCategory();
             this.setupNextQuestion()
             await this.waitForSpace();
@@ -81,6 +85,7 @@ export class SpotlightRoundComponent implements OnDestroy {
             await this.awaitSelectedPlayerAnswer();
             this.displayTimer(true)
             styledLogger("Buzzern um zu behaupten Spieler liegt falsch", Style.speak)
+            this.hue.setColor(HueLightService.secondary, '#FF0000', 1000, 50)
             await this.startTimer();
             this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254)
             styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
@@ -385,6 +390,8 @@ export class SpotlightRoundComponent implements OnDestroy {
         for (let i = 0; i < spinAmount; i++) {
             await new Promise(resolve => setTimeout(resolve, Math.pow(i, 2)))
             new Audio('music/div/spin' + i % 4 + '.mp3').play();
+            this.hue.setColor([HueLightService.secondary[i%HueLightService.secondary.length]], this.round.secondary, 0, 254)
+            this.hue.turnOff([HueLightService.secondary[(i-1)%HueLightService.secondary.length]])
 
             const selected = i < spinAmount -1 ? shuffleArray(possible)[0] : this.playerOrder[questionNumber];
 
@@ -452,6 +459,8 @@ export class SpotlightRoundComponent implements OnDestroy {
         const categories = shuffleArray(CategoryLoader.loadCategories(this.round.questionType)).slice(0,4);
         let i = 0
         for (; this.categorySelect; i++) {
+            this.hue.setColor([HueLightService.secondary[i%HueLightService.secondary.length]], this.round.secondary, 0, 254)
+            this.hue.turnOff([HueLightService.secondary[(i-1)%HueLightService.secondary.length]])
             const states = new Array(4).fill(false);
             states[this.currentPlayer] = i%2 === 0
             this.buzz.setLeds(states);
