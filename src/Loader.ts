@@ -194,6 +194,11 @@ export class QuestionLoader {
                     answers: [{answer: "Kebab", correct: true}, {answer: "Hot Dog", correct: false}, {answer: "Burger", correct: false}, {answer: "Falafel", correct: false}],
                     shuffle: true,
                 });
+                questions.push({
+                    question: 'Wieviele von diesen Nutella Gläsern müsste ich konsumieren um die Tagesration an Zucker zu erreichen?',
+                    answers: [{answer: "Kebab", correct: true}, {answer: "Hot Dog", correct: false}, {answer: "Burger", correct: false}, {answer: "Falafel", correct: false}],
+                    shuffle: true,
+                });
                 break;
             case CategoryLoader.literatur.name:
                 questions.push({
