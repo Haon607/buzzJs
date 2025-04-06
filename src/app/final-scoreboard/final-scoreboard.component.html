@@ -1,0 +1,20 @@
+<div class="background" [ngStyle]="{'background': bgc}">
+    @for (player of disPlayers; track player.controllerId) {
+        <div class="player-container" id="player-container-{{player.controllerId}}"
+             [ngStyle]="{'background': getPlayerColorBackground(player.controllerId, player.done)}">
+            <div class="player-information-container">
+                <span class="player-name" id="player-name-{{player.controllerId}}">{{ player.name }}</span>
+                <span class="player-score numbers" id="player-score-{{player.controllerId}}">{{ player.countingScore }}</span>
+            </div>
+
+            <div class="player-score-bar-container" id="player-score-bar-container-{{player.controllerId}}">
+                <div class="player-score-bar" id="player-score-bar-{{player.controllerId}}"></div>
+            </div>
+
+            <div class="player-scores-container" id="player-scores-container-{{player.controllerId}}">
+                <span class="player-bottom-score numbers" id="player-bottom-score-{{player.controllerId}}" [ngStyle]="{'color': player.done ? '#444' : '#FFF'}">{{ player.done ? player.totalGameScore : player.countingScore }}</span>
+                <span class="player-bottom-percentage numbers" id="player-bottom-percentage-{{player.controllerId}}" [ngStyle]="{'color': player.done ? '#888' : '#FFF'}">{{ player.done ? player.totalPercentage : player.countingPercentage }}%</span>
+            </div>
+        </div>
+    }
+</div>

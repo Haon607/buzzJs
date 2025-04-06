@@ -34,7 +34,7 @@ export class LastQuestionsRoundComponent {
     spacePressed = false;
     music: HTMLAudioElement = new Audio();
     timerDone = false;
-    amountOfQuestions = 10;
+    amountOfQuestions = 1 /*10 TODO*/;
     buzzerQuestion = false;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
     private inputs: ButtonState[] = [];
@@ -193,7 +193,7 @@ export class LastQuestionsRoundComponent {
         await this.waitForSpace()
         gsap.to('#scoreboard', {x: 600})
         await new Promise(resolve => setTimeout(resolve, 1000));
-        this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
+        this.router.navigateByUrl("scoreboard/final/" + this.bgc.slice(1, this.bgc.length));
     }
 
     private onPress(buttonState: ButtonState) {

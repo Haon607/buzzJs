@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Style, styledLogger } from '../../utils';
+import { randomNumber, Style, styledLogger } from '../../utils';
 import { Category, CategoryLoader } from "../../Loader";
 import { Player } from "../../models";
 import { Round, RoundInterface } from "./round";
@@ -47,23 +47,23 @@ export class MemoryService {
             {
                 name: "Name",
                 controllerId: 0,
-                gameScore: 11,
-                finalPercentage: 0,
+                gameScore: randomNumber(0,10000),
+                finalPercentage: randomNumber(0,100),
             }, {
                 name: "Benedikt",
                 controllerId: 1,
-                gameScore: 10,
-                finalPercentage: 0,
+                gameScore: randomNumber(0,10000),
+                finalPercentage: randomNumber(0,100),
             }, {
                 name: "Waltraud",
                 controllerId: 2,
-                gameScore: 0,
-                finalPercentage: 0,
+                gameScore: randomNumber(0,10000),
+                finalPercentage: randomNumber(0,100),
             }, {
                 name: "Moritz",
                 controllerId: 3,
-                gameScore: -10,
-                finalPercentage: 0,
+                gameScore: randomNumber(0,10000),
+                finalPercentage: randomNumber(0,100),
             },
         ]
         this.category = CategoryLoader.videogames;

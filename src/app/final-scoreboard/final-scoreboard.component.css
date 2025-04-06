@@ -1,0 +1,65 @@
+.background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    perspective: 1000px;
+}
+.player-container {
+    flex-basis: 0;
+    flex-grow: 1;
+    margin-left: 5px;
+    margin-right: 5px;
+    color: white;
+    border-radius: 25px;
+    height: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    font-size: 40px;
+    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+    opacity: 0;
+}
+.player-information-container {
+    width: 80%;
+    margin-top: 30px;
+    padding: 10px;
+    background: rgb(18,70,71);
+    border-style: solid;
+    border-radius: 25px;
+    border-width: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+}
+.player-name {
+    text-align: center;
+}
+.player-score {
+    font-size: 60px;
+}
+.player-scores-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;;
+}
+.player-score-bar-container {
+    flex-grow: 1;
+    width: 80%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
+    background: #00000088;
+    display: flex;
+    align-items: end;
+}
+.player-score-bar {
+    height: 100%;
+    width: 100%;
+    background: white;
+}

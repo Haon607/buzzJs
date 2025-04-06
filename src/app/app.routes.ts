@@ -18,11 +18,13 @@ import { StreakRoundComponent } from "./components/rounds/streak.round/streak.ro
 import { Round } from "./services/round";
 import { FinalCategoryComponent } from "./components/categorys/final-category/final-category.component";
 import { LastQuestionsRoundComponent } from "./components/rounds/finals/last-questions.round/last-questions.round.component";
+import { FinalScoreboardComponent } from "./final-scoreboard/final-scoreboard.component";
 
 export const routes: Routes = [
     {path: "", component: JoinGameComponent},
     {path: "category/:bgc", component: CategoryComponent},
     {path: "final/:bgc", component: FinalCategoryComponent},
+    {path: "scoreboard/final/:bgc", component: FinalScoreboardComponent},
     {path: "round" + Round.punktesammler.path, component: PunktesammlerRoundComponent},
     {path: "round" + Round.waitForIt.path, component: WaitForItRoundComponent},
     {path: "round" + Round.stopTheClock.path, component: StopTheClockRoundComponent},
@@ -38,5 +40,4 @@ export const routes: Routes = [
     {path: "round" + Round.drawing.path, component: DrawingRoundComponent},
     {path: "round" + Round.washingMachine.path, component: WashingMachineRoundComponent},
     {path: "round" + Round.final10.path, component: LastQuestionsRoundComponent},
-    /*TODO Scoreboard*/
 ];
