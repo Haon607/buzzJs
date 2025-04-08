@@ -91,17 +91,32 @@ export class FinalScoreboardComponent {
         while (this.disPlayers.some(player => !player.done)) {
             for (let player of this.disPlayers.filter(player => !player.done)) {
                 if (player.countingPercentage+1 <= player.totalPercentage) {
-                    player.countingPercentage++;
+                    player.countingPercentage+=1;
                     player.countingScore = Math.round(player.totalGameScore * (player.countingPercentage / 100));
                     gsap.to('#player-score-bar-' + player.controllerId, {height: (player.countingScore / max * 100) + "%", duration: 0.1, ease: "none"});
+                    if (i>25) gsap.set('#player-score-bar-container-' + player.controllerId, {x: randomNumber(-5,5)});
                 } else {
                     player.done = true;
+                    gsap.set('.player-score-bar-container', {x: 0});
+                    i = -1;
                 }
                 // await new Promise(resolve => setTimeout(resolve, 50));
             }
-            new Audio('music/div/spin' + (i%4) + '.mp3').play();
-            await new Promise(resolve => setTimeout(resolve, 500 / Math.max(1, i / 10)));
+            if (i !== -1) new Audio('music/div/spin' + (i%4) + '.mp3').play();
+            else {
+                if (!this.disPlayers.some(player => !player.done)) {
+                    new Audio('music/div/spinresult.mp3').play();
+                    return;
+                }
+                new Audio('music/div/nextplayer.mp3').play();
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            for (let player of this.disPlayers) {
+                gsap.to('#player-score-bar-' + player.controllerId, { opacity: 1 - (this.disPlayers.filter(value => value.countingScore > player.countingScore).length / 5), duration: 0.5 / Math.max(1, i / 10)});
+            }
+            await new Promise(resolve => setTimeout(resolve, 500 / Math.max(1, i / this.disPlayers.filter(player => !player.done).length)));
             i++;
         }
+
     }
 }

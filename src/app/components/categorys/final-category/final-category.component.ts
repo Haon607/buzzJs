@@ -26,6 +26,7 @@ export class FinalCategoryComponent {
     music: HTMLAudioElement = new Audio();
     bgc: string;
     hlc: string = '#FFFFFF';
+    stopLights: boolean = false;
 
     constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService, private scoreboard: ScoreboardService) {
         this.bgc = '#' + route.snapshot.paramMap.get('bgc')!;
@@ -83,7 +84,7 @@ export class FinalCategoryComponent {
 
         styledLogger(this.currentRound.name, Style.speak)
 
-        this.music.src = "/music/esc/finalescoreboard.mp3";
+        this.music.src = "/music/esc/finalecategory.mp3";
         this.music.play();
         await new Promise(resolve => setTimeout(resolve, 1725));
 //start
@@ -115,14 +116,13 @@ export class FinalCategoryComponent {
         new ColorFader().fadeColor(this.bgc, '#000000', 2000, color => this.bgc = color);
         this.hue.turnOff(HueLightService.primary.concat(HueLightService.secondary), 2000)
         await new Promise(resolve => setTimeout(resolve, 750));
-
     }
 
     private async beginn() {
         await new Promise(resolve => setTimeout(resolve, 19298))
         gsap.set('#round-container-' + (this.rounds.length - 1), {scale: 0.2, autoAlpha: 0, borderRadius: '0px', borderColor: '#FFF', borderStyle: 'solid', borderWidth: '10px'})
         //1
-
+        this.startLights();
         gsap.to('#round-container-' + (this.rounds.length - 1), {scale: 1, autoAlpha: 1, borderRadius: 0.1})
         await new Promise(resolve => setTimeout(resolve, 1118));
         gsap.to('#round-container-' + (this.rounds.length - 1), {autoAlpha: 0, duration: 3, filter: 'blur(100px)'})
@@ -146,6 +146,7 @@ export class FinalCategoryComponent {
         await new Promise(resolve => setTimeout(resolve, 576));
         gsap.to('#round-container-' + (this.rounds.length - 1), {autoAlpha: 0, scale: 0.1, duration: 2, filter: 'blur(100px)'})
 //end
+        this.stopLights = true;
 
         await new Promise(resolve => setTimeout(resolve, 3000));
     }
@@ -239,5 +240,21 @@ export class FinalCategoryComponent {
             return;
         }
         gsap.set('#headline', {x: randomNumber(-500, 500), y: randomNumber(-250, 250), rotation: randomNumber(-15, 15), autoAlpha: 1, scale: 0.3 + (i * 0.05), filter: 'blur(' + (15-i) + 'px)'});
+    }
+
+    private async startLights() {
+        const lights = shuffleArray(HueLightService.primary.concat(HueLightService.secondary));
+        let i = 0;
+        while (!this.stopLights) {
+            this.bounceLight(lights[i % lights.length])
+            await new Promise(resolve => setTimeout(resolve, 250));
+            i++;
+        }
+    }
+
+    private async bounceLight(lightId: number) {
+        this.hue.setColor([lightId], '#FFFFFF', 250, 254)
+        await new Promise(resolve => setTimeout(resolve, 250));
+        this.hue.turnOff([lightId], 1000)
     }
 }

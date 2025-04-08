@@ -308,6 +308,11 @@ export class QuestionLoader {
                     answers: [{answer: "Kleptomanie", correct: true}],
                     shuffle: false,
                 });
+                questions.push({
+                    question: 'kakorrhaphiophobia',
+                    answers: [{answer: "", correct: true}],
+                    shuffle: false,
+                });
                 break;
             case CategoryLoader.werBinIch.name:
                 questions.push({
