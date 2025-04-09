@@ -29,7 +29,7 @@ export class BuzzDeviceService implements OnDestroy {
   private statesSubject = new BehaviorSubject<boolean[]>(this.previousStates);
 
   constructor() {
-    this.ws = new WebSocket('ws://localhost:3000');
+    this.ws = new WebSocket('ws://192.168.0.6:3000');
 
     this.connectToWebSocket();
   }
@@ -43,6 +43,8 @@ export class BuzzDeviceService implements OnDestroy {
       const message = JSON.parse(event.data);
       if (message.event === 'buttonChange') {
         this.handleDeviceData(message.states);
+      } else if (message.event === 'press' || message.event === 'release') {
+        this.triggerEvent( message.event, {controller: message.controller, button: message.button });
       } else if (message.event === 'error') {
         this.handleDeviceError(message.error);
       }

@@ -9,6 +9,7 @@ export class Player {
     this.gameScore = gameScore;
   }
 }
+
 export enum Colors {
   red = '#FF0000',
   blue = '#2CADFA',
@@ -16,6 +17,7 @@ export enum Colors {
   green = '#11BC20',
   yellow = '#FFFF00'
 }
+
 export function inputToColor(button: number) {
   switch (button) {
     case 0: return Colors.red;
