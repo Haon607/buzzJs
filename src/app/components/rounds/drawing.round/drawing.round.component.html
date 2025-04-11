@@ -1,4 +1,5 @@
 <div class="background" [ngStyle]="{'background': bgc}">
+    <app-canvas-mirror></app-canvas-mirror>
     <div id="question" [ngStyle]="{'width': (questionFullWidth ? 94 : 80) +'vw'}">{{currentQuestion.question}}</div>
     <app-timer id="timer"
                [size]="225"

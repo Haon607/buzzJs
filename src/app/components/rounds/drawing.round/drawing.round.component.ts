@@ -12,13 +12,15 @@ import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils
 import { inputToColor } from "../../../../models";
 import { NgStyle } from "@angular/common";
 import { RoundInterface } from "../../../services/round";
+import { CanvasMirrorComponent } from "./canvas-mirror/canvas-mirror.component";
 
 @Component({
   selector: 'app-drawing.round',
   imports: [
     ScoreboardComponent,
     TimerComponent,
-    NgStyle
+    NgStyle,
+    CanvasMirrorComponent
   ],
   templateUrl: './drawing.round.component.html',
   standalone: true,
