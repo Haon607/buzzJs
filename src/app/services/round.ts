@@ -10,7 +10,8 @@ export class Round {
         background: "#015c53",
         primary: "#20fff8",
         secondary: "#015c53",
-        rules: ""
+        rules: "",
+        perks: "Erhalte 2 Punkte für jede richtige Antwort jedes Spielers"
     };
     static stopTheClock: RoundInterface = {
         name: "Stoppt die Uhr!",
@@ -21,7 +22,8 @@ export class Round {
         background: "#5c0147",
         primary: "#e120ff",
         secondary: "#f3ade2",
-        rules: ""
+        rules: "",
+        perks: ""
     };
     static iLiterallyJustToldYou: RoundInterface = {
         name: "I literally just told you!",
@@ -32,7 +34,8 @@ export class Round {
         background: "#450000",
         primary: "#a35252",
         secondary: "#39ba65",
-        rules: ""
+        rules: "",
+        perks: "SCREW EM"
     }
     static itLiterallyJustHappened: RoundInterface = {
         name: "It literally just happened!",
@@ -43,7 +46,8 @@ export class Round {
         background: "#00326f",
         primary: "#527da3",
         secondary: "#bf7238",
-        rules: ""
+        rules: "",
+        perks: "See other answers first"
     }
     static wonderWall: RoundInterface = {
         name: "Wunderwand",
@@ -54,7 +58,8 @@ export class Round {
         background: "#000e47",
         primary: "#1c3193",
         secondary: "#84acff",
-        rules: ""
+        rules: "",
+        perks: ""
     }
     static whatIsTheQuestion: RoundInterface = {
         name: "Lückentext",
@@ -65,7 +70,8 @@ export class Round {
         background: "#0c6100",
         primary: "#257017",
         secondary: "#d3ff5d",
-        rules: ""
+        rules: "",
+        perks: "block other players for 10 seconds"
     }
     static spotlight: RoundInterface = {
         name: "Rampensau",
@@ -76,7 +82,8 @@ export class Round {
         background: "#4b0080",
         primary: "#4b0080",
         secondary: "#ffe900",
-        rules: ""
+        rules: "",
+        perks: "Dont lose points on your question"
     }
     static shortFuse: RoundInterface = {
         name: "Tick Tack Bumm",
@@ -87,7 +94,8 @@ export class Round {
         background: "#980a01",
         primary: "#ff8400",
         secondary: "#ffff00",
-        rules: ""
+        rules: "",
+        perks: "extend time"
     }
     static fastestFinger: RoundInterface = {
         name: "Schnell am Drücker!",
@@ -98,7 +106,8 @@ export class Round {
         background: "#232ED1",
         primary: "#087E8B",
         secondary: "#FF5A5F",
-        rules: ""
+        rules: "",
+        perks: "2 chances"
     }
     static stealing: RoundInterface = {
         name: "Diebstahl",
@@ -109,7 +118,8 @@ export class Round {
         background: "#300057",
         primary: "#9900ff",
         secondary: "#ff96ff",
-        rules: ""
+        rules: "",
+        perks: ""
     } // Buzzern? Prozentuales Stehlen von Punkten GLOBALER TIMER
     static waitForIt: RoundInterface = {
         name: "Abwarten...",
@@ -120,7 +130,8 @@ export class Round {
         background: "#231c30",
         primary: "#8F0000",
         secondary: "#33009a",
-        rules: "// Wait for it, Hintere Plätze maybe mehr punkte?"
+        rules: "// Wait for it, Hintere Plätze maybe mehr punkte?",
+        perks: "button flash"
     }
     static streak: RoundInterface = {
         name: "Glückssträhne",
@@ -131,7 +142,8 @@ export class Round {
         background: "#0F0F0F",
         primary: "#80FF80",
         secondary: "#FFFF80",
-        rules: ""
+        rules: "",
+        perks: "2 chips per right"
     }
     static optIn: RoundInterface = {
         name: "Einsteigen bitte",
@@ -142,7 +154,8 @@ export class Round {
         background: "",
         primary: "",
         secondary: "",
-        rules: ""
+        rules: "",
+        perks: ""
     } //Maybe prozentuale punkte
     static massAnswers: RoundInterface = {
         name: "Massenhafte Antworten",
@@ -153,7 +166,8 @@ export class Round {
         background: "",
         primary: "",
         secondary: "",
-        rules: ""
+        rules: "",
+        perks: ""
     } //drawful (2) music, buzz to answer
     static musicBox: RoundInterface = {
         name: "Ab der ersten Sekunde",
@@ -164,7 +178,8 @@ export class Round {
         background: "#1A1F4A",
         primary: "#6600ff",
         secondary: "#00FFC3",
-        rules: "Ein Lied beginnt zu spielen, wer glaubt es zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder der Liedtitel exakt richtig ist, oder der Interpret richtig ist und der Titel so ein bissl stimmt. Je schneller, desto mehr Punkte."
+        rules: "Ein Lied beginnt zu spielen, wer glaubt es zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder der Liedtitel exakt richtig ist, oder der Interpret richtig ist und der Titel so ein bissl stimmt. Je schneller, desto mehr Punkte.",
+        perks: "idle points"
     } //Von anfang an, buzzern, titel und interpret
     static musicalMemory: RoundInterface = {
         name: "Musikalisches Gedächtnis",
@@ -175,7 +190,8 @@ export class Round {
         background: "",
         primary: "",
         secondary: "",
-        rules: ""
+        rules: "",
+        perks: ""
     } // Nur memory segment, auch mehrmals, multiple choice
     static textAware: RoundInterface = {
         name: "Textsicher",
@@ -186,7 +202,8 @@ export class Round {
         background: "#adc2ea",
         primary: "#35568f",
         secondary: "#e1fffd",
-        rules: ""
+        rules: "",
+        perks: "no lockout"
     } // nur text, multiple choice, antwort nach geschwindigkeit
     static skipping: RoundInterface = {
         name: "Mixtape",
@@ -197,7 +214,8 @@ export class Round {
         background: "#4e4a3d",
         primary: "#99ff00",
         secondary: "#ff003c",
-        rules: "Teile zwei Lieder werden in zufälliger reihenfolge gespielt, wer glaubt beide zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder die Liedtitel exakt richtig ist, oder die Interpreten richtig sind und die Titel so ein bissl stimmten. Je schneller, desto mehr Punkte."
+        rules: "Teile zwei Lieder werden in zufälliger reihenfolge gespielt, wer glaubt beide zu erkennen, drückt den Buzzer und die Musik stoppt. Punkte gibts, wenn entweder die Liedtitel exakt richtig ist, oder die Interpreten richtig sind und die Titel so ein bissl stimmten. Je schneller, desto mehr Punkte.",
+        perks: "more playing time"
     } //shuffeln von segmenten, buzzern, titel und interpret
     static timeline: RoundInterface = {
         name: "Hitster",
@@ -208,7 +226,8 @@ export class Round {
         background: "#002929",
         primary: "#5e60ce",
         secondary: "#64dfdf",
-        rules: ""
+        rules: "",
+        perks: "2 steps ahead"
     } //lieder richtig in timeline einräumen
     static washingMachine: RoundInterface = {
         name: "Waschmaschine",
@@ -219,7 +238,8 @@ export class Round {
         background: "#52525c",
         primary: "#222ec5",
         secondary: "#c8ccff",
-        rules: ""
+        rules: "",
+        perks: ""
     } //drei lieder gleichzeitig spielen mit so abwechselnder lautstärke, danach "welches lied war nicht zu hören" ahh frage ODER WAS IST MIT STEREO?? ODER DIMENSIONAL??
     static drawing: RoundInterface = {
         name: "Mal'mal",
@@ -230,7 +250,8 @@ export class Round {
         background: "#88FF88",
         primary: "#8888FF",
         secondary: "#FF8888",
-        rules: ""
+        rules: "",
+        perks: ""
     }
     static final10: RoundInterface = {
         name: "Die letzten 10!",
@@ -285,7 +306,7 @@ export class Round {
     // Total round value
 
     // PERCS + MINIGAMES
-    // SKILL GAMES? (Mii News (Breaking News) - Tomodachi Life Music Extended [OST])
+    // SKILL GAMES? if there are a multiple of 5 rounds left, last round all vs current leader (Mii News (Breaking News) - Tomodachi Life Music Extended [OST])
 
     /*
     background: "#FFFFFF",
@@ -305,4 +326,5 @@ export interface RoundInterface {
     primary: string;
     secondary: string;
     rules: string;
+    perks: string;
 }

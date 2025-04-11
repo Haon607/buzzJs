@@ -100,6 +100,7 @@ export class  StealingRoundComponent implements OnDestroy{
         score: player.gameScore,
         pointAward: undefined,
         active: false,
+        perks: player.perks,
         square: undefined
       }
     }), false])
@@ -209,6 +210,7 @@ export class  StealingRoundComponent implements OnDestroy{
               squareBorder: '#FFF',
               squareText: "±" + this.calculatePoints(player, true)
             } : undefined,
+            perks: player.perks,
             active: this.latestInput?.controller === player.controllerId
           }
         }), false])
@@ -281,6 +283,7 @@ export class  StealingRoundComponent implements OnDestroy{
           score: player.gameScore,
           pointAward: undefined,
           square: undefined,
+          perks: player.perks,
           active: true
         }
       }), false])
@@ -297,6 +300,7 @@ export class  StealingRoundComponent implements OnDestroy{
         score: player.gameScore,
         pointAward: this.latestInput?.controller === player.controllerId ? this.calculatePoints(player, this.isCorrect!) : undefined,
         square: undefined,
+        perks: player.perks,
         active: false
       })
     })
@@ -320,6 +324,7 @@ export class  StealingRoundComponent implements OnDestroy{
           squareBorder: '#00FF00',
           squareText: "+" + this.calculatePoints(player, true)
         } : undefined,
+        perks: player.perks,
         active: false
       })
     })
@@ -343,6 +348,7 @@ export class  StealingRoundComponent implements OnDestroy{
           squareBorder: '#FF0000',
           squareText: "" + this.calculatePoints(player, false)
         } : undefined,
+        perks: player.perks,
         active: false
       })
     })

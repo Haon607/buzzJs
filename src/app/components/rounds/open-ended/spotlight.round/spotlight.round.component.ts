@@ -149,6 +149,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 active: false,
+                perks: player.perks,
                 square: undefined
             }
         }), false])
@@ -200,6 +201,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                         squareBackground: '#00000088',
                         squareBorder: '#FFF'
                     } : undefined,
+                    perks: player.perks,
                     active: false
                 }
             }), false])
@@ -220,6 +222,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: undefined,
                     square: square,
+                    perks: player.perks,
                     active: !this.doubtingPlayers.some(id => id === player.controllerId) && player.controllerId !== this.currentPlayer
                 }
             }), false])
@@ -288,6 +291,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                         squareBackground: '#00000088',
                         squareBorder: '#FFF'
                     } : undefined,
+                    perks: player.perks,
                     active: player.controllerId !== this.currentPlayer
                 }
             }), false])
@@ -301,6 +305,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: undefined,
                     square: square,
+                    perks: player.perks,
                     active: false
                 }
             }), false])
@@ -330,6 +335,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 square: square,
+                perks: player.perks,
                 active: false
             })
         })
@@ -347,6 +353,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 square: square,
+                perks: player.perks,
                 active: false
             })
         })
@@ -377,6 +384,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: this.getPoints(player.controllerId === this.currentPlayer, this.doubtingPlayers.length, correct),
                 square: undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -406,6 +414,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: undefined,
                     square: undefined,
+                    perks: player.perks,
                     active: player.controllerId === selected
                 })
             })
@@ -421,6 +430,7 @@ export class SpotlightRoundComponent implements OnDestroy {
                         score: player.gameScore,
                         pointAward: undefined,
                         square: undefined,
+                        perks: player.perks,
                         active: false
                     })
                 })

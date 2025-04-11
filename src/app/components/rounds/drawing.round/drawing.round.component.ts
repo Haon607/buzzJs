@@ -85,6 +85,7 @@ export class DrawingRoundComponent implements OnDestroy {
         score: player.gameScore,
         pointAward: undefined,
         active: false,
+        perks: player.perks,
         square: undefined
       }
     }), false])
@@ -213,6 +214,7 @@ export class DrawingRoundComponent implements OnDestroy {
               squareBackground: '#00000000',
               squareBorder: '#FFF'
             } : undefined,
+            perks: player.perks,
             active: !this.inputs.some(input => input.controller === player.controllerId)
           }
         }), false])
@@ -268,6 +270,7 @@ export class DrawingRoundComponent implements OnDestroy {
           score: player.gameScore,
           pointAward: undefined,
           square: undefined,
+          perks: player.perks,
           active: true
         }
       }), false])
@@ -282,6 +285,7 @@ export class DrawingRoundComponent implements OnDestroy {
             squareBackground: '#00000000',
             squareBorder: '#FFF'
           } : undefined,
+          perks: player.perks,
           active: false
         }
       }), false])
@@ -300,6 +304,7 @@ export class DrawingRoundComponent implements OnDestroy {
           squareBackground: inputToColor(input.button) + '80',
           squareBorder: inputToColor(input.button)
         } : undefined,
+        perks: player.perks,
         active: false
       })
     })
@@ -330,6 +335,7 @@ export class DrawingRoundComponent implements OnDestroy {
           squareBackground: inputToColor(input.button),
           squareBorder: input.button - 1 === correctInput ? '#00FF00' : '#FF0000',
         } : undefined,
+        perks: player.perks,
         active: false
       })
     })
@@ -350,6 +356,7 @@ export class DrawingRoundComponent implements OnDestroy {
           squareBorder: '#00FF00',
           squareText: "+25"
         } : undefined,
+        perks: player.perks,
         active: false
       })
     })
@@ -366,6 +373,7 @@ export class DrawingRoundComponent implements OnDestroy {
         score: player.gameScore,
         pointAward: input?.button === correctInput + 1 ? 25 : 0,
         square: undefined,
+        perks: player.perks,
         active: false
       })
     })

@@ -90,6 +90,7 @@ export class TextAwareComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: undefined,
                 active: false,
+                perks: player.perks,
                 square: undefined
             }
         }), false])
@@ -369,6 +370,7 @@ export class TextAwareComponent implements OnDestroy {
                             squareBackground: '#00000000',
                             squareBorder: '#FFF'
                         } : undefined,
+                        perks: player.perks,
                         active: !this.inputs.some(input => input.controller === player.controllerId) && !this.excludedIds.some(id => id === player.controllerId)
                     }
                 }), false])
@@ -468,6 +470,7 @@ export class TextAwareComponent implements OnDestroy {
                     score: player.gameScore,
                     pointAward: undefined,
                     square: undefined,
+                    perks: player.perks,
                     active: !this.excludedIds.includes(player.controllerId)
                 }
             }), false])
@@ -482,6 +485,7 @@ export class TextAwareComponent implements OnDestroy {
                         squareBackground: '#00000000',
                         squareBorder: '#FFF'
                     } : undefined,
+                    perks: player.perks,
                     active: false
                 }
             }), false])
@@ -500,6 +504,7 @@ export class TextAwareComponent implements OnDestroy {
                     squareBackground: inputToColor(input.button) + '80',
                     squareBorder: inputToColor(input.button)
                 } : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -540,6 +545,7 @@ export class TextAwareComponent implements OnDestroy {
                     squareBackground: inputToColor(input.button),
                     squareBorder: input.button - 1 === correctInput ? '#00FF00' : '#FF0000',
                 }) : undefined,
+                perks: player.perks,
                 active: false
             })
         })
@@ -560,7 +566,8 @@ export class TextAwareComponent implements OnDestroy {
                     squareBorder: '#00FF00',
                     squareText: "+" + this.possiblePoints
                 } : undefined,
-                active: false
+                active: false,
+                perks: player.perks,
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
@@ -576,7 +583,8 @@ export class TextAwareComponent implements OnDestroy {
                 score: player.gameScore,
                 pointAward: input?.button === correctInput + 1 || (this.isCorrect && input) ? this.possiblePoints : 0,
                 square: undefined,
-                active: false
+                active: false,
+                perks: player.perks,
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
