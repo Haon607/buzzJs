@@ -12,6 +12,7 @@ import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
 import { inputToColor } from "../../../../models";
 import { RoundInterface } from "../../../services/round";
+import { Animate } from "../../../../Animate";
 
 @Component({
     selector: 'app-streak.round',
@@ -176,8 +177,10 @@ export class StreakRoundComponent implements OnDestroy {
         const initMusic = new Audio("/music/mp/smpj-dc2.mp3");
         initMusic.play()
         await this.waitForSpace();
-        this.displayTimer(true)
+        this.displayTimer(true);
+        // initMusic.pause()
         new MusicFader().fadeOut(initMusic, 1000);
+        await new Animate(this.hue).gameOn(this.round.primary, this.round.secondary, ColorFader.adjustBrightness('#888888', -50), ColorFader.adjustBrightness('#888888', -50));
         await new Promise(resolve => setTimeout(resolve, 500));
         for (let i = 0; i < this.musics.length; i++) {
             this.musics[i].play();

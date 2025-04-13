@@ -8,10 +8,11 @@ import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboar
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../services/hue-light.service";
 import gsap from "gsap";
-import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
+import { ColorFader, MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { NgClass, NgStyle } from "@angular/common";
 import { RoundInterface } from "../../../services/round";
 import { CanvasMirrorComponent } from "./canvas-mirror/canvas-mirror.component";
+import { Animate } from "../../../../Animate";
 
 @Component({
     selector: 'app-drawing.round',
@@ -96,6 +97,7 @@ export class DrawingRoundComponent implements OnDestroy {
 
         gsap.set('#scoreboard', {x: 600})
         gsap.set('#canvas', {x: 0, scale: 1})
+        /*TODO THIS ROUND IS PROBABLY MORE LIKE Textaware*/
 /*TODO top line no question just category? and answers? let users pick category and draw any of the multiple choice answers? maybe also music?*/
         gsap.set('#answer', {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"})
         gsap.set('#question', {y: -600, rotationX: -45, ease: "back.inOut"})
@@ -130,6 +132,9 @@ export class DrawingRoundComponent implements OnDestroy {
     }
 
     private async startRound() {
+        await this.waitForSpace();
+        await new Animate(this.hue).gameOn(this.round.primary, this.round.secondary, this.round.secondary, this.round.primary);
+
         this.music.src = "/music/buzz/BTV-BL_PF.mp3";
         this.music.loop = true
         this.music.play()
