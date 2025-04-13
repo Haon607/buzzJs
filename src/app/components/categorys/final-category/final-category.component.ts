@@ -65,7 +65,8 @@ export class FinalCategoryComponent {
                 score: player.gameScore,
                 pointAward: undefined,
                 active: false,
-                square: undefined
+                square: undefined,
+                perks: player.perks
             }
         }), false])
 

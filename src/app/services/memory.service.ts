@@ -20,10 +20,10 @@ export class MemoryService {
     constructor() {
         this.rounds = [
           // Round.itLiterallyJustHappened,
+            Round.drawing,
             Round.timeline,
-            Round.waitForIt,
             // Round.washingMachine,
-            // Round.drawing,
+            Round.waitForIt,
             // Round.wonderWall,
             // Round.iLiterallyJustToldYou,
             Round.streak,
@@ -40,7 +40,7 @@ export class MemoryService {
             Round.final10,
             // Round.savePoints
         ];
-        this.roundNumber = 10;
+        this.roundNumber = 0;
         // this.pointsPerRound = 100;
         // this.pointsPerRoundIncrement = 25;
         this.players = [
@@ -49,21 +49,25 @@ export class MemoryService {
                 controllerId: 0,
                 gameScore: randomNumber(0,10000),
                 finalPercentage: randomNumber(0,100),
+                perks: null
             }, {
                 name: "Benedikt",
                 controllerId: 1,
                 gameScore: randomNumber(0,10000),
                 finalPercentage: randomNumber(0,100),
+                perks: null
             }, {
                 name: "Waltraud",
                 controllerId: 2,
                 gameScore: randomNumber(0,10000),
                 finalPercentage: randomNumber(0,100),
+                perks: null
             }, {
                 name: "Moritz",
                 controllerId: 3,
                 gameScore: randomNumber(0,10000),
                 finalPercentage: randomNumber(0,100),
+                perks: null
             },
         ]
         this.category = CategoryLoader.videogames;

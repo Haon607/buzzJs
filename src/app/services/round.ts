@@ -261,7 +261,8 @@ export class Round {
         background: "#363741",
         primary: "#0004ff",
         secondary: "#fffb00",
-        rules: ""
+        rules: "",
+        perks: ""
     } // Finale 10 Fragen 5Buzz / 5Multi 10% pro frage
     static savePoints: RoundInterface = {
         name: "Rette die Punkte!",
@@ -271,7 +272,8 @@ export class Round {
         background: "#000040",
         primary: "#730000",
         secondary: "#d5d5d5",
-        rules: ""
+        rules: "",
+        perks: ""
     } // million dollar money drop
     static inControl: RoundInterface = {
         name: "In der Hand",
@@ -281,7 +283,8 @@ export class Round {
         background: "",
         primary: "",
         secondary: "",
-        rules: ""
+        rules: "",
+        perks: ""
     } // speedfire controlle behalten
     static oneVsOnehundred: RoundInterface = {
         name: "100%",
@@ -291,7 +294,8 @@ export class Round {
         background: "",
         primary: "",
         secondary: "",
-        rules: ""
+        rules: "",
+        perks: ""
     } // speedfire controlle behalten
     // Audience Knowledge?
     // Autism Knowledge explaining

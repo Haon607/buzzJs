@@ -82,7 +82,8 @@ export class LastQuestionsRoundComponent {
                 pointAward: undefined,
                 active: false,
                 square: undefined,
-                playerPercent: 0
+                playerPercent: 0,
+                perks: player.perks
             }
         }), false])
 
@@ -216,7 +217,8 @@ export class LastQuestionsRoundComponent {
                             squareBackground: '#00000000',
                             squareBorder: '#FFF'
                         } : undefined,
-                        active: !this.inputs.some(input => input.controller === player.controllerId)
+                        active: !this.inputs.some(input => input.controller === player.controllerId),
+                        perks: player.perks
                     }
                 }), false])
             }
@@ -280,7 +282,8 @@ export class LastQuestionsRoundComponent {
                     pointAward: undefined,
                     square: undefined,
                     active: true,
-                    playerPercent: player.finalPercentage
+                    playerPercent: player.finalPercentage,
+                    perks: player.perks
                 }
             }), false])
         } else {
@@ -295,7 +298,8 @@ export class LastQuestionsRoundComponent {
                         squareBackground: '#00000000',
                         squareBorder: '#FFF'
                     } : undefined,
-                    active: false
+                    active: false,
+                    perks: player.perks
                 }
             }), false])
         }
@@ -314,7 +318,8 @@ export class LastQuestionsRoundComponent {
                     squareBackground: inputToColor(input.button) + '80',
                     squareBorder: inputToColor(input.button)
                 } : undefined,
-                active: false
+                active: false,
+                perks: player.perks
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
@@ -346,7 +351,8 @@ export class LastQuestionsRoundComponent {
                     squareBackground: inputToColor(input.button),
                     squareBorder: input.button - 1 === correctInput ? '#00FF00' : '#FF0000',
                 } : undefined,
-                active: false
+                active: false,
+                perks: player.perks
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
@@ -367,7 +373,8 @@ export class LastQuestionsRoundComponent {
                     squareBorder: '#00FF00',
                     squareText: "+10%"
                 } : undefined,
-                active: false
+                active: false,
+                perks: player.perks
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
@@ -384,7 +391,8 @@ export class LastQuestionsRoundComponent {
                 pointAward: 0,
                 square: undefined,
                 active: false,
-                playerPercent: player.finalPercentage + (input?.button === correctInput + 1 ? 10 : 0)
+                playerPercent: player.finalPercentage + (input?.button === correctInput + 1 ? 10 : 0),
+                perks: player.perks
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
