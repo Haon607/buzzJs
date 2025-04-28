@@ -30,7 +30,7 @@ export class  StealingRoundComponent implements OnDestroy{
   round: RoundInterface;
   currentQuestion: Question = {
     question: "", answers: [
-      {answer: "", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false},
+      {answer: "", correct: true, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false},
     ], shuffle: false
   };
   questions: Question[] = [this.currentQuestion];
@@ -239,7 +239,7 @@ export class  StealingRoundComponent implements OnDestroy{
     this.questions = this.questions.slice(1, this.questions.length);
     this.currentQuestion = this.questions[0];
     if (this.currentQuestion.shuffle) this.currentQuestion.answers = shuffleArray(this.currentQuestion.answers);
-    this.currentQuestion.answers[1] = {answer: (this.percentCounter/this.percentThrough).toFixed(1) + "%", correct: false}
+    this.currentQuestion.answers[1] = {answer: (this.percentCounter/this.percentThrough).toFixed(1) + "%", correct: false, drawAble: false}
     this.printQuestion()
   }
 
@@ -255,7 +255,7 @@ export class  StealingRoundComponent implements OnDestroy{
     while (!this.latestInput && !this.skipVar) {
       await new Promise(resolve => setTimeout(resolve, 100));
       this.percentCounter++;
-      this.currentQuestion.answers[1] = {answer: (this.percentCounter/this.percentThrough).toFixed(1) + "%", correct: false}
+      this.currentQuestion.answers[1] = {answer: (this.percentCounter/this.percentThrough).toFixed(1) + "%", correct: false, drawAble: false}
 
       timePassed++;
       if (timePassed % 50 === 0) {

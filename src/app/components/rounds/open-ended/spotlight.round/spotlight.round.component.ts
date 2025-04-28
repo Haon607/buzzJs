@@ -30,7 +30,7 @@ export class SpotlightRoundComponent implements OnDestroy {
     round: RoundInterface;
     currentQuestion: Question = {
         question: "", answers: [
-            {answer: "", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false},
+            {answer: "", correct: true, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false},
         ], shuffle: false
     };
     questions: Question[] = [this.currentQuestion];
@@ -245,7 +245,7 @@ export class SpotlightRoundComponent implements OnDestroy {
         this.selectedPlayerAnswered = false
         this.questions = [{
             question: "", answers: [
-                {answer: "", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false},
+                {answer: "", correct: true, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false},
             ], shuffle: false
         }]
     }

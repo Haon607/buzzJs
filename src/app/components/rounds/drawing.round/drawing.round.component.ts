@@ -31,7 +31,7 @@ export class DrawingRoundComponent implements OnDestroy {
     round: RoundInterface;
     currentQuestion: Question = {
         question: "", answers: [
-            {answer: "", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false},
+            {answer: "", correct: true, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false},
         ], shuffle: false
     };
     questions: Question[] = [this.currentQuestion];
@@ -98,7 +98,7 @@ export class DrawingRoundComponent implements OnDestroy {
         gsap.set('#scoreboard', {x: 600})
         gsap.set('#canvas', {x: 0, scale: 1})
         /*TODO THIS ROUND IS PROBABLY MORE LIKE Textaware*/
-/*TODO top line no question just category? and answers? let users pick category and draw any of the multiple choice answers? maybe also music?*/
+        /*TODO top line no question just category? and answers? let users pick category and draw any of the multiple choice answers? maybe also music?*/
         gsap.set('#answer', {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"})
         gsap.set('#question', {y: -600, rotationX: -45, ease: "back.inOut"})
         gsap.set('#timer', {y: -300, rotationX: -45, opacity: 1, ease: "back.inOut"})

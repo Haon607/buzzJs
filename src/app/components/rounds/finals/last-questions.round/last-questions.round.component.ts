@@ -25,7 +25,7 @@ export class LastQuestionsRoundComponent {
     round: RoundInterface;
     currentQuestion: Question = {
         question: "", answers: [
-            {answer: "", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false},
+            {answer: "", correct: true, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false},
         ], shuffle: false
     };
     openCategories: Category[] = [];
@@ -240,9 +240,9 @@ export class LastQuestionsRoundComponent {
         if (this.buzzerQuestion) {
             this.currentQuestion.answers[2] = this.currentQuestion.answers[0];
             this.currentQuestion.answers[2].correct = true;
-            this.currentQuestion.answers[0] = {answer: "", correct: false};
-            this.currentQuestion.answers[1] = {answer: "", correct: false};
-            this.currentQuestion.answers[3] = {answer: "", correct: false};
+            this.currentQuestion.answers[0] = {answer: "", correct: false, drawAble: false};
+            this.currentQuestion.answers[1] = {answer: "", correct: false, drawAble: false};
+            this.currentQuestion.answers[3] = {answer: "", correct: false, drawAble: false};
         }
         if (this.currentQuestion.shuffle) this.currentQuestion.answers = shuffleArray(this.currentQuestion.answers);
         this.printQuestion()

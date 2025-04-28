@@ -30,7 +30,7 @@ export class SkippingRoundComponent implements OnDestroy {
   round: RoundInterface;
   currentQuestion: Question = {
     question: "", answers: [
-      {answer: "", correct: true}, {answer: "", correct: false}, {answer: "", correct: false}, {answer: "", correct: false},
+      {answer: "", correct: true, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false},
     ], shuffle: false
   };
   currentTracks: MusicQuestion[] = []
