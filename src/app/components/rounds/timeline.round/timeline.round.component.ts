@@ -12,7 +12,7 @@ import { HueLightService } from "../../../services/hue-light.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { CategoryLoader } from "../../../../Loader";
 import { inputToColor } from "../../../../models";
-import { RoundInterface } from "../../../services/round";
+import { RoundInterface } from "../../../../round";
 
 @Component({
     selector: 'app-timeline.round',

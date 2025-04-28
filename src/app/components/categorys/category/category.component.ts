@@ -10,7 +10,7 @@ import gsap from 'gsap';
 import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
 import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
 import { inputToColor } from "../../../../models";
-import { RoundInterface } from "../../../services/round";
+import { RoundInterface } from "../../../../round";
 
 @Component({
     selector: 'app-category',

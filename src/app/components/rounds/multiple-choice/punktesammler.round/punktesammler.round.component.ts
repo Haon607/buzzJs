@@ -11,7 +11,7 @@ import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
 import { inputToColor } from "../../../../../models";
 import { HueLightService } from "../../../../services/hue-light.service";
-import { RoundInterface } from "../../../../services/round";
+import { RoundInterface } from "../../../../../round";
 
 @Component({
     selector: 'app-punktesammler.round',

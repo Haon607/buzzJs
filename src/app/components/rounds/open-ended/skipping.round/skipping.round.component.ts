@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../../services/hue-light.service";
 import { MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../../utils";
 import { Genre, Musicloader, MusicQuestion } from "../../../../../MusicLoader";
-import { RoundInterface } from "../../../../services/round";
+import { RoundInterface } from "../../../../../round";
 
 @Component({
   selector: 'app-skipping.round',

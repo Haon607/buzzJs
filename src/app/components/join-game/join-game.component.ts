@@ -6,7 +6,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { MemoryService } from '../../services/memory.service';
 import { Style, styledLogger } from '../../../utils';
-import { Round } from "../../services/round";
+import { Round } from "../../../round";
 
 export interface PlayerData {
   playerInformation: Player;

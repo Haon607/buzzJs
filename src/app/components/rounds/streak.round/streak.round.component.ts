@@ -11,7 +11,7 @@ import { ColorFader, countWithDelay, MusicFader, shuffleArray, Style, styledLogg
 import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
 import { inputToColor } from "../../../../models";
-import { RoundInterface } from "../../../services/round";
+import { RoundInterface } from "../../../../round";
 import { Animate } from "../../../../Animate";
 
 @Component({

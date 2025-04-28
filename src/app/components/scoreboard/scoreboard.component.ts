@@ -45,9 +45,7 @@ export class ScoreboardComponent {
         })
 
         scoreboardService.sortSubject.subscribe(() => {
-            if (!this.kill) {
-                this.sort();
-            }
+            if (!this.kill) this.sort();
         })
         this.sort(true)
     }

@@ -11,7 +11,7 @@ import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../ut
 import { inputToColor } from "../../../../../models";
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
-import { RoundInterface } from "../../../../services/round";
+import { RoundInterface } from "../../../../../round";
 
 @Component({
   selector: 'app-washing-machine.round',

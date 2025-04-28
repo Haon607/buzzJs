@@ -2,7 +2,7 @@ import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
 import { TimerComponent } from "../../timer/timer.component";
 import { MemoryService } from "../../../services/memory.service";
-import { Question, QuestionLoader } from "../../../../Loader";
+import { Category, CategoryLoader, Question, QuestionLoader } from "../../../../Loader";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -10,9 +10,10 @@ import { HueLightService } from "../../../services/hue-light.service";
 import gsap from "gsap";
 import { ColorFader, MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { NgClass, NgStyle } from "@angular/common";
-import { RoundInterface } from "../../../services/round";
+import { RoundInterface } from "../../../../round";
 import { CanvasMirrorComponent } from "./canvas-mirror/canvas-mirror.component";
 import { Animate } from "../../../../Animate";
+import { Player } from "../../../../models";
 
 @Component({
     selector: 'app-drawing.round',
@@ -31,9 +32,10 @@ export class DrawingRoundComponent implements OnDestroy {
     round: RoundInterface;
     currentQuestion: Question = {
         question: "", answers: [
-            {answer: "", correct: true, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false}, {answer: "", correct: false, drawAble: false},
+            {answer: "", correct: true, drawAble: false}
         ], shuffle: false
     };
+    categories: Category[] = [];
     questions: Question[] = [this.currentQuestion];
     spacePressed = false;
     music: HTMLAudioElement = new Audio();
@@ -41,20 +43,21 @@ export class DrawingRoundComponent implements OnDestroy {
     gotCorrect = false;
     amountOfQuestions = 5;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
-    maxTime = 30;
-    timerSound = true;
-    monospaceQuestion = true;
+    maxTime = 180;
+    private drawingPlayer: Player;
     private latestInput: ButtonState | null = null;
     private excludeIds: number[] = [];
     private acceptInputsVar = false;
     private stoppBuzzFlash = false
+    displayObject: { options: string[] } = {options: []};
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
         this.bgc = this.round.background;
+        this.categories = CategoryLoader.loadCategories(this.round.questionType!)
         buzz.onPress(buttonState => this.onPress(buttonState));
+        this.drawingPlayer = this.memory.players.slice().sort((a, b) => a.gameScore - b.gameScore)[0];
         this.setupWithDelay();
-        this.questions = this.questions.concat(QuestionLoader.loadQuestion(memory.category!));
         this.startRound();
     }
 
@@ -89,7 +92,7 @@ export class DrawingRoundComponent implements OnDestroy {
                 name: player.name,
                 score: player.gameScore,
                 pointAward: undefined,
-                active: false,
+                active: player.controllerId === this.drawingPlayer.controllerId,
                 perks: player.perks,
                 square: undefined,
             }
@@ -98,8 +101,8 @@ export class DrawingRoundComponent implements OnDestroy {
         gsap.set('#scoreboard', {x: 600})
         gsap.set('#canvas', {x: 0, scale: 1})
         /*TODO THIS ROUND IS PROBABLY MORE LIKE Textaware*/
-        /*TODO top line no question just category? and answers? let users pick category and draw any of the multiple choice answers? maybe also music?*/
-        gsap.set('#answer', {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"})
+        /*TODO top line no question just category? and answers? let users pick category every so often*/
+        gsap.set('.option', {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"})
         gsap.set('#question', {y: -600, rotationX: -45, ease: "back.inOut"})
         gsap.set('#timer', {y: -300, rotationX: -45, opacity: 1, ease: "back.inOut"})
 
@@ -125,20 +128,22 @@ export class DrawingRoundComponent implements OnDestroy {
 
     private async displayAnswers(tf: boolean) {
         if (tf) {
-            gsap.to('#answer', {rotateY: 2, x: 30, ease: "back.inOut"})
+            gsap.to('.option', {rotateY: 2, x: 30, ease: "back.inOut"})
         } else {
-            gsap.to('#answer', {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"})
+            gsap.to('.option', {rotateY: 88, x: -1150, scale: 1, borderWidth: 5, ease: "back.inOut"})
         }
     }
 
     private async startRound() {
         await this.waitForSpace();
-        await new Animate(this.hue).gameOn(this.round.primary, this.round.secondary, this.round.secondary, this.round.primary);
+        new ColorFader().fadeColor(this.bgc, ColorFader.adjustBrightness(this.bgc,-50), 300, color => this.bgc = color);
+        await new Animate(this.hue).gameOn(this.round.primary, '#404040', this.round.secondary, this.round.primary);
+        new ColorFader().fadeColor(this.bgc, this.round.background, 300, color => this.bgc = color);
+        this.displayTimer(true)
+        // await this.waitForSpace();
+        await this.chooseCategory()
+        for (let i = 0; true; i++) {
 
-        this.music.src = "/music/buzz/BTV-BL_PF.mp3";
-        this.music.loop = true
-        this.music.play()
-        for (let i = 0; i < this.amountOfQuestions; i++) {
             this.setupNextQuestion()
             await this.waitForSpace();
             new Audio('music/wwds/frage.mp3').play();
@@ -437,6 +442,14 @@ export class DrawingRoundComponent implements OnDestroy {
             })
         })
         this.scoreboard.playerSubject.next([scoreboardPlayers, true])
+    }
+
+    private async chooseCategory() {
+        this.music.src = "/music/jackbox/drawfuldecoy.mp3";
+        this.music.play();
+        this.displayObject.options = this.categories.slice(0, 4).map((category) => category.name);
+        this.categories = this.categories.slice(4)
+        this.displayAnswers(true);
     }
 }
 

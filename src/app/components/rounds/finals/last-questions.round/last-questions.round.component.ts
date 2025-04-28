@@ -1,7 +1,7 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
-import { RoundInterface } from "../../../../services/round";
+import { RoundInterface } from "../../../../../round";
 import { Category, CategoryLoader, Question, QuestionLoader, QuestionType } from "../../../../../Loader";
 import { TimerComponent } from "../../../timer/timer.component";
 import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";

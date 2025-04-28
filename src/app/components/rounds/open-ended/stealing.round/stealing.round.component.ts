@@ -11,7 +11,7 @@ import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../ut
 import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
 import { Player } from "../../../../../models";
-import { RoundInterface } from "../../../../services/round";
+import { RoundInterface } from "../../../../../round";
 
 @Component({
   selector: 'app-stealing.round',

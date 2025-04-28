@@ -1,7 +1,5 @@
 <div class="background" [ngStyle]="{'background': bgc}">
     <app-canvas-mirror id="canvas"></app-canvas-mirror>
-
-    <div id="question" class="numbers">{{ currentQuestion.question }}</div>
     <app-timer id="timer"
                [size]="225"
                [makeSound]="false"
@@ -9,8 +7,11 @@
                [showTime]="true"
                (timerExpired)="onTimeExpired()"
     ></app-timer>
-    <div class="answer-container" id="answer-container">
-        <div class="answer" id="answer"><span>{{ currentQuestion.answers[0].answer }}</span></div>
+    <div class="options-container" id="options-container">
+        <div class="option" id="blue"><span>{{ displayObject.options[0] }}</span></div>
+        <div class="option" id="orange"><span>{{ displayObject.options[1] }}</span></div>
+        <div class="option" id="green"><span>{{ displayObject.options[2] }}</span></div>
+        <div class="option" id="yellow"><span>{{ displayObject.options[3] }}</span></div>
     </div>
     <app-scoreboard id="scoreboard" class="scoreboard"></app-scoreboard>
 </div>

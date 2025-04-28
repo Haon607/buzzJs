@@ -781,7 +781,10 @@ export class CategoryLoader {
         categories.push(CategoryLoader.hipHopMusic);
         categories.push(CategoryLoader.drawing);
 
-        return shuffleArray(categories.filter(cat => cat.questionType === questionType))
+        return shuffleArray(categories.filter(cat => {
+            if (questionType !== QuestionType.drawing) return cat.questionType === questionType;
+            else return QuestionLoader.loadQuestion(cat).some(question => question.answers.some(answer => answer.drawAble));
+        }));
     }
 
 }

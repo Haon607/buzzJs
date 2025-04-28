@@ -10,7 +10,7 @@ import gsap from "gsap";
 import { ColorFader, countWithDelay, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { inputToColor } from "../../../../models";
 import { Language, Musicloader, MusicQuestion } from "../../../../MusicLoader";
-import { RoundInterface } from "../../../services/round";
+import { RoundInterface } from "../../../../round";
 
 @Component({
     selector: 'app-text-aware',

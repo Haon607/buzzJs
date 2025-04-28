@@ -11,20 +11,20 @@ export class Animate {
         new Audio('music/cahagiytyse/gameon.mp3').play();
 
         async function flash(hue: HueLightService, light: {id: number, baseColor: string}) {
-            hue.setColor([light.id], '#FFFFFF', 0, 255);
+            hue.setColor([light.id], '#FFFFFF', 100, 255);
             await new Promise(resolve => setTimeout(resolve, 300));
-            hue.setColor([light.id], light.baseColor, 0, 255);
+            hue.setColor([light.id], light.baseColor, 100);
         }
 
-        this.hue.setColor(HueLightService.primary, startPrimary, 250, 255);
-        this.hue.setColor(HueLightService.secondary, startSecondary, 250, 255);
+        this.hue.setColor(HueLightService.primary, startPrimary, 250);
+        this.hue.setColor(HueLightService.secondary, startSecondary, 250);
         await new Promise(resolve => setTimeout(resolve, 839));
         //start
-        const allLights = shuffleArray(HueLightService.primary.map(id => {return {id: id, baseColor: startPrimary}}).concat(HueLightService.secondary.map(id => {return {id: id, baseColor: startSecondary}})));
-        for (let i = 0; i < 30; i++) {
+        const allLights = shuffleArray(/*HueLightService.primary.map(id => {return {id: id, baseColor: startPrimary}}).concat(*/HueLightService.secondary.map(id => {return {id: id, baseColor: startSecondary}}/*)*/));
+        for (let i = 0; i < 15; i++) {
             flash(this.hue, allLights[i%allLights.length])
             // flash(this.hue, allLights[(i+(allLights.length/2))%allLights.length])
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 200));
         }
         await new Promise(resolve => setTimeout(resolve, 400));
         // await new Promise(resolve => setTimeout(resolve, 3591));

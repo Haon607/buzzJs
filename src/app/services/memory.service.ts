@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { randomNumber, Style, styledLogger } from '../../utils';
 import { Category, CategoryLoader } from "../../Loader";
 import { Player } from "../../models";
-import { Round, RoundInterface } from "./round";
+import { Round, RoundInterface } from "../../round";
 
 @Injectable({
     providedIn: 'root'

@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { RoundInterface } from "../../../services/round";
+import { RoundInterface } from "../../../../round";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MemoryService } from "../../../services/memory.service";
 import { BuzzDeviceService } from "../../../services/buzz-device.service";

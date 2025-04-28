@@ -10,7 +10,7 @@ import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreb
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../../services/hue-light.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
-import { RoundInterface } from "../../../../services/round";
+import { RoundInterface } from "../../../../../round";
 
 @Component({
     selector: 'app-whatisthequestion.round',
