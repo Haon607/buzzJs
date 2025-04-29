@@ -145,12 +145,24 @@ export class Round {
         rules: "",
         perks: "2 chips per right"
     }
+    static countOn: RoundInterface = {
+        name: "Ich zähl auf dich!",
+        category: true,
+        questionType: QuestionType.openEnded,
+        path: "/counton",
+        iconPath: "M320-200q-117 0-198.5-81.5T40-480q0-117 81.5-198.5T320-760h320q117 0 198.5 81.5T920-480q0 117-81.5 198.5T640-200H320Zm0-80h320q83 0 141.5-58.5T840-480q0-83-58.5-141.5T640-680H320q-83 0-141.5 58.5T120-480q0 83 58.5 141.5T320-280Zm10-80h60v-90h90v-60h-90v-90h-60v90h-90v60h90v90Zm290 0h60v-240H560v60h60v180ZM480-480Z",
+        background: "#666A86",
+        primary: "#D00000", //split the light down the middle, background should be split down the middle
+        secondary: "#7EBCE6",
+        rules: "", //1vs 3 immer einer schreibt open antwort, andere sagen ob sie glauben richtig oder falsch. Richtige antwort 40 punkte, 30 punkte für prediktion aber split. Team kann auch die antwort geben, sollte 1 dann falsch, bekommt team auch die 40 punkte split
+        perks: ""
+    }
     static optIn: RoundInterface = {
         name: "Einsteigen bitte",
         category: true,
         questionType: QuestionType.multipleChoice,
         path: "/optin",
-        iconPath: "M320-200q-117 0-198.5-81.5T40-480q0-117 81.5-198.5T320-760h320q117 0 198.5 81.5T920-480q0 117-81.5 198.5T640-200H320Zm0-80h320q83 0 141.5-58.5T840-480q0-83-58.5-141.5T640-680H320q-83 0-141.5 58.5T120-480q0 83 58.5 141.5T320-280Zm10-80h60v-90h90v-60h-90v-90h-60v90h-90v60h90v90Zm290 0h60v-240H560v60h60v180ZM480-480Z",
+        iconPath: "M400-80v-80h520v80H400Zm40-120q0-81 51-141.5T620-416v-25q0-17 11.5-28.5T660-481q17 0 28.5 11.5T700-441v25q77 14 128.5 74.5T880-200H440Zm105-81h228q-19-27-48.5-43.5T660-341q-36 0-66 16.5T545-281Zm114 0ZM40-440v-440h240v58l280-78 320 100v40q0 50-35 85t-85 35h-80v24q0 25-14.5 45.5T628-541L358-440H40Zm80-80h80v-280h-80v280Zm160 0h64l232-85q11-4 17.5-13.5T600-640h-71l-117 38-24-76 125-42h247q9 0 22.5-6.5T796-742l-238-74-278 76v220Z",
         background: "",
         primary: "",
         secondary: "",

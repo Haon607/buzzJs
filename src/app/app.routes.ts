@@ -33,6 +33,7 @@ export const routes: Routes = [
     {path: "round" + Round.fastestFinger.path, component: FastestRoundComponent},
     {path: "round" + Round.stealing.path, component: StealingRoundComponent},
     {path: "round" + Round.streak.path, component: StreakRoundComponent},
+    // {path: "round" + Round.countOn.path, component: },
     {path: "round" + Round.musicBox.path, component: MusicboxRoundComponent},
     {path: "round" + Round.skipping.path, component: SkippingRoundComponent},
     {path: "round" + Round.textAware.path, component: TextAwareComponent},
