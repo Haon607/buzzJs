@@ -1,9 +1,9 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
-import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
+import { ScoreboardComponent } from "../../../embettables/scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
 import { RoundInterface } from "../../../../../round";
 import { Category, CategoryLoader, Question, QuestionLoader, QuestionType } from "../../../../../Loader";
-import { TimerComponent } from "../../../timer/timer.component";
+import { TimerComponent } from "../../../embettables/timer/timer.component";
 import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";
 import { MemoryService } from "../../../../services/memory.service";
 import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreboard.service";

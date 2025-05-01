@@ -1,12 +1,17 @@
 <div class="background" [ngStyle]="{'background': bgc}">
     <app-canvas-mirror id="canvas"></app-canvas-mirror>
-    <app-timer id="timer"
+    <app-progressbar id="progress-bar"
+                     [fontsize]="'100px'"
+                     [percent]="progressBar.percent"
+                     [text]="progressBar.text"
+    ></app-progressbar>
+    <!--<app-timer id="timer"
                [size]="225"
                [makeSound]="false"
                [duration]="maxTime"
                [showTime]="true"
                (timerExpired)="onTimeExpired()"
-    ></app-timer>
+    ></app-timer>-->
     <div class="options-container" id="options-container">
         <div class="option" id="blue"><span>{{ displayObject.options[0] }}</span></div>
         <div class="option" id="orange"><span>{{ displayObject.options[1] }}</span></div>

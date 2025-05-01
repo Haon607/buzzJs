@@ -14,6 +14,7 @@ import { Subject } from "rxjs";
 export class CanvasMirrorComponent implements OnInit {
     imageSrc: string = '';
     input: Subject<string> = new Subject<string>();
+    done: Subject<void> = new Subject<void>();
     private ws!: WebSocket;
 
     ngOnInit(): void {
@@ -22,8 +23,11 @@ export class CanvasMirrorComponent implements OnInit {
         this.ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
 
-            if (data.event === 'drawingUpdate' && data.data) {
+            if ((data.event === 'drawingUpdate' || data.event === 'drawingDone') && data.data) {
                 this.imageSrc = data.data;
+                if (data.event === 'drawingDone') {
+                    this.done.next();
+                }
             }
             if (data.event === 'optionSelected' && data.data) {
                 this.input.next(data.data);
@@ -35,5 +39,17 @@ export class CanvasMirrorComponent implements OnInit {
         this.ws.send(JSON.stringify({"event": "showOptions", "data": options}));
     }
 
+    sendMessage(text: string) {
+        this.ws.send(JSON.stringify({"event": "displayDrawingText", "data": text}));
+    }
 
+    setColor(color: string) {
+        this.ws.send(JSON.stringify({"event": "changeCanvasBorderColor", "data": color}));
+    }
+
+    sendClear() {
+        this.ws.send(JSON.stringify({"event": "clearCanvas"}));
+    }
+
+    static baseBoarderColor = '#2CADFA'
 }

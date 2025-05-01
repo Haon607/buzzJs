@@ -8,7 +8,7 @@ import { HueLightService } from "../../../services/hue-light.service";
 import { ColorFader, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
 import gsap from 'gsap';
 import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
-import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
+import { ScoreboardComponent } from "../../embettables/scoreboard/scoreboard.component";
 import { inputToColor } from "../../../../models";
 import { RoundInterface } from "../../../../round";
 

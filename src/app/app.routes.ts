@@ -18,7 +18,7 @@ import { StreakRoundComponent } from "./components/rounds/streak.round/streak.ro
 import { Round } from "../round";
 import { FinalCategoryComponent } from "./components/categorys/final-category/final-category.component";
 import { LastQuestionsRoundComponent } from "./components/rounds/finals/last-questions.round/last-questions.round.component";
-import { FinalScoreboardComponent } from "./final-scoreboard/final-scoreboard.component";
+import { FinalScoreboardComponent } from "./components/final-scoreboard/final-scoreboard.component";
 
 export const routes: Routes = [
     {path: "", component: JoinGameComponent},

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgStyle } from "@angular/common";
-import { MusicFader } from "../../../utils";
+import { MusicFader } from "../../../../utils";
 
 @Component({
     selector: 'app-timer',

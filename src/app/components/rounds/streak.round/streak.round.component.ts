@@ -1,14 +1,14 @@
 import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { MemoryService } from "../../../services/memory.service";
 import { Question, QuestionLoader } from "../../../../Loader";
-import { TimerComponent } from "../../timer/timer.component";
+import { TimerComponent } from "../../embettables/timer/timer.component";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../services/hue-light.service";
 import gsap from "gsap";
 import { ColorFader, countWithDelay, MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
-import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
+import { ScoreboardComponent } from "../../embettables/scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
 import { inputToColor } from "../../../../models";
 import { RoundInterface } from "../../../../round";

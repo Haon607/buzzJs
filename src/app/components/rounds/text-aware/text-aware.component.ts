@@ -1,5 +1,5 @@
 import { Component, HostListener, OnDestroy } from '@angular/core';
-import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
+import { ScoreboardComponent } from "../../embettables/scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
 import { MemoryService } from "../../../services/memory.service";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";

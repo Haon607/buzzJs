@@ -8,16 +8,15 @@
     perspective: 1000px;
 }
 
-#timer {
+#progress-bar {
     position: absolute;
     top: 20px;
     right: 20px;
-    border: 10px solid black;
-    border-radius: 50%;
-    opacity: 0;
+    height: 10vh;
+    width: 30vw;
 }
 
-#question {
+/*#question {
     border: 10px solid black;
     border-radius: 50px;
     background: linear-gradient(90deg, rgb(17, 35, 108) 0%, rgba(18,58,122,1) 100%);
@@ -35,23 +34,14 @@
     padding-right: 25px;
     white-space: pre-wrap;
     opacity: 0;
-}
-
-#in-timer-text {
-    top: 100px;
-    right: 300px;
-    position: absolute;
-    font-size: 75px;
-    font-weight: bold;
-    color: #FFF;
-    text-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;
-}
+}*/
 
 #canvas {
     /*box-shadow: 1px 1px 2px #000, 2px 2px 4px #000, 3px 3px 6px #000;*/
     position: absolute;
     left: 20px;
     /*bottom: 20px;*/
+    opacity: 0;
 }
 
 .options-container {

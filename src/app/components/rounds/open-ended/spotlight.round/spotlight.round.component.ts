@@ -1,8 +1,8 @@
 import gsap from 'gsap';
 import { Component, HostListener, OnDestroy, ViewChild } from "@angular/core";
-import { ScoreboardComponent } from "../../../scoreboard/scoreboard.component";
+import { ScoreboardComponent } from "../../../embettables/scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
-import { TimerComponent } from "../../../timer/timer.component";
+import { TimerComponent } from "../../../embettables/timer/timer.component";
 import { MemoryService } from "../../../../services/memory.service";
 import { CategoryLoader, Question, QuestionLoader } from "../../../../../Loader";
 import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";

@@ -1,6 +1,6 @@
 import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { ScoreboardComponent } from "../../scoreboard/scoreboard.component";
-import { TimerComponent } from "../../timer/timer.component";
+import { ScoreboardComponent } from "../../embettables/scoreboard/scoreboard.component";
+import { TimerComponent } from "../../embettables/timer/timer.component";
 import { MemoryService } from "../../../services/memory.service";
 import { Category, CategoryLoader, Question, QuestionLoader, QuestionType } from "../../../../Loader";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
@@ -11,17 +11,19 @@ import gsap from "gsap";
 import { ColorFader, MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { NgStyle } from "@angular/common";
 import { RoundInterface } from "../../../../round";
-import { CanvasMirrorComponent } from "./canvas-mirror/canvas-mirror.component";
+import { CanvasMirrorComponent } from "../../embettables/canvas-mirror/canvas-mirror.component";
 import { Animate } from "../../../../Animate";
 import { Player } from "../../../../models";
+import { ProgressbarComponent } from "../../embettables/progressbar/progressbar.component";
 
 @Component({
     selector: 'app-drawing.round',
     imports: [
         ScoreboardComponent,
-        TimerComponent,
+        // TimerComponent,
         NgStyle,
-        CanvasMirrorComponent
+        CanvasMirrorComponent,
+        ProgressbarComponent
     ],
     templateUrl: './drawing.round.component.html',
     standalone: true,
@@ -33,7 +35,7 @@ export class DrawingRoundComponent implements OnDestroy {
     categories: Category[] = [];
     spacePressed = false;
     music: HTMLAudioElement = new Audio();
-    drawingMusic: HTMLAudioElement = new Audio('music/jackbox/drawfuldraw.mp3  ');
+    drawingMusic: HTMLAudioElement = new Audio('music/jackbox/drawfuldraw.mp3');
     timerDone = false;
     gotCorrect = false;
     amountOfQuestions = 5;
@@ -48,6 +50,10 @@ export class DrawingRoundComponent implements OnDestroy {
     displayObject: { options: string[], answer: string } = {options: [], answer: ""};
     currentCategory: Category | null = null;
     private promts: string[] = [];
+    private pauseDrawing: boolean = false;
+    private colorRotation = ['#88FF88', '#FF8888', '#8888FF'] //Backround, Primary, Secondary
+    private colorRotationInProgress = false;
+    progressBar: {percent: number, text: string} = {percent: 0, text: '0%'};
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -97,7 +103,7 @@ export class DrawingRoundComponent implements OnDestroy {
         }), false])
 
         gsap.set('#scoreboard', {x: 600})
-        gsap.set('#canvas', {x: 0, scale: 1})
+        gsap.set('#canvas', {x: -2000, scale: 1, autoAlpha: 1})
         /*TODO THIS ROUND IS PROBABLY MORE LIKE Textaware*/
         /*TODO top line no question just category? and answers? let users pick category every so often*/
         /*TODO custom timer from the music progression, makes more sense here*/
@@ -105,9 +111,18 @@ export class DrawingRoundComponent implements OnDestroy {
         // gsap.set('#answer', {rotateY: 88, x: -1150, opacity: 1, ease: "sine.inOut"})
         gsap.set('#timer', {y: -300, rotationX: -45, opacity: 1, ease: "back.inOut"})
 
-        await new Promise(resolve => setTimeout(resolve, 750));
-
+        await new Promise(resolve => setTimeout(resolve, 650));
         this.canvas.input.subscribe(input => this.selectCategory(input));
+        this.canvas.done.subscribe(() => this.pauseDrawing = true);
+        this.canvas.sendClear();
+
+        setInterval(() => {
+            this.progressBar.percent = this.getPlayedTrackInPercent()
+            this.progressBar.text = Math.floor(this.getPlayedTrackInPercent()) + "%";
+        }, 250)
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+        gsap.to('#canvas', {x: 0, ease: 'bounce'})
 
         gsap.to('#scoreboard', {x: 0, ease: 'bounce'})
     }
@@ -146,43 +161,16 @@ export class DrawingRoundComponent implements OnDestroy {
         // await this.waitForSpace();
         await this.chooseCategory()
         this.drawingMusic.play()
-        this.timer.startTimer()
+
+        setInterval(() => {
+            this.rotateColors(10000)
+        }, 15000)
+
         for (let i = 0; true; i++) {
             this.setupNextQuestion()
-            await this.waitForSpace();
-            new Audio('music/wwds/frage.mp3').play();
-            await new Promise(resolve => setTimeout(resolve, 250));
-            // const question = this.currentQuestion.question;
-            // this.currentQuestion.question = "";
-            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 50)
-            await new Promise(resolve => setTimeout(resolve, 100));
-            this.displayTimer(true)
-            await new Promise(resolve => setTimeout(resolve, 400));
-            // await this.startTimer(question);
-            this.hue.setColor(HueLightService.secondary, this.round.secondary, 1000, 254)
-            // styledLogger("Richtige Antwort: " + this.currentQuestion.answers.find(ans => ans.correct)?.answer, Style.information)
-            await new Promise(resolve => setTimeout(resolve, 1000))
-            if (i + 1 === this.amountOfQuestions) {
-                new MusicFader().fadeOut(this.music, 1000);
-                await new Promise(resolve => setTimeout(resolve, 500));
-                this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
-                // this.memory.crossMusic.volume = 0.2;
-                this.memory.crossMusic.play()
-            }
-            new Audio('music/wwds/richtig.mp3').play();
-            this.displayAnswers(true);
-            await new Promise(resolve => setTimeout(resolve, 500));
-            await this.waitForSpace();
-            this.flipToPoints()
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            this.collectPoints()
-            this.displayTimer(false)
-            this.displayAnswers(false)
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            this.scoreboard.sortSubject.next();
-            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            await this.waitForSpace()
         }
-        await this.waitForSpace()
         gsap.to('#scoreboard', {x: 600})
         await new Promise(resolve => setTimeout(resolve, 1000));
         this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
@@ -401,11 +389,31 @@ export class DrawingRoundComponent implements OnDestroy {
 
     private async selectCategory(input: string) {
         new Audio('music/div/spinresult.mp3').play();
+        this.rotateColors(1000)
         if (this.displayObject.options[0] === input) gsap.to('#blue', {x: 100, borderWidth: 20, ease: "back.inOut"})
         if (this.displayObject.options[1] === input) gsap.to('#orange', {x: 100, borderWidth: 20, ease: "back.inOut"})
         if (this.displayObject.options[2] === input) gsap.to('#green', {x: 100, borderWidth: 20, ease: "back.inOut"})
         if (this.displayObject.options[3] === input) gsap.to('#yellow', {x: 100, borderWidth: 20, ease: "back.inOut"})
         this.currentCategory = CategoryLoader.loadCategories(QuestionType.drawing).find((c) => c.name === input)!;
     }
-}
 
+    private async rotateColors(time: number) {
+        while (this.colorRotationInProgress) {
+            await new Promise(resolve => setTimeout(resolve, 100))
+        }
+        this.colorRotationInProgress = true;
+        const temp = this.colorRotation[0];
+        this.colorRotation[0] = this.colorRotation[1];
+        this.colorRotation[1] = this.colorRotation[2];
+        this.colorRotation[2] = temp;
+        new ColorFader().fadeColor(this.bgc, this.colorRotation[0], time, (color) => this.bgc = color);
+        this.hue.setColor(HueLightService.primary, this.colorRotation[1], time)
+        this.hue.setColor(HueLightService.secondary, this.colorRotation[2], time)
+        await new Promise(resolve => setTimeout(resolve, time * 1.05))
+        this.colorRotationInProgress = false;
+    }
+
+    private getPlayedTrackInPercent(): number {
+        return (this.drawingMusic.currentTime / this.drawingMusic.duration) * 100
+    }
+}
