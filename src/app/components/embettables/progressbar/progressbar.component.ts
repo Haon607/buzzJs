@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { NgStyle } from "@angular/common";
+import { NgClass, NgStyle } from "@angular/common";
 
 @Component({
   selector: 'app-progressbar',
   imports: [
-    NgStyle
+    NgStyle,
+    NgClass
   ],
   templateUrl: './progressbar.component.html',
   standalone: true,
@@ -17,5 +18,6 @@ export class ProgressbarComponent {
   @Input() progressColor: string = '#123a7a';
   @Input() fontsize: string = "40px";
   @Input() borderColor: string = '#000000';
+  @Input() numberClass: boolean = false;
 
 }

@@ -16,6 +16,7 @@ export class CanvasMirrorComponent implements OnInit {
     input: Subject<string> = new Subject<string>();
     done: Subject<void> = new Subject<void>();
     private ws!: WebSocket;
+    lastUpdate: number | null = null;
 
     ngOnInit(): void {
         this.ws = new WebSocket('ws://192.168.0.6:3000');
@@ -24,6 +25,7 @@ export class CanvasMirrorComponent implements OnInit {
             const data = JSON.parse(event.data);
 
             if ((data.event === 'drawingUpdate' || data.event === 'drawingDone') && data.data) {
+                this.lastUpdate = Date.now();
                 this.imageSrc = data.data;
                 if (data.event === 'drawingDone') {
                     this.done.next();

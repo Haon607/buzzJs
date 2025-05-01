@@ -454,10 +454,10 @@ export class QuestionLoader {
                 questions.push({
                     question: 'Wer schrieb die Romane "Farm der Tiere" und "1984"?',
                     answers: [
-                        {answer: "Jorjor Wel"/*George Orwell*/, correct: true, drawAble: true},
-                        {answer: "Yll'se Eikingr"/*Illse Eichinger*/, correct: false, drawAble: true},
-                        {answer: "Maysink Laire"/*May Sinclair*/, correct: false, drawAble: true},
-                        {answer: "Tchonos Born"/*John Osborne*/, correct: false, drawAble: true}],
+                        {answer: "Jorjor Wel"/*George Orwell*/, correct: true, drawAble: false},
+                        {answer: "Yll'se Eikingr"/*Illse Eichinger*/, correct: false, drawAble: false},
+                        {answer: "Maysink Laire"/*May Sinclair*/, correct: false, drawAble: false},
+                        {answer: "Tchonos Born"/*John Osborne*/, correct: false, drawAble: false}],
                     shuffle: true,
                 });
                 break;

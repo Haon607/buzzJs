@@ -4,14 +4,8 @@
                      [fontsize]="'100px'"
                      [percent]="progressBar.percent"
                      [text]="progressBar.text"
+                     [numberClass]="true"
     ></app-progressbar>
-    <!--<app-timer id="timer"
-               [size]="225"
-               [makeSound]="false"
-               [duration]="maxTime"
-               [showTime]="true"
-               (timerExpired)="onTimeExpired()"
-    ></app-timer>-->
     <div class="options-container" id="options-container">
         <div class="option" id="blue"><span>{{ displayObject.options[0] }}</span></div>
         <div class="option" id="orange"><span>{{ displayObject.options[1] }}</span></div>
