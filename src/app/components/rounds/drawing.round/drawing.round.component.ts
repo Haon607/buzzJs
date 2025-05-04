@@ -369,7 +369,7 @@ export class DrawingRoundComponent implements OnDestroy {
     private async incorrect() {
         this.excludeIds.push(this.latestInput!)
 
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
             scoreboardPlayers.push({
                 name: player.name,
@@ -473,7 +473,7 @@ export class DrawingRoundComponent implements OnDestroy {
 
         if (this.gotCorrect) return;
 
-        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
             scoreboardPlayers.push({
                 name: player.name,

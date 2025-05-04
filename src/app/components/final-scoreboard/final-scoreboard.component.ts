@@ -72,7 +72,7 @@ export class FinalScoreboardComponent {
             }
         }
 
-        for (let player of this.disPlayers) {
+        for (const player of this.disPlayers) {
             gsap.set('#player-container-' + player.controllerId, {y: 1200, opacity: 1, rotationY: getRotationOfPane(i, this.disPlayers.length)})
             gsap.set('#player-score-bar-' + player.controllerId, {height: "0%"})
             await new Promise(resolve => setTimeout(resolve, 100))
@@ -89,7 +89,7 @@ export class FinalScoreboardComponent {
         const max = Math.max(...this.disPlayers.map(player => player.totalGameScore));
         let i = 0;
         while (this.disPlayers.some(player => !player.done)) {
-            for (let player of this.disPlayers.filter(player => !player.done)) {
+            for (const player of this.disPlayers.filter(player => !player.done)) {
                 if (player.countingPercentage+1 <= player.totalPercentage) {
                     player.countingPercentage+=1;
                     player.countingScore = Math.round(player.totalGameScore * (player.countingPercentage / 100));
@@ -111,7 +111,7 @@ export class FinalScoreboardComponent {
                 new Audio('music/div/nextplayer.mp3').play();
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
-            for (let player of this.disPlayers) {
+            for (const player of this.disPlayers) {
                 gsap.to('#player-score-bar-' + player.controllerId, { opacity: 1 - (this.disPlayers.filter(value => value.countingScore > player.countingScore).length / 5), duration: 0.5 / Math.max(1, i / 10)});
             }
             await new Promise(resolve => setTimeout(resolve, 500 / Math.max(1, i / this.disPlayers.filter(player => !player.done).length)));

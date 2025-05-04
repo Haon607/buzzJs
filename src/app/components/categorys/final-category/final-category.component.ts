@@ -25,8 +25,8 @@ export class FinalCategoryComponent implements OnDestroy {
     }[] = [];
     music: HTMLAudioElement = new Audio();
     bgc: string;
-    hlc: string = '#FFFFFF';
-    stopLights: boolean = false;
+    hlc = '#FFFFFF';
+    stopLights = false;
 
     constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService, private scoreboard: ScoreboardService) {
         this.bgc = '#' + route.snapshot.paramMap.get('bgc')!;

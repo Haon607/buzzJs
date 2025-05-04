@@ -182,8 +182,8 @@ export class StreakRoundComponent implements OnDestroy {
         new MusicFader().fadeOut(initMusic, 1000);
         await new Animate(this.hue, this.buzz).gameOn(this.round.primary, this.round.secondary, ColorFader.adjustBrightness('#888888', -50), ColorFader.adjustBrightness('#888888', -50));
         await new Promise(resolve => setTimeout(resolve, 500));
-        for (let i = 0; i < this.musics.length; i++) {
-            this.musics[i].play();
+        for (const musics of this.musics) {
+            musics.play();
         }
         this.musics[0].volume = 1;
         for (let i = 0; !this.timerDone; i++) {

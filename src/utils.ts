@@ -170,10 +170,10 @@ export function randomNumber(from: number, to: number): number {
   return Math.floor(Math.random() * (to - from + 1) + from);
 }
 
-export type WeightedItem<T> = {
+export interface WeightedItem<T> {
   item: T;
   weight: number;
-};
+}
 
 export function getRandomWeightedItem<T>(items: WeightedItem<T>[]): T {
   // Filter out non-positive weights

@@ -265,11 +265,11 @@ export class TimelineRoundComponent implements OnDestroy {
             if (trackList.length <= 3)
                 if (!(i % 5 === 0)) return
                 else {
-                    for (let track of trackList) {
+                    for (const track of trackList) {
                         gsap.to('#track-' + track.track.id, {borderColor: '#FFF'});
                     }
                     await new Promise(resolve => setTimeout(resolve, 500));
-                    for (let track of trackList) {
+                    for (const track of trackList) {
                         gsap.to('#track-' + track.track.id, {borderColor: '#000'});
                     }
                 }

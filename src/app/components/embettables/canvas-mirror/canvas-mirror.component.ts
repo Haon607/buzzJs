@@ -12,7 +12,7 @@ import { Subject } from "rxjs";
     standalone: true
 })
 export class CanvasMirrorComponent implements OnInit {
-    imageSrc: string = '';
+    imageSrc = '';
     input: Subject<string> = new Subject<string>();
     done: Subject<void> = new Subject<void>();
     private ws!: WebSocket;

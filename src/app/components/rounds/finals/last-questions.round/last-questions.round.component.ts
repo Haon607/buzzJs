@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild, OnDestroy } from '@angular/core';
 import { ScoreboardComponent } from "../../../embettables/scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
 import { RoundInterface } from "../../../../../round";
@@ -20,7 +20,7 @@ import { inputToColor } from "../../../../../models";
     standalone: true,
     styleUrl: './last-questions.round.component.css'
 })
-export class LastQuestionsRoundComponent {
+export class LastQuestionsRoundComponent implements OnDestroy {
     bgc: string;
     round: RoundInterface;
     currentQuestion: Question = {

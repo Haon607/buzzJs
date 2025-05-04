@@ -14,7 +14,7 @@ import { MemoryService } from "../../../services/memory.service";
     styleUrl: './scoreboard.component.css'
 })
 export class ScoreboardComponent {
-    @Input() final: boolean = false;
+    @Input() final = false;
     players: ScoreboardPlayer[] = [];
     space = 200;
     preSpace: number;
