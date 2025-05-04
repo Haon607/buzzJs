@@ -8,7 +8,7 @@ import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboar
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../services/hue-light.service";
 import gsap from "gsap";
-import { ColorFader, MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
+import { ColorFader, getRandomWeightedItem, MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { NgStyle } from "@angular/common";
 import { RoundInterface } from "../../../../round";
 import { CanvasMirrorComponent } from "../../embettables/canvas-mirror/canvas-mirror.component";
@@ -43,7 +43,7 @@ export class DrawingRoundComponent implements OnDestroy {
     currentCategory: Category | null = null;
     progressBar: { percent: number, text: string } = {percent: 0, text: '3:00'};
     private drawingPlayer: Player;
-    private latestInput: ButtonState | null = null;
+    private latestInput: number | null = null;
     private excludeIds: number[] = [];
     private acceptInputsVar = false;
     private stoppBuzzFlash = false
@@ -106,8 +106,7 @@ export class DrawingRoundComponent implements OnDestroy {
 
         await new Promise(resolve => setTimeout(resolve, 650));
         this.canvas.input.subscribe(input => this.selectCategory(input));
-        this.canvas.done.subscribe(() => this.drawingMusic.pause());
-        this.canvas.sendClear();
+        this.canvas.done.subscribe(() => new MusicFader().fadeOut(this.drawingMusic, 500));
 
         setInterval(() => {
             this.progressBar.percent = this.getPlayedTrackInPercent()
@@ -116,8 +115,6 @@ export class DrawingRoundComponent implements OnDestroy {
         }, 100)
 
         await new Promise(resolve => setTimeout(resolve, 100));
-        gsap.to('#canvas', {x: 0, ease: 'bounce'})
-
         gsap.to('#scoreboard', {x: 0, ease: 'bounce'})
     }
 
@@ -147,15 +144,13 @@ export class DrawingRoundComponent implements OnDestroy {
 
     private async startRound() {
         do {
+            await new Promise(resolve => setTimeout(resolve, 500));
             styledLogger("Initialize Drawing tablet", Style.requiresInput)
-            await this.waitForSpace();
+            this.canvas.sendClear()
         } while (!this.canvas.lastUpdate);
-        new ColorFader().fadeColor(this.bgc, ColorFader.adjustBrightness(this.bgc, -50), 300, color => this.bgc = color);
-        await new Animate(this.hue, this.buzz).gameOn(this.round.primary, '#404040', this.round.secondary, this.round.primary);
-        new ColorFader().fadeColor(this.bgc, this.round.background, 300, color => this.bgc = color);
-        this.displayBar(true)
-        await new Promise(resolve => setTimeout(resolve, 500));
-        // await this.waitForSpace();
+        gsap.to('#canvas', {x: 0, ease: 'bounce'})
+        await this.waitForSpace();
+        await this.roundStartAnimation();
         await this.chooseCategory()
         this.drawingMusic.play()
 
@@ -163,50 +158,100 @@ export class DrawingRoundComponent implements OnDestroy {
             this.rotateColors(10000)
         }, 12500)
 
-        for (let i = 0; true; i++) {
+        for (let i = 0; !this.drawingMusic.ended; i++) {
             if (!this.promts[1]) {
                 this.drawingMusic.pause()
                 await this.chooseCategory()
-                this.drawingMusic.play()
             }
-            this.setupNextQuestion()
+            this.setupNextQuestion();
+            this.acceptInputs(true)
+            do {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            } while (!this.drawingMusic.paused && !this.gotCorrect);
+            this.acceptInputsVar = false
+            this.music.src = "/music/jackbox/drawfulreveal.mp3";
+            this.music.play();
+            while (!this.gotCorrect && this.excludeIds.length < this.memory.players.length) {
+                await this.playerAnswer(this.getPlayerToForceAnswer());
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            if (this.gotCorrect) {
+                this.flipToPoints();
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                this.collectPoints();
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            new MusicFader().fadeOut(this.music, 1000);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            if (this.drawingMusic.ended) {
 
-            await this.waitForSpace()
+            }
         }
         gsap.to('#scoreboard', {x: 600})
         await new Promise(resolve => setTimeout(resolve, 1000));
         this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
     }
 
+    private async roundStartAnimation() {
+        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+            return {
+                name: player.name,
+                score: player.gameScore,
+                pointAward: undefined,
+                square: undefined,
+                perks: player.perks,
+                active: true
+            }
+        }), true])
+        new ColorFader().fadeColor(this.bgc, ColorFader.adjustBrightness(this.bgc, -50), 300, color => this.bgc = color);
+        await new Animate(this.hue, this.buzz).gameOn(this.round.primary, '#404040', this.round.secondary, this.round.primary);
+        new ColorFader().fadeColor(this.bgc, this.round.background, 300, color => this.bgc = color);
+        this.displayBar(true)
+        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+            return {
+                name: player.name,
+                score: player.gameScore,
+                pointAward: undefined,
+                square: undefined,
+                perks: player.perks,
+                active: false
+            }
+        }), true])
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
     private async onPress(buttonState: ButtonState) {
         if (this.acceptInputsVar && buttonState.button === 0) {
             if (!this.latestInput && !this.excludeIds.includes(buttonState.controller)) {
-                this.latestInput = buttonState;
-                this.timer.stopTimer(this.music)
+                this.latestInput = buttonState.controller;
                 new Audio('music/wwds/einloggen.mp3').play();
                 this.scoreboard.playerSubject.next([this.memory.players.map(player => {
                     return {
                         name: player.name,
                         score: player.gameScore,
                         pointAward: undefined,
-                        square: this.latestInput?.controller === player.controllerId ? {
+                        square: this.latestInput === player.controllerId ? {
                             squareBackground: '#FF000088',
                             squareBorder: '#FFF'
                         } : undefined,
                         perks: player.perks,
-                        active: this.latestInput?.controller === player.controllerId
+                        active: this.latestInput === player.controllerId
                     }
                 }), false])
 
-                const states = new Array(4).fill(false);
-                while (!this.stoppBuzzFlash) {
-                    states[buttonState.controller] = !states[buttonState.controller];
-                    this.buzz.setLeds(states);
-                    await new Promise(resolve => setTimeout(resolve, 100));
-                }
-                this.stoppBuzzFlash = false;
+                await this.flashBuzzer(buttonState.controller);
             }
         }
+    }
+
+    private async flashBuzzer(controller: number) {
+        const states = new Array(4).fill(false);
+        while (!this.stoppBuzzFlash) {
+            states[controller] = !states[controller];
+            this.buzz.setLeds(states);
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        this.stoppBuzzFlash = false;
     }
 
     private async waitForSpace() {
@@ -218,12 +263,13 @@ export class DrawingRoundComponent implements OnDestroy {
 
     private setupNextQuestion() {
         this.latestInput = null;
-        this.excludeIds = [];
+        this.excludeIds = [this.drawingPlayer.controllerId];
         this.gotCorrect = false;
         this.canvas.sendClear();
         this.promts = this.promts.slice(1);
         this.printPromt();
         this.canvas.sendMessage(this.promts[0]);
+        this.drawingMusic.play()
     }
 
     private printPromt() {
@@ -235,7 +281,7 @@ export class DrawingRoundComponent implements OnDestroy {
         this.acceptInputsVar = tf;
         if (tf) {
             const states = new Array(4).fill(false);
-            for (const player of this.memory.players) {
+            for (const player of this.memory.players.filter(player => player.controllerId !== this.drawingPlayer.controllerId)) {
                 states[player.controllerId] = true;
             }
             this.buzz.setLeds(states);
@@ -246,7 +292,7 @@ export class DrawingRoundComponent implements OnDestroy {
                     pointAward: undefined,
                     square: undefined,
                     perks: player.perks,
-                    active: true
+                    active: player.controllerId !== this.drawingPlayer.controllerId
                 }
             }), false])
         } else {
@@ -273,10 +319,10 @@ export class DrawingRoundComponent implements OnDestroy {
                 name: player.name,
                 score: player.gameScore,
                 pointAward: undefined,
-                square: this.latestInput?.controller === player.controllerId ? {
+                square: this.latestInput === player.controllerId ? {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
-                    squareText: "+" + (Math.floor(this.timer.remainingTime) + 21)
+                    squareText: "+" + 40
                 } : undefined,
                 perks: player.perks,
                 active: false
@@ -291,7 +337,7 @@ export class DrawingRoundComponent implements OnDestroy {
             scoreboardPlayers.push({
                 name: player.name,
                 score: player.gameScore,
-                pointAward: this.latestInput?.controller === player.controllerId ? Math.floor(this.timer.remainingTime) + 21 : undefined,
+                pointAward: this.latestInput === player.controllerId ? 40 : undefined,
                 square: undefined,
                 perks: player.perks,
                 active: false
@@ -301,7 +347,6 @@ export class DrawingRoundComponent implements OnDestroy {
     }
 
     private correct() {
-        this.stoppBuzzFlash = true;
         this.gotCorrect = true;
 
         const scoreboardPlayers: ScoreboardPlayer[] = [];
@@ -310,7 +355,7 @@ export class DrawingRoundComponent implements OnDestroy {
                 name: player.name,
                 score: player.gameScore,
                 pointAward: undefined,
-                square: this.latestInput?.controller === player.controllerId ? {
+                square: this.latestInput === player.controllerId ? {
                     squareBackground: '#00000080',
                     squareBorder: '#00FF00',
                 } : undefined,
@@ -322,8 +367,7 @@ export class DrawingRoundComponent implements OnDestroy {
     }
 
     private async incorrect() {
-        this.excludeIds.push(this.latestInput!.controller)
-        this.stoppBuzzFlash = true;
+        this.excludeIds.push(this.latestInput!)
 
         let scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
@@ -331,7 +375,7 @@ export class DrawingRoundComponent implements OnDestroy {
                 name: player.name,
                 score: player.gameScore,
                 pointAward: undefined,
-                square: this.latestInput?.controller === player.controllerId ? {
+                square: this.latestInput === player.controllerId ? {
                     squareBackground: '#00000080',
                     squareBorder: '#FF0000',
                 } : undefined,
@@ -343,26 +387,6 @@ export class DrawingRoundComponent implements OnDestroy {
 
         await new Promise(resolve => setTimeout(resolve, 1000))
         this.latestInput = null;
-
-        this.timer.startTimer(this.music);
-        const states = new Array(4).fill(true);
-        for (const id of this.excludeIds) {
-            states[id] = false;
-        }
-        this.buzz.setLeds(states);
-
-        scoreboardPlayers = [];
-        this.memory.players.forEach((player) => {
-            scoreboardPlayers.push({
-                name: player.name,
-                score: player.gameScore,
-                pointAward: undefined,
-                square: undefined,
-                perks: player.perks,
-                active: !this.excludeIds.includes(player.controllerId)
-            })
-        })
-        this.scoreboard.playerSubject.next([scoreboardPlayers, true])
     }
 
     private async chooseCategory() {
@@ -417,4 +441,58 @@ export class DrawingRoundComponent implements OnDestroy {
     private getPlayedTrackInPercent(): number {
         return (this.drawingMusic.currentTime / this.drawingMusic.duration) * 100
     }
+
+    private async playerAnswer(player: number) {
+        styledLogger("Zu Antworten: " + this.memory.players.filter(mPlayer => mPlayer.controllerId === player)[0].name, Style.speak);
+        this.latestInput = player;
+        this.flashBuzzer(player);
+        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+            return {
+                name: player.name,
+                score: player.gameScore,
+                pointAward: undefined,
+                square: this.latestInput === player.controllerId ? {
+                    squareBackground: '#FF000088',
+                    squareBorder: '#FFF'
+                } : undefined,
+                perks: player.perks,
+                active: this.latestInput === player.controllerId
+            }
+        }), false])
+        do {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        } while (this.latestInput !== null && !this.gotCorrect) //0 === null
+        this.stoppBuzzFlash = true;
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const states = new Array(4).fill(true);
+        for (const id of this.excludeIds) {
+            states[id] = false;
+        }
+        this.buzz.setLeds(states);
+
+        if (this.gotCorrect) return;
+
+        let scoreboardPlayers: ScoreboardPlayer[] = [];
+        this.memory.players.forEach((player) => {
+            scoreboardPlayers.push({
+                name: player.name,
+                score: player.gameScore,
+                pointAward: undefined,
+                square: undefined,
+                perks: player.perks,
+                active: !this.excludeIds.includes(player.controllerId)
+            })
+        })
+        this.scoreboard.playerSubject.next([scoreboardPlayers, true])
+    }
+
+    private getPlayerToForceAnswer() {
+        const players = this.memory.players.filter(player => player.controllerId !== this.drawingPlayer.controllerId).filter(player => !this.excludeIds.includes(player.controllerId));
+        const highestScore = players.sort((a, b) => a.gameScore - b.gameScore)[players.length - 1].gameScore;
+        return getRandomWeightedItem(players.map(player => {
+            return {item: player.controllerId, weight: Math.max(highestScore - player.gameScore, 1)}
+        }));
+    }
+
 }

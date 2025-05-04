@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 import { RoundInterface } from "../../../../round";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MemoryService } from "../../../services/memory.service";
@@ -18,7 +18,7 @@ import { NgStyle } from "@angular/common";
     standalone: true,
     styleUrl: './final-category.component.css'
 })
-export class FinalCategoryComponent {
+export class FinalCategoryComponent implements OnDestroy {
     currentRound: RoundInterface;
     rounds: {
         path: string, name: string, index: number, primary: string, secondary: string, background: string, iconPath: string

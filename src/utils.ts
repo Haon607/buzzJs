@@ -170,6 +170,34 @@ export function randomNumber(from: number, to: number): number {
   return Math.floor(Math.random() * (to - from + 1) + from);
 }
 
+export type WeightedItem<T> = {
+  item: T;
+  weight: number;
+};
+
+export function getRandomWeightedItem<T>(items: WeightedItem<T>[]): T {
+  // Filter out non-positive weights
+  const validItems = items.filter(({ weight }) => weight > 0);
+  if (validItems.length === 0) {
+    throw new Error("All weights must be greater than zero.");
+  }
+
+  const totalWeight = validItems.reduce((sum, { weight }) => sum + weight, 0);
+  const threshold = Math.random() * totalWeight;
+
+  let cumulativeWeight = 0;
+  for (const { item, weight } of validItems) {
+    cumulativeWeight += weight;
+    if (threshold < cumulativeWeight) {
+      return item;
+    }
+  }
+
+  // Fallback, should never happen
+  return validItems[validItems.length - 1].item;
+}
+
+
 export function countWithDelay(start: number, end: number, delay: number, emit: (value: number) => void): Promise<void> {
   return new Promise((resolve) => {
     let current = start;

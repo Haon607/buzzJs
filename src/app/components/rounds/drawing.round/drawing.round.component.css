@@ -15,6 +15,7 @@
     height: 10vh;
     width: 30vw;
     transform-style: preserve-3d;
+    opacity: 0;
 }
 
 /*#question {
