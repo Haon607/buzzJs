@@ -262,7 +262,7 @@ export class Round {
         background: "#88FF88",
         primary: "#8888FF",
         secondary: "#FF8888",
-        rules: "",
+        rules: "Letzter Platz malt, die anderen Guessen. 1 Guess pro drawing. 40 pkt für erraten. Zeichener bekommt am ende punkte. Kategoriewahl wenn keine Begriffe mehr. Done -> 'forceguess'",
         perks: ""
     }
     static final10: RoundInterface = {
@@ -319,7 +319,6 @@ export class Round {
     // Memory also halt das spiel
 
     // 8 Players maybe phone hybrid?
-    // Total round value
 
     // PERCS + MINIGAMES
     // SKILL GAMES? if there are a multiple of 5 rounds left, last round all vs current leader (Mii News (Breaking News) - Tomodachi Life Music Extended [OST])
