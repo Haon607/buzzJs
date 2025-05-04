@@ -56,6 +56,8 @@ export class DrawingRoundComponent implements OnDestroy {
         this.bgc = this.round.background;
         this.categories = CategoryLoader.loadCategories(this.round.questionType!)
         buzz.onPress(buttonState => this.onPress(buttonState));
+        styledLogger(this.round.name, Style.speak)
+        styledLogger(this.round.rules, Style.speak)
         this.drawingPlayer = this.memory.players.slice().sort((a, b) => a.gameScore - b.gameScore)[0];
         this.setupWithDelay();
         this.startRound();
@@ -145,7 +147,7 @@ export class DrawingRoundComponent implements OnDestroy {
             styledLogger("Initialize Drawing tablet", Style.requiresInput)
             this.canvas.sendClear()
         } while (!this.canvas.lastUpdate);
-        this.setCanvasColor('#2CADFA');
+        this.setCanvasColor(CanvasMirrorComponent.baseBorderColor);
         gsap.to('#canvas', {x: 0, ease: 'bounce'})
         await this.waitForSpace();
         new MusicFader().fadeOut(initMusic, 1000);
@@ -207,7 +209,7 @@ export class DrawingRoundComponent implements OnDestroy {
                 }
                 await new Promise(resolve => setTimeout(resolve, 5000));
             }
-            this.setCanvasColor('#2CADFA');
+            this.setCanvasColor(CanvasMirrorComponent.baseBorderColor);
             this.displayAnswer(false)
             new MusicFader().fadeOut(this.music, 1000);
             await new Promise(resolve => setTimeout(resolve, 500));
@@ -435,7 +437,7 @@ export class DrawingRoundComponent implements OnDestroy {
 
         await new Promise(resolve => setTimeout(resolve, 1000))
         this.latestInput = null;
-        this.setCanvasColor('#2CADFA');
+        this.setCanvasColor(CanvasMirrorComponent.baseBorderColor);
     }
 
     private async chooseCategory() {
@@ -458,7 +460,7 @@ export class DrawingRoundComponent implements OnDestroy {
         new MusicFader().fadeOut(this.music, 1000);
         this.categories = shuffleArray(this.categories.filter(category => category.name !== this.currentCategory!.name));
         await this.waitForSpace();
-        this.setCanvasColor('#2CADFA');
+        this.setCanvasColor(CanvasMirrorComponent.baseBorderColor);
         this.displayAnswers(false);
     }
 

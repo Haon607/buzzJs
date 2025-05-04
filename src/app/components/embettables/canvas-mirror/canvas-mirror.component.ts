@@ -59,5 +59,5 @@ export class CanvasMirrorComponent implements OnInit {
         this.ws.send(JSON.stringify({"event": "doneCanvas"}));
     }
 
-    static baseBoarderColor = '#2CADFA'
+    static baseBorderColor = '#2CADFA'
 }
