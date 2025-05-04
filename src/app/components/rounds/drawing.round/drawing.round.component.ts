@@ -20,7 +20,6 @@ import { ProgressbarComponent } from "../../embettables/progressbar/progressbar.
     selector: 'app-drawing.round',
     imports: [
         ScoreboardComponent,
-        // TimerComponent,
         NgStyle,
         CanvasMirrorComponent,
         ProgressbarComponent
@@ -50,6 +49,7 @@ export class DrawingRoundComponent implements OnDestroy {
     private promts: string[] = [];
     private colorRotation = ['#88FF88', '#FF8888', '#8888FF'] //Backround, Primary, Secondary
     private colorRotationInProgress = false;
+    private amountCorrect: number = 0;
 
     constructor(private memory: MemoryService, private scoreboard: ScoreboardService, private route: ActivatedRoute, private buzz: BuzzDeviceService, private router: Router, private hue: HueLightService) {
         this.round = memory.rounds[memory.roundNumber];
@@ -96,12 +96,7 @@ export class DrawingRoundComponent implements OnDestroy {
 
         gsap.set('#scoreboard', {x: 600})
         gsap.set('#canvas', {x: -2000, scale: 1, autoAlpha: 1})
-        /*TODO THIS ROUND IS PROBABLY MORE LIKE Textaware*/
-        /*TODO top line no question just category? and answers? let users pick category every so often*/
-        /*TODO custom timer from the music progression, makes more sense here*/
         gsap.set('.option', {rotateY: 88, x: -1150, opacity: 1})
-        // gsap.set('#answer', {rotateY: 88, x: -1150, opacity: 1})
-        // gsap.set('#timer', {y: -300, rotationX: -45, opacity: 1})
         gsap.set('#progress-bar', {y: -300, rotationX: -45, rotationY: -2, opacity: 1})
 
         await new Promise(resolve => setTimeout(resolve, 650));
@@ -143,23 +138,29 @@ export class DrawingRoundComponent implements OnDestroy {
     }
 
     private async startRound() {
+        const initMusic = new Audio("/music/mp/smpj-dc2.mp3");
+        initMusic.play()
         do {
             await new Promise(resolve => setTimeout(resolve, 500));
             styledLogger("Initialize Drawing tablet", Style.requiresInput)
             this.canvas.sendClear()
         } while (!this.canvas.lastUpdate);
+        this.setCanvasColor('#2CADFA');
         gsap.to('#canvas', {x: 0, ease: 'bounce'})
         await this.waitForSpace();
+        new MusicFader().fadeOut(initMusic, 1000);
+        await new Promise(resolve => setTimeout(resolve, 500));
         await this.roundStartAnimation();
         await this.chooseCategory()
         this.drawingMusic.play()
 
-        setInterval(() => {
+        let colorInterval = setInterval(() => {
             this.rotateColors(10000)
         }, 12500)
 
         for (let i = 0; !this.drawingMusic.ended; i++) {
             if (!this.promts[1]) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 this.drawingMusic.pause()
                 await this.chooseCategory()
             }
@@ -167,26 +168,86 @@ export class DrawingRoundComponent implements OnDestroy {
             this.acceptInputs(true)
             do {
                 await new Promise(resolve => setTimeout(resolve, 100));
-            } while (!this.drawingMusic.paused && !this.gotCorrect);
+            } while (!this.drawingMusic.paused && !this.gotCorrect && this.excludeIds.length < this.memory.players.length);
+            if (this.drawingMusic.ended) {
+                this.canvas.sendDone();
+            }
             this.acceptInputsVar = false
-            this.music.src = "/music/jackbox/drawfulreveal.mp3";
-            this.music.play();
+            if (!this.gotCorrect) {
+                this.music.src = "/music/jackbox/drawfulreveal.mp3";
+                this.music.play();
+            }
+            while (this.latestInput !== null && !this.gotCorrect) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
             while (!this.gotCorrect && this.excludeIds.length < this.memory.players.length) {
                 await this.playerAnswer(this.getPlayerToForceAnswer());
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
+            this.displayAnswer(true)
             if (this.gotCorrect) {
+                if (this.drawingMusic.ended) {
+                    new MusicFader().fadeOut(this.music, 1000)
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
+                    this.memory.crossMusic.play()
+                }
                 this.flipToPoints();
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 3000));
                 this.collectPoints();
                 await new Promise(resolve => setTimeout(resolve, 1000));
+                this.scoreboard.sortSubject.next();
+                this.amountCorrect++;
+            } else {
+                if (this.drawingMusic.ended) {
+                    new MusicFader().fadeOut(this.music, 1000)
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    this.memory.crossMusic = new Audio('/music/levelhead/Your Goods Delivered Real Good.mp3');
+                    this.memory.crossMusic.play()
+                }
+                await new Promise(resolve => setTimeout(resolve, 5000));
             }
+            this.setCanvasColor('#2CADFA');
+            this.displayAnswer(false)
             new MusicFader().fadeOut(this.music, 1000);
             await new Promise(resolve => setTimeout(resolve, 500));
-            if (this.drawingMusic.ended) {
-
-            }
         }
+        await this.waitForSpace();
+        this.displayBar(false);
+        let points = 0;
+        for (let i = 0; i <= this.amountCorrect; i++) {
+            points += (10 * ((i/10) +1))
+        }
+        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+            return {
+                name: player.name,
+                score: player.gameScore,
+                pointAward: undefined,
+                square: player.controllerId === this.drawingPlayer.controllerId ? {
+                    squareBackground: '#00000080',
+                    squareBorder: '#00FF00',
+                    squareText: this.amountCorrect + " Beg. +" + points + " Pkt"
+                } : undefined,
+                perks: player.perks,
+                active: false
+            }
+        }), false])
+        await this.waitForSpace();
+        this.scoreboard.playerSubject.next([this.memory.players.map(player => {
+            return {
+                name: player.name,
+                score: player.gameScore,
+                pointAward: player.controllerId === this.drawingPlayer.controllerId ? points : undefined,
+                square: undefined,
+                perks: player.perks,
+                active: false
+            }
+        }), true])
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        this.scoreboard.sortSubject.next();
+        await this.waitForSpace();
+        clearInterval(colorInterval)
+        gsap.to('#canvas', {x: -2000})
         gsap.to('#scoreboard', {x: 600})
         await new Promise(resolve => setTimeout(resolve, 1000));
         this.router.navigateByUrl("/category/" + this.bgc.slice(1, this.bgc.length));
@@ -223,23 +284,7 @@ export class DrawingRoundComponent implements OnDestroy {
     private async onPress(buttonState: ButtonState) {
         if (this.acceptInputsVar && buttonState.button === 0) {
             if (!this.latestInput && !this.excludeIds.includes(buttonState.controller)) {
-                this.latestInput = buttonState.controller;
-                new Audio('music/wwds/einloggen.mp3').play();
-                this.scoreboard.playerSubject.next([this.memory.players.map(player => {
-                    return {
-                        name: player.name,
-                        score: player.gameScore,
-                        pointAward: undefined,
-                        square: this.latestInput === player.controllerId ? {
-                            squareBackground: '#FF000088',
-                            squareBorder: '#FFF'
-                        } : undefined,
-                        perks: player.perks,
-                        active: this.latestInput === player.controllerId
-                    }
-                }), false])
-
-                await this.flashBuzzer(buttonState.controller);
+                this.playerAnswer(buttonState.controller)
             }
         }
     }
@@ -265,8 +310,9 @@ export class DrawingRoundComponent implements OnDestroy {
         this.latestInput = null;
         this.excludeIds = [this.drawingPlayer.controllerId];
         this.gotCorrect = false;
-        this.canvas.sendClear();
         this.promts = this.promts.slice(1);
+        this.displayObject.answer = this.promts[0];
+        this.canvas.sendClear();
         this.printPromt();
         this.canvas.sendMessage(this.promts[0]);
         this.drawingMusic.play()
@@ -348,6 +394,7 @@ export class DrawingRoundComponent implements OnDestroy {
 
     private correct() {
         this.gotCorrect = true;
+        this.setCanvasColor('#00FF00');
 
         const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
@@ -368,6 +415,7 @@ export class DrawingRoundComponent implements OnDestroy {
 
     private async incorrect() {
         this.excludeIds.push(this.latestInput!)
+        this.setCanvasColor('#FF0000');
 
         const scoreboardPlayers: ScoreboardPlayer[] = [];
         this.memory.players.forEach((player) => {
@@ -387,12 +435,14 @@ export class DrawingRoundComponent implements OnDestroy {
 
         await new Promise(resolve => setTimeout(resolve, 1000))
         this.latestInput = null;
+        this.setCanvasColor('#2CADFA');
     }
 
     private async chooseCategory() {
         this.currentCategory = null;
         this.music.src = "/music/jackbox/drawfuldecoy.mp3";
         this.music.play();
+        this.setCanvasColor('#F86613');
         this.displayObject.options = this.categories.slice(0, 4).map((category) => category.name);
         styledLogger("Kategoriewahl", Style.speak)
         styledLogger(this.displayObject.options.join(", "), Style.speak)
@@ -408,6 +458,7 @@ export class DrawingRoundComponent implements OnDestroy {
         new MusicFader().fadeOut(this.music, 1000);
         this.categories = shuffleArray(this.categories.filter(category => category.name !== this.currentCategory!.name));
         await this.waitForSpace();
+        this.setCanvasColor('#2CADFA');
         this.displayAnswers(false);
     }
 
@@ -443,7 +494,8 @@ export class DrawingRoundComponent implements OnDestroy {
     }
 
     private async playerAnswer(player: number) {
-        styledLogger("Zu Antworten: " + this.memory.players.filter(mPlayer => mPlayer.controllerId === player)[0].name, Style.speak);
+        new Audio('music/wwds/einloggen.mp3').play();
+        styledLogger("Antwort von: " + this.memory.players.filter(mPlayer => mPlayer.controllerId === player)[0].name, Style.speak);
         this.latestInput = player;
         this.flashBuzzer(player);
         this.scoreboard.playerSubject.next([this.memory.players.map(player => {
@@ -495,4 +547,7 @@ export class DrawingRoundComponent implements OnDestroy {
         }));
     }
 
+    private setCanvasColor(color: string) {
+        this.canvas.setColor(color)
+    }
 }

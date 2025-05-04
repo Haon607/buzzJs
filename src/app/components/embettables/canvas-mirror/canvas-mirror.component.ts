@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgOptimizedImage } from "@angular/common";
 import { Subject } from "rxjs";
+import gsap from "gsap";
 
 @Component({
     selector: 'app-canvas-mirror',
@@ -46,11 +47,16 @@ export class CanvasMirrorComponent implements OnInit {
     }
 
     setColor(color: string) {
+        gsap.to('#drawing', {borderColor: color, duration: 0.2});
         this.ws.send(JSON.stringify({"event": "changeCanvasBorderColor", "data": color}));
     }
 
     sendClear() {
         this.ws.send(JSON.stringify({"event": "clearCanvas"}));
+    }
+
+    sendDone() {
+        this.ws.send(JSON.stringify({"event": "doneCanvas"}));
     }
 
     static baseBoarderColor = '#2CADFA'
