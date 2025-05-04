@@ -218,7 +218,7 @@ export class DrawingRoundComponent implements OnDestroy {
         this.displayBar(false);
         let points = 0;
         for (let i = 0; i <= this.amountCorrect; i++) {
-            points += (10 * ((i/10) +1))
+            points += (10 * ((i/5) +1))
         }
         this.scoreboard.playerSubject.next([this.memory.players.map(player => {
             return {
