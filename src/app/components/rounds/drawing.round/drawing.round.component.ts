@@ -34,6 +34,7 @@ export class DrawingRoundComponent implements OnDestroy {
     categories: Category[] = [];
     spacePressed = false;
     music: HTMLAudioElement = new Audio();
+    // drawingMusic: HTMLAudioElement = new Audio('music/gen/wrong.mp3');
     drawingMusic: HTMLAudioElement = new Audio('music/jackbox/drawfuldraw.mp3');
     gotCorrect = false;
     @ViewChild(TimerComponent) timer: TimerComponent = new TimerComponent();
@@ -216,10 +217,7 @@ export class DrawingRoundComponent implements OnDestroy {
         }
         await this.waitForSpace();
         this.displayBar(false);
-        let points = 0;
-        for (let i = 0; i <= this.amountCorrect; i++) {
-            points += (10 * ((i/5) +1))
-        }
+        const points = this.amountCorrect * 30;
         this.scoreboard.playerSubject.next([this.memory.players.map(player => {
             return {
                 name: player.name,
