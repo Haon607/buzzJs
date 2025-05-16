@@ -41,7 +41,7 @@ export class MemoryService {
             Round.final10,
             // Round.savePoints,
         ];
-        this.roundNumber = 0;
+        this.roundNumber = 11;
         // this.pointsPerRound = 100;
         // this.pointsPerRoundIncrement = 25;
         this.players = [

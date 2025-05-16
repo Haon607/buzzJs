@@ -3,16 +3,16 @@ import { Component, HostListener, OnDestroy, ViewChild } from "@angular/core";
 import { ScoreboardComponent } from "../../embettables/scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
 import { TimerComponent } from "../../embettables/timer/timer.component";
-import { MemoryService } from "../../../services/memory.service";
+import { RoundInterface } from "../../../../round";
 import { Genre, Musicloader, MusicQuestion } from "../../../../MusicLoader";
-import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
+import { MemoryService } from "../../../services/memory.service";
 import { ScoreboardPlayer, ScoreboardService, ScoreboardSquare } from "../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { HueLightService } from "../../../services/hue-light.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { CategoryLoader } from "../../../../Loader";
 import { inputToColor } from "../../../../models";
-import { RoundInterface } from "../../../../round";
 
 @Component({
     selector: 'app-timeline.round',

@@ -1,13 +1,13 @@
 import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { MemoryService } from "../../../services/memory.service";
+import { MemoryService } from "../../../../../../q1/src/app/services/memory.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Category, CategoryLoader, QuestionType } from "../../../../Loader";
-import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
+import { ButtonState, BuzzDeviceService } from "../../../../../../q1/src/app/services/buzz-device.service";
 import { NgStyle } from "@angular/common";
-import { HueLightService } from "../../../services/hue-light.service";
-import { ColorFader, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
+import { HueLightService } from "../../../../../../q1/src/app/services/hue-light.service";
+import { ColorFader, MusicFader, randomNumber, shuffleArray, Style, styledLogger, getRandomWeightedItem } from "../../../../utils";
 import gsap from 'gsap';
-import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
+import { ScoreboardPlayer, ScoreboardService } from "../../../../../../q1/src/app/services/scoreboard.service";
 import { ScoreboardComponent } from "../../embettables/scoreboard/scoreboard.component";
 import { inputToColor } from "../../../../models";
 import { RoundInterface } from "../../../../round";
@@ -41,6 +41,7 @@ export class CategoryComponent implements OnDestroy {
 
     constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService, private scoreboard: ScoreboardService) {
         this.bgc = '#' + route.snapshot.paramMap.get('bgc')!;
+        memory.saveState();
         new MusicFader().fadeOut(memory.crossMusic, 1000)
         if (this.bgc !== '#000000') this.memory.roundNumber++;
         if ((this.rounds.length - this.memory.roundNumber) % 5 === 0 && this.memory.roundNumber > 0) {
@@ -82,7 +83,7 @@ export class CategoryComponent implements OnDestroy {
             this.displayHeadline = "Kategoriewahl";
             styledLogger(this.displayHeadline, Style.speak)
             styledLogger("Zur Auswahl:\n" + this.categories.map(cat => cat.name).slice(0, 4).join('\n'), Style.speak)
-            styledLogger("Wähle jemanden zum Kategorie auswählen mit 1-4", Style.requiresInput)
+            styledLogger("Wähle jemanden zum Kategorie auswählen mit 1-4 ODER mit < biased random", Style.requiresInput)
             this.animateOnLoad();
             this.fadeToPageColor(2500, this.round.questionType === QuestionType.music ? '#800080' : '#000080');
             this.music.play()
@@ -91,6 +92,7 @@ export class CategoryComponent implements OnDestroy {
 
     @HostListener('document:keydown', ['$event'])
     async handleKeyboardEvent(event: KeyboardEvent) {
+        if (event.key === "<") this.switchControlTo(getRandomWeightedItem(this.memory.players.map(player => {return {item: player.controllerId, weight:  Math.max(this.memory.players.sort((a, b) => a.gameScore - b.gameScore)[this.memory.players.length - 1].gameScore - player.gameScore, 1)}})));
         if (event.key === "1" || event.key === "2" || event.key === "3" || event.key === "4") this.switchControlTo(Number(event.key) - 1);
 
         if (this.buzz.emulate(event.key)) this.onPress(this.buzz.emulate(event.key)!);

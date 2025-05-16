@@ -1,16 +1,16 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
+import gsap from "gsap";
+import { Component, HostListener, OnDestroy } from "@angular/core";
 import { ScoreboardComponent } from "../../embettables/scoreboard/scoreboard.component";
 import { NgStyle } from "@angular/common";
-import { MemoryService } from "../../../services/memory.service";
+import { RoundInterface } from "../../../../round";
+import { Language, Musicloader, MusicQuestion } from "../../../../MusicLoader";
 import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
+import { MemoryService } from "../../../services/memory.service";
 import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HueLightService } from "../../../services/hue-light.service";
-import gsap from "gsap";
 import { ColorFader, countWithDelay, MusicFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
 import { inputToColor } from "../../../../models";
-import { Language, Musicloader, MusicQuestion } from "../../../../MusicLoader";
-import { RoundInterface } from "../../../../round";
 
 @Component({
     selector: 'app-text-aware',
