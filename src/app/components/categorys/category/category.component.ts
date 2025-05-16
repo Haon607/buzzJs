@@ -1,13 +1,13 @@
 import { Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { MemoryService } from "../../../../../../q1/src/app/services/memory.service";
+import { MemoryService } from "../../../services/memory.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Category, CategoryLoader, QuestionType } from "../../../../Loader";
-import { ButtonState, BuzzDeviceService } from "../../../../../../q1/src/app/services/buzz-device.service";
+import { ButtonState, BuzzDeviceService } from "../../../services/buzz-device.service";
 import { NgStyle } from "@angular/common";
-import { HueLightService } from "../../../../../../q1/src/app/services/hue-light.service";
+import { HueLightService } from "../../../services/hue-light.service";
 import { ColorFader, MusicFader, randomNumber, shuffleArray, Style, styledLogger, getRandomWeightedItem } from "../../../../utils";
 import gsap from 'gsap';
-import { ScoreboardPlayer, ScoreboardService } from "../../../../../../q1/src/app/services/scoreboard.service";
+import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
 import { ScoreboardComponent } from "../../embettables/scoreboard/scoreboard.component";
 import { inputToColor } from "../../../../models";
 import { RoundInterface } from "../../../../round";
@@ -41,7 +41,7 @@ export class CategoryComponent implements OnDestroy {
 
     constructor(private router: Router, public memory: MemoryService, private buzz: BuzzDeviceService, private route: ActivatedRoute, private hue: HueLightService, private scoreboard: ScoreboardService) {
         this.bgc = '#' + route.snapshot.paramMap.get('bgc')!;
-        memory.saveState();
+        // memory.saveState();
         new MusicFader().fadeOut(memory.crossMusic, 1000)
         if (this.bgc !== '#000000') this.memory.roundNumber++;
         if ((this.rounds.length - this.memory.roundNumber) % 5 === 0 && this.memory.roundNumber > 0) {

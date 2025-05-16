@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
-import { ButtonState, BuzzDeviceService } from '../../../../../q1/src/app/services/buzz-device.service';
+import { ButtonState, BuzzDeviceService } from '../../services/buzz-device.service';
 import { Player } from '../../../models';
 import gsap from 'gsap';
 import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
-import { MemoryService } from '../../../../../q1/src/app/services/memory.service';
+import { MemoryService } from '../../services/memory.service';
 import { Style, styledLogger } from '../../../utils';
 import { Round } from "../../../round";
 

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NgStyle } from "@angular/common";
-import { MemoryService } from "../../../../../q1/src/app/services/memory.service";
+import { MemoryService } from "../../services/memory.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { BuzzDeviceService } from "../../../../../q1/src/app/services/buzz-device.service";
-import { HueLightService } from "../../../../../q1/src/app/services/hue-light.service";
+import { BuzzDeviceService } from "../../services/buzz-device.service";
+import { HueLightService } from "../../services/hue-light.service";
 import { ColorFader, countWithDelay, randomNumber } from "../../../utils";
 import { inputToColor } from "../../../models";
 import gsap from "gsap";

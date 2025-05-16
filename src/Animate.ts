@@ -1,6 +1,6 @@
-import { HueLightService } from "../../q1/src/app/services/hue-light.service";
+import { HueLightService } from "./app/services/hue-light.service";
 import { shuffleArray } from "./utils";
-import { BuzzDeviceService } from "../../q1/src/app/services/buzz-device.service";
+import { BuzzDeviceService } from "./app/services/buzz-device.service";
 
 export class Animate {
     hue: HueLightService;

@@ -3,12 +3,12 @@ import gsap from 'gsap';
 import { ScoreboardComponent } from "../../../embettables/scoreboard/scoreboard.component";
 import { NgClass, NgStyle } from "@angular/common";
 import { TimerComponent } from "../../../embettables/timer/timer.component";
-import { MemoryService } from "../../../../../../../q1/src/app/services/memory.service";
+import { MemoryService } from "../../../../services/memory.service";
 import { Question, QuestionLoader } from "../../../../../Loader";
-import { ButtonState, BuzzDeviceService } from "../../../../../../../q1/src/app/services/buzz-device.service";
-import { ScoreboardPlayer, ScoreboardService } from "../../../../../../../q1/src/app/services/scoreboard.service";
+import { ButtonState, BuzzDeviceService } from "../../../../services/buzz-device.service";
+import { ScoreboardPlayer, ScoreboardService } from "../../../../services/scoreboard.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { HueLightService } from "../../../../../../../q1/src/app/services/hue-light.service";
+import { HueLightService } from "../../../../services/hue-light.service";
 import { MusicFader, shuffleArray, Style, styledLogger } from "../../../../../utils";
 import { RoundInterface } from "../../../../../round";
 

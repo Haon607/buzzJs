@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { NgStyle } from "@angular/common";
-import { ScoreboardPlayer, ScoreboardService } from "../../../../../../q1/src/app/services/scoreboard.service";
+import { ScoreboardPlayer, ScoreboardService } from "../../../services/scoreboard.service";
 import gsap from 'gsap';
-import { MemoryService } from "../../../../../../q1/src/app/services/memory.service";
+import { MemoryService } from "../../../services/memory.service";
 
 @Component({
     selector: 'app-scoreboard',

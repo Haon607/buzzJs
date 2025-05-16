@@ -1,10 +1,10 @@
 import { Component, HostListener, OnDestroy } from '@angular/core';
 import { RoundInterface } from "../../../../round";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MemoryService } from "../../../../../../q1/src/app/services/memory.service";
-import { BuzzDeviceService } from "../../../../../../q1/src/app/services/buzz-device.service";
-import { HueLightService } from "../../../../../../q1/src/app/services/hue-light.service";
-import { ScoreboardService } from "../../../../../../q1/src/app/services/scoreboard.service";
+import { MemoryService } from "../../../services/memory.service";
+import { BuzzDeviceService } from "../../../services/buzz-device.service";
+import { HueLightService } from "../../../services/hue-light.service";
+import { ScoreboardService } from "../../../services/scoreboard.service";
 import { ColorFader, randomNumber, shuffleArray, Style, styledLogger } from "../../../../utils";
 import gsap from "gsap";
 import { NgStyle } from "@angular/common";
